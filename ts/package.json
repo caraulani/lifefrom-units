@@ -1,0 +1,44 @@
+{
+  "name": "@lifefrom/units",
+  "version": "1.0.0",
+  "description": "Normalise clinical lab unit spellings and convert lab values with sourced, analyte-specific factors.",
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "bin": {
+    "lifefrom-units": "./dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/test/"
+  },
+  "keywords": ["laboratory", "units", "UCUM", "unit conversion", "clinical chemistry", "OMOP", "FHIR"],
+  "author": "LifeFrom (https://lifefrom.ai), Julian Caraulani",
+  "license": "MIT",
+  "homepage": "https://lifefrom.ai/research/open-data/lab-units",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caraulani/lifefrom-units.git",
+    "directory": "ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "typescript": "5.7.2"
+  }
+}

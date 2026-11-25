@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lifefrom-units"
+version = "1.0.0"
+description = "Normalise clinical lab unit spellings and convert lab values with sourced, analyte-specific factors."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "LifeFrom" }, { name = "Julian Caraulani" }]
+keywords = ["laboratory", "units", "UCUM", "unit conversion", "clinical chemistry", "OMOP", "FHIR"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Healthcare Industry",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://lifefrom.ai/research/open-data/lab-units"
+Repository = "https://github.com/caraulani/lifefrom-units"
+
+[project.scripts]
+lifefrom-units = "lifefrom_units.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lifefrom_units"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/lifefrom_units", "tests", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--doctest-modules src/lifefrom_units/core.py src/lifefrom_units/__init__.py tests"

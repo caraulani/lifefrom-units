@@ -1,0 +1,34 @@
+{
+  "title": "lifefrom-units: lab unit normalisation and sourced conversion",
+  "version": "1.0.0",
+  "publication_date": "2026-11-25",
+  "upload_type": "software",
+  "description": "lifefrom-units normalises the unit strings printed on clinical laboratory results and converts values between units. Unit-arithmetic factors are derived; analyte-specific factors (molar masses from PubChem and CIAAW, ion charges, published NHANES factors, the IFCC-NGSP HbA1c master equation) carry a cited source; conversions that must not be done by default (for example lipoprotein(a) mg/dL to nmol/L, insulin µIU/mL to pmol/L) are refused with a reason; callers may supply their own factor, which is recorded. Values with comparators or flags (<5, 5.4 H) keep their qualifier. One JSON specification is shared by a Python package and a TypeScript package that pass the same 1,501 test vectors.",
+  "creators": [
+    {
+      "name": "LifeFrom"
+    },
+    {
+      "name": "Caraulani, Julian",
+      "affiliation": "LifeFrom"
+    }
+  ],
+  "license": "mit",
+  "keywords": [
+    "laboratory medicine",
+    "clinical chemistry",
+    "units of measure",
+    "UCUM",
+    "unit conversion",
+    "OMOP",
+    "FHIR"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://lifefrom.ai/research/open-data/lab-units",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Code under MIT; data (data/, web/, tests/vectors.json) under CC BY 4.0. UCUM code strings used under the UCUM License (https://ucum.org/license); UCUM tables are not included."
+}

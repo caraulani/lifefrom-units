@@ -1,0 +1,297 @@
+marker_slug,unit,preferred_unit,release1_factor,release1_basis,lifefrom_units_factor,lifefrom_units_equation,lifefrom_units_status,rel_diff,flag,release1_note
+1-5-anhydroglucitol,mg/L,µg/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+17-hydroxyprogesterone,nmol/L,ng/dL,,,33.05,,analyte_factor,,new in lifefrom-units,no conversion in this release
+absolute-neutrophil-count-calculated,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+acth,pmol/L,pg/mL,,,,,no_sourced_conversion,,,no conversion in this release
+adiponectin,mg/L,µg/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+adiponectin,ng/mL,µg/mL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+afp,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+afp,IU/mL,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+albumin-serum,g/L,g/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+aldosterone,pmol/L,ng/dL,,,0.03604,,analyte_factor,,new in lifefrom-units,no conversion in this release
+aldosterone-renin-ratio,ratio,(ng/dL)/(ng/mL/h),,,,,forbidden,,,no conversion in this release
+alp,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+alp,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+alpha-1-antitrypsin,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+alt,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+alt,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+amh,pmol/L,ng/mL,,,,,forbidden,,,no conversion in this release
+ammonia,µg/dL,µmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+amylase,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+ana,ratio,titer,,,,,forbidden,,,no conversion in this release
+anca,U/mL,titer,,,,,forbidden,,,no conversion in this release
+androstenedione,nmol/L,ng/dL,,,28.64,,analyte_factor,,new in lifefrom-units,no conversion in this release
+anion-gap,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+anti-ccp,EU,U/mL,,,,,forbidden,,,no conversion in this release
+anti-dsdna,U/mL,IU/mL,,,,,no_sourced_conversion,,,no conversion in this release
+anti-hbc,S/CO,qualitative,,,,,forbidden,,,no conversion in this release
+anti-hbc,IU/mL,qualitative,,,,,forbidden,,,no conversion in this release
+anti-hbs,IU/L,mIU/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+anti-hcv,S/CO,qualitative,,,,,forbidden,,,no conversion in this release
+anti-hcv,index,qualitative,,,,,forbidden,,,no conversion in this release
+anti-ssa-ssb,AI,U/mL,,,,,forbidden,,,no conversion in this release
+antithrombin-iii,U/mL,%,,,,,no_sourced_conversion,,,no conversion in this release
+apolipoprotein-a1,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+apolipoprotein-b,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+ast,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+ast,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+band-neutrophils-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+band-neutrophils-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+basophils-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+basophils-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+basophils-absolute,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+beta-2-microglobulin,µg/mL,mg/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+beta-2-microglobulin,mg/dL,mg/L,10,unit arithmetic,10,,unit_arithmetic,+0.00000%,,
+bicarbonate-co2,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+blood-urea-nitrogen,mmol/L,mg/dL,2.80112,LifeFrom reader factor,2.8014,,analyte_factor,+0.01000%,differs,mmol/L here is urea (BUN mg/dL x 0.357 = urea mmol/L).
+bnp,ng/L,pg/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+bone-alp,µg/L,U/L,,,,,no_sourced_conversion,,,no conversion in this release
+c-peptide,nmol/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+c-peptide,pmol/mL,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+ca-125,kU/L,U/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ca-15-3,kU/L,U/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ca-19-9,kU/L,U/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+calcium-corrected,mmol/L,mg/dL,,,4.0078,,analyte_factor,,new in lifefrom-units,no conversion in this release
+calcium-ionized,mg/dL,mmol/L,,,0.24951345,,analyte_factor,,new in lifefrom-units,no conversion in this release
+calcium-total,mmol/L,mg/dL,4.00802,LifeFrom reader factor,4.0078,,analyte_factor,-0.00549%,differs,
+cea,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ceruloplasmin,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+ceruloplasmin,µmol/L,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+chloride-serum,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+chromium,µg/L,nmol/L,,,19.232249,,analyte_factor,,new in lifefrom-units,no conversion in this release
+chromogranin-a,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+chromogranin-a,nmol/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+ck-mb,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ck-mb,U/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+ck-total,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+cmv-antibody,U/mL,AU/mL,,,,,forbidden,,,no conversion in this release
+cmv-antibody,index,AU/mL,,,,,forbidden,,,no conversion in this release
+cmv-antibody,qualitative,AU/mL,,,,,forbidden,,,no conversion in this release
+complement-c3,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+complement-c4,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+copper,µg/dL,µmol/L,,,0.15736632,,analyte_factor,,new in lifefrom-units,no conversion in this release
+copper,mg/L,µmol/L,,,15.736632,,analyte_factor,,new in lifefrom-units,no conversion in this release
+cortisol-am,nmol/L,µg/dL,0.036245,LifeFrom reader factor,0.03625,,analyte_factor,+0.01380%,differs,
+cortisol-pm,nmol/L,µg/dL,,,0.03625,,analyte_factor,,new in lifefrom-units,no conversion in this release
+creatinine-serum,µmol/L,mg/dL,0.0113122,LifeFrom reader factor,0.011312,,analyte_factor,-0.00177%,differs,
+crp,mg/dL,mg/L,10,unit arithmetic,10,,unit_arithmetic,+0.00000%,,
+ctx,pg/mL,ng/mL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+d-dimer,µg/mL FEU,mg/L FEU,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+d-dimer,ng/mL FEU,mg/L FEU,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+d-dimer,µg/L DDU,mg/L FEU,,,,,no_sourced_conversion,,,no conversion in this release
+dhea,nmol/L,ng/dL,,,28.84,,analyte_factor,,new in lifefrom-units,no conversion in this release
+dhea-s,µmol/L,µg/dL,36.846,LifeFrom reader factor,36.85,,analyte_factor,+0.01086%,differs,
+dht,pmol/L,ng/dL,,,0.02904,,analyte_factor,,new in lifefrom-units,no conversion in this release
+direct-bilirubin,µmol/L,mg/dL,0.0584795,LifeFrom reader factor,0.05847,,analyte_factor,-0.01625%,differs,
+eag,mmol/L,mg/dL,,,18.016,,analyte_factor,,new in lifefrom-units,no conversion in this release
+ebv-antibody,AU/mL,U/mL,,,,,forbidden,,,no conversion in this release
+ebv-antibody,index,U/mL,,,,,forbidden,,,no conversion in this release
+ebv-antibody,qualitative,U/mL,,,,,forbidden,,,no conversion in this release
+eosinophils-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+eosinophils-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+eosinophils-absolute,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+esr,mm/hr,mm/h,1,unit arithmetic,1,,identity,+0.00000%,,
+estradiol-e2,pmol/L,pg/mL,0.272405,LifeFrom reader factor,0.2724,,analyte_factor,-0.00184%,differs,
+estrone-e1,pmol/L,pg/mL,,,0.2704,,analyte_factor,,new in lifefrom-units,no conversion in this release
+fasting-insulin,mIU/L,µIU/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+fasting-insulin,pmol/L,µIU/mL,,,,,forbidden,,,no conversion in this release
+fecal-calprotectin,mg/kg,µg/g,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+fecal-fat,g/day,g/24h,1,unit arithmetic,1,,identity,+0.00000%,,
+fecal-lactoferrin,µg/g,µg/mL,,,,,no_sourced_conversion,,,no conversion in this release
+fecal-lactoferrin,qualitative,µg/mL,,,,,forbidden,,,no conversion in this release
+fecal-occult-blood-fit,µg/g,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+fecal-occult-blood-fit,qualitative,ng/mL,,,,,forbidden,,,no conversion in this release
+ferritin,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ferritin,pmol/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+fibrin-degradation-products,mg/L,µg/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+fibrinogen,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+folate-rbc,nmol/L,ng/mL,,,0.4414,,analyte_factor,,new in lifefrom-units,no conversion in this release
+folate-serum,nmol/L,ng/mL,0.441306,LifeFrom reader factor,0.4414,,analyte_factor,+0.02130%,differs,
+free-t3,pmol/L,pg/mL,0.651042,LifeFrom reader factor,0.65097,,analyte_factor,-0.01106%,differs,
+free-t4,pmol/L,ng/dL,0.0777001,LifeFrom reader factor,0.077687,,analyte_factor,-0.01686%,differs,
+fructosamine,mmol/L,µmol/L,1000,unit arithmetic,1000,,unit_arithmetic,+0.00000%,,
+fsh,mIU/mL,IU/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+ggt,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+ggt,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+globulin-serum,g/L,g/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+glp-1,pg/mL,pmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+glucose-fasting,mmol/L,mg/dL,18.018,LifeFrom reader factor,18.016,,analyte_factor,-0.01110%,differs,
+growth-hormone,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+growth-hormone,mIU/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+h-pylori-antibody-igg,AU/mL,U/mL,,,,,forbidden,,,no conversion in this release
+h-pylori-antibody-igg,qualitative,U/mL,,,,,forbidden,,,no conversion in this release
+haptoglobin,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+hba1c,mmol/mol,%,,LifeFrom reader formula (not linear),,% = 0.09148 × mmol/mol + 2.152,equation,,equation,mmol/mol = (% - 2.15) x 10.929; % = mmol/mol / 10.929 + 2.15
+hbsag,IU/mL,qualitative,,,,,forbidden,,,no conversion in this release
+hbsag,S/CO,qualitative,,,,,forbidden,,,no conversion in this release
+hcg-beta,IU/L,mIU/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+hdl-cholesterol,mmol/L,mg/dL,38.6698,LifeFrom reader factor,38.67,,analyte_factor,+0.00052%,differs,
+hematocrit,L/L,%,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+hematocrit,proportion,%,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+hemoglobin,g/L,g/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+hemoglobin,mmol/L,g/dL,,,,,no_sourced_conversion,,,no conversion in this release
+hepcidin,nM,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+hiv-ag-ab-combo,S/CO,qualitative,,,,,forbidden,,,no conversion in this release
+hiv-ag-ab-combo,index,qualitative,,,,,forbidden,,,no conversion in this release
+holotranscobalamin,pg/mL,pmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+homocysteine,mg/L,µmol/L,,,7.3969968,,analyte_factor,,new in lifefrom-units,no conversion in this release
+hs-crp,mg/dL,mg/L,10,unit arithmetic,10,,unit_arithmetic,+0.00000%,,
+hs-crp,nmol/L,mg/L,,,,,no_sourced_conversion,,,no conversion in this release
+iga,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+ige-total,kU/L,IU/mL,1,unit arithmetic,,,no_sourced_conversion,,"release-1 converts, lifefrom-units does not",
+ige-total,ng/mL,IU/mL,,,,,no_sourced_conversion,,,no conversion in this release
+igf-1,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+igf-1,nmol/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+igg,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+igm,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+immature-granulocytes-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+immature-granulocytes-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+immature-reticulocyte-fraction,ratio,%,,,,,forbidden,,,no conversion in this release
+indirect-bilirubin,µmol/L,mg/dL,,,0.05847,,analyte_factor,,new in lifefrom-units,no conversion in this release
+iodine-urine,µg/g creatinine,µg/L,,,,,no_sourced_conversion,,,no conversion in this release
+iodine-urine,µg/24h,µg/L,,,,,no_sourced_conversion,,,no conversion in this release
+lactate-serum,mg/dL,mmol/L,,,0.11101243,,analyte_factor,,new in lifefrom-units,no conversion in this release
+ldh,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+ldh,µkat/L,U/L,60,unit arithmetic,60,,analyte_factor,+0.00000%,,
+ldl-cholesterol,mmol/L,mg/dL,38.6698,LifeFrom reader factor,38.67,,analyte_factor,+0.00052%,differs,
+leptin,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+lh,mIU/mL,IU/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+lipase,IU/L,U/L,1,unit arithmetic,1,,label_equivalence,+0.00000%,,
+lipoprotein-a,nmol/L,mg/dL,,,,,forbidden,,,never convert: mass and particle concentration measure different things; there is no fixed factor
+lipoprotein-associated-phospholipase-a2,nmol/min/mL,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+lymphocytes-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+lymphocytes-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+lymphocytes-absolute,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+magnesium-rbc,mmol/L,mg/dL,,,2.4305,,analyte_factor,,new in lifefrom-units,no conversion in this release
+magnesium-serum,mmol/L,mg/dL,2.43072,LifeFrom reader factor,2.4305,,analyte_factor,-0.00905%,differs,
+magnesium-serum,mEq/L,mg/dL,1.21536,LifeFrom reader factor,1.21525,,analyte_factor,-0.00905%,differs,
+manganese,µg/L,nmol/L,,,18.202337,,analyte_factor,,new in lifefrom-units,no conversion in this release
+mchc,g/L,g/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+methylmalonic-acid,µmol/L,nmol/L,1000,unit arithmetic,1000,,unit_arithmetic,-0.00000%,,
+methylmalonic-acid,µg/mL,nmol/L,,,8468.1175,,analyte_factor,,new in lifefrom-units,no conversion in this release
+monocytes-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+monocytes-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+monocytes-absolute,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+myeloperoxidase,ng/mL,pmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+myoglobin,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+myoglobin,nmol/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+neutrophils-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+neutrophils-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+neutrophils-absolute,cells/µL,10^3/µL,0.001,unit arithmetic,0.001,,unit_arithmetic,+0.00000%,,
+non-hdl-cholesterol,mmol/L,mg/dL,38.6698,LifeFrom reader factor,38.67,,analyte_factor,+0.00052%,differs,
+nrbc-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+nrbc-percent,/100 WBC,%,,,,,forbidden,,,no conversion in this release
+nt-probnp,pmol/L,pg/mL,,,,,no_sourced_conversion,,,no conversion in this release
+ogtt-2h-glucose,mmol/L,mg/dL,,,18.016,,analyte_factor,,new in lifefrom-units,no conversion in this release
+osmolality-serum,mOsm/kg H2O,mOsm/kg,1,unit arithmetic,1,,identity,+0.00000%,,
+osteocalcin,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+oxidized-ldl,ng/mL,U/L,,,,,no_sourced_conversion,,,no conversion in this release
+p1np,ng/mL,µg/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+pdw,fL,%,,,,,no_sourced_conversion,,,no conversion in this release
+phosphorus-serum,mmol/L,mg/dL,3.09693,LifeFrom reader factor,3.0974,,analyte_factor,+0.01518%,differs,
+platelet-count,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+platelet-count,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+potassium-serum,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+pregnenolone,nmol/L,ng/dL,,,31.65,,analyte_factor,,new in lifefrom-units,no conversion in this release
+progesterone,nmol/L,ng/mL,,,0.3145,,analyte_factor,,new in lifefrom-units,no conversion in this release
+proinsulin,pIU/mL,pmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+prolactin,µIU/mL,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+prolactin,mIU/L,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release
+protein-c,U/mL,%,,,,,no_sourced_conversion,,,no conversion in this release
+protein-s,U/mL,%,,,,,no_sourced_conversion,,,no conversion in this release
+prothrombin-time,seconds,s,1,unit arithmetic,1,,identity,+0.00000%,,
+psa-free,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+psa-free-total-ratio,ratio,%,,,,,forbidden,,,no conversion in this release
+psa-total,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+pth,pmol/L,pg/mL,,,,,no_sourced_conversion,,,no conversion in this release
+rbc,10^12/L,10^6/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+rbc,M/µL,10^6/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+remnant-cholesterol,mmol/L,mg/dL,,,38.67,,analyte_factor,,new in lifefrom-units,no conversion in this release
+renin-pra,µg/L/h,ng/mL/h,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+reticulocyte-absolute,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+reticulocyte-absolute,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+reverse-t3,pmol/L,ng/dL,,,0.065097,,analyte_factor,,new in lifefrom-units,no conversion in this release
+rheumatoid-factor,U/mL,IU/mL,,,,,no_sourced_conversion,,,no conversion in this release
+secretory-iga-stool,µg/mL,mg/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+secretory-iga-stool,mg/g,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+selenium,µg/L,µmol/L,,,0.012662876,,analyte_factor,,new in lifefrom-units,no conversion in this release
+selenium,ng/mL,µmol/L,,,0.012662876,,analyte_factor,,new in lifefrom-units,no conversion in this release
+serum-amyloid-a,µg/mL,mg/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+serum-iron,µmol/L,µg/dL,5.58659,LifeFrom reader factor,5.5845,,analyte_factor,-0.03741%,differs,
+shbg,µg/dL,nmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+small-dense-ldl,nmol/L,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+sodium-serum,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+soluble-transferrin-receptor,nmol/L,mg/L,,,,,no_sourced_conversion,,,no conversion in this release
+testosterone-bioavailable,nmol/L,ng/dL,,,28.84,,analyte_factor,,new in lifefrom-units,no conversion in this release
+testosterone-free,pmol/L,pg/mL,0.288434,LifeFrom reader factor,0.2884,,analyte_factor,-0.01179%,differs,
+testosterone-free,ng/dL,pg/mL,10,unit arithmetic,10,,unit_arithmetic,+0.00000%,,
+testosterone-total,nmol/L,ng/dL,28.8184,LifeFrom reader factor,28.84,,analyte_factor,+0.07495%,differs,
+thyroglobulin,µg/L,ng/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+thyroglobulin-antibody,kIU/L,IU/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+tibc,µmol/L,µg/dL,5.58659,LifeFrom reader factor,5.5845,,analyte_factor,-0.03741%,differs,
+total-bilirubin,µmol/L,mg/dL,0.0584795,LifeFrom reader factor,0.05847,,analyte_factor,-0.01625%,differs,
+total-cholesterol,mmol/L,mg/dL,38.6698,LifeFrom reader factor,38.67,,analyte_factor,+0.00052%,differs,
+total-protein,g/L,g/dL,0.1,unit arithmetic,0.1,,unit_arithmetic,+0.00000%,,
+total-t3,nmol/L,ng/dL,,,65.097,,analyte_factor,,new in lifefrom-units,no conversion in this release
+total-t4,nmol/L,µg/dL,,,0.077687,,analyte_factor,,new in lifefrom-units,no conversion in this release
+tpo-antibody,kIU/L,IU/mL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+trab,U/L,IU/L,,,,,no_sourced_conversion,,,no conversion in this release
+transferrin,g/L,mg/dL,100,unit arithmetic,100,,unit_arithmetic,+0.00000%,,
+transferrin,µmol/L,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+triglycerides,mmol/L,mg/dL,88.574,LifeFrom reader factor,88.573959,,analyte_factor,-0.00005%,,
+troponin-i-hs,pg/mL,ng/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+troponin-t-hs,pg/mL,ng/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+tsh,µIU/mL,mIU/L,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+tsh,mU/L,mIU/L,1,unit arithmetic,,,no_sourced_conversion,,"release-1 converts, lifefrom-units does not",
+tsi,IU/L,%,,,,,no_sourced_conversion,,,no conversion in this release
+ttg-iga,CU,U/mL,,,,,forbidden,,,no conversion in this release
+uibc,µmol/L,µg/dL,,,5.5845,,analyte_factor,,new in lifefrom-units,no conversion in this release
+urea,mg/dL,mmol/L,,,0.16651126,,analyte_factor,,new in lifefrom-units,no conversion in this release
+uric-acid,µmol/L,mg/dL,0.0168124,LifeFrom reader factor,0.016811,,analyte_factor,-0.00833%,differs,
+urine-24h-protein,g/24h,mg/24h,1000,unit arithmetic,1000,,unit_arithmetic,+0.00000%,,
+urine-acr,mg/mmol,mg/g,,,8.8401697,,analyte_factor,,new in lifefrom-units,no conversion in this release
+urine-albumin,mg/dL,mg/L,10,unit arithmetic,10,,unit_arithmetic,+0.00000%,,
+urine-albumin,mg/24h,mg/L,,,,,no_sourced_conversion,,,no conversion in this release
+urine-bacteria,qualitative,/hpf,,,,,forbidden,,,no conversion in this release
+urine-creatinine,mmol/L,mg/dL,,,11.312,,analyte_factor,,new in lifefrom-units,no conversion in this release
+urine-creatinine,mg/24h,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+urine-creatinine,mmol/24h,mg/dL,,,,,no_sourced_conversion,,,no conversion in this release
+urine-crystals,qualitative,/lpf,,,,,forbidden,,,no conversion in this release
+urine-glucose-dipstick,semiquantitative,mg/dL,,,,,forbidden,,,no conversion in this release
+urine-ketones,semiquantitative,mg/dL,,,,,forbidden,,,no conversion in this release
+urine-microalbumin,µg/min,mg/L,,,,,no_sourced_conversion,,,no conversion in this release
+urine-microalbumin,mg/24h,mg/L,,,,,no_sourced_conversion,,,no conversion in this release
+urine-potassium,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+urine-potassium,mmol/24h,mmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+urine-protein-creatinine-ratio,mg/mmol,mg/g,,,8.8401697,,analyte_factor,,new in lifefrom-units,no conversion in this release
+urine-protein-creatinine-ratio,ratio,mg/g,,,,,forbidden,,,no conversion in this release
+urine-protein-dipstick,semiquantitative,mg/dL,,,,,forbidden,,,no conversion in this release
+urine-rbc-microscopy,/µL,/hpf,,,,,forbidden,,,no conversion in this release
+urine-sodium,mEq/L,mmol/L,1,unit arithmetic (mEq/L = mmol/L x 1),1,,analyte_factor,+0.00000%,,
+urine-sodium,mmol/24h,mmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+urine-urobilinogen,mg/dL,EU/dL,,,,,forbidden,,,no conversion in this release
+urine-wbc-microscopy,/µL,/hpf,,,,,forbidden,,,no conversion in this release
+urine-yeast,qualitative,/hpf,,,,,forbidden,,,no conversion in this release
+vitamin-a,µg/dL,µmol/L,,,0.034904014,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-a,mg/L,µmol/L,,,3.4904014,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-b1,µg/L,nmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+vitamin-b12,pmol/L,pg/mL,1.35501,LifeFrom reader factor,1.3554,,analyte_factor,+0.02878%,differs,
+vitamin-b2,µg/L,nmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+vitamin-b6,µg/L,nmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+vitamin-b6,ng/mL,nmol/L,,,,,no_sourced_conversion,,,no conversion in this release
+vitamin-c,mg/dL,µmol/L,,,56.779469,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-c,mg/L,µmol/L,,,5.6779469,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-d-1-25-oh2,pmol/L,pg/mL,,,0.4166,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-d-25-oh,nmol/L,ng/mL,0.400641,LifeFrom reader factor,0.4006,,analyte_factor,-0.01023%,differs,
+vitamin-e,mg/L,µmol/L,,,2.3218017,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-e,mg/dL,µmol/L,,,23.218017,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vitamin-k,µg/L,nmol/L,,,2.2187708,,analyte_factor,,new in lifefrom-units,no conversion in this release
+vldl-cholesterol,mmol/L,mg/dL,,,38.67,,analyte_factor,,new in lifefrom-units,no conversion in this release
+von-willebrand-factor,IU/dL,%,,,,,no_sourced_conversion,,,no conversion in this release
+von-willebrand-factor,U/dL,%,,,,,no_sourced_conversion,,,no conversion in this release
+wbc,10^9/L,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+wbc,K/µL,10^3/µL,1,unit arithmetic,1,,identity,+0.00000%,,
+wbc,K/mm³,10^3/µL,1,unit arithmetic,1,,unit_arithmetic,+0.00000%,,
+zinc,µg/dL,µmol/L,0.153,LifeFrom reader factor,0.15295197,,analyte_factor,-0.03139%,differs,
+zinc,mg/L,µmol/L,15.3,LifeFrom reader factor,15.295197,,analyte_factor,-0.03139%,differs,
+zonulin-stool,ng/g,ng/mL,,,,,no_sourced_conversion,,,no conversion in this release

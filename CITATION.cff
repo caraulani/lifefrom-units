@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use lifefrom-units, please cite it as below. When you use a specific conversion factor, please also cite its source (explain() returns it)."
+title: "lifefrom-units: lab unit normalisation and sourced conversion"
+version: 1.0.0
+date-released: 2026-11-25
+type: software
+license:
+  - MIT
+  - CC-BY-4.0
+url: "https://lifefrom.ai/research/open-data/lab-units"
+repository-code: "https://github.com/caraulani/lifefrom-units"
+authors:
+  - name: LifeFrom
+    website: "https://lifefrom.ai"
+  - given-names: Julian
+    family-names: Caraulani
+    affiliation: LifeFrom
+keywords:
+  - laboratory medicine
+  - clinical chemistry
+  - units of measure
+  - UCUM
+  - unit conversion
+  - OMOP
+  - FHIR
+abstract: >-
+  lifefrom-units normalises the unit strings printed on clinical laboratory results and converts values
+  between units. Unit-arithmetic factors are derived; analyte-specific factors (molar masses, ion
+  charges, published factors, the IFCC-NGSP HbA1c master equation) carry a cited source; conversions
+  that must not be done by default (for example lipoprotein(a) mg/dL to nmol/L) are refused with a reason. One JSON
+  specification is shared by a Python package and a TypeScript package that pass the same 1,501 test
+  vectors.

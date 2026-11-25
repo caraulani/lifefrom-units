@@ -1,0 +1,91 @@
+"""API behaviour beyond the shared vectors: error types, explain structure, CLI."""
+from __future__ import annotations
+
+import json
+
+import pytest
+
+import lifefrom_units as L
+from lifefrom_units.cli import main
+
+
+def test_error_hierarchy():
+    for cls in (L.UnknownUnitError, L.UnknownAnalyteError, L.IncompatibleUnitsError, L.ForbiddenConversionError,
+                L.NoSourcedConversionError, L.InvalidValueError, L.AmbiguousValueError):
+        assert issubclass(cls, L.LifeFromUnitsError)
+        assert issubclass(cls, ValueError)
+
+
+def test_forbidden_carries_reason_and_source():
+    with pytest.raises(L.ForbiddenConversionError) as ei:
+        L.convert(50, "mg/dL", "nmol/L", analyte="lipoprotein-a")
+    d = ei.value.details
+    assert d["rule"] == "lpa-mass-vs-molar"
+    assert d["sources"][0]["doi"] == "10.1093/eurheartj/ehac361"
+
+
+def test_explain_structure():
+    e = L.explain("mmol/L", "mg/dL", analyte="glucose", value="5,4")
+    assert e["kind"] == "analyte_factor" and not e["derived"]
+    assert e["sources"][0]["pubchem_cid"] == 5793
+    assert e["text"].startswith("1 mmol/L = 18.016")
+    assert abs(e["result"] - 5.4 * 18.016) < 1e-9
+    h = L.explain("%", "mmol/mol", analyte="hba1c")
+    assert h["factor"] is None and h["equation"]["text"].startswith("mmol/mol = 10.9314")
+
+
+def test_every_spelling_in_spec_resolves():
+    for u in L.SPEC["units"]:
+        for s in [u["unit"]] + u["aliases"] + u["case_sensitive_aliases"]:
+            assert L.normalize_unit(s) == u["unit"], s
+
+
+def test_every_analyte_bridge_has_sources():
+    for a in L.SPEC["analytes"]:
+        for b in a["bridges"]:
+            assert b["sources"], (a["id"], b)
+            for s in b["sources"]:
+                src = L.SPEC["sources"][s]
+                assert src["url"].startswith("https://") and src["accessed"] == "2026-11-25"
+
+
+def test_unit_info_ucum():
+    assert L.unit_info("x10E9/L")["ucum"] == "10*9/L"
+    assert L.unit_info("mIU/mL")["ucum"] == "m[IU]/mL"
+
+
+def test_cli(capsys):
+    assert main(["convert", "5,4", "mmol/L", "mg/dL", "--analyte", "glucose"]) == 0
+    assert capsys.readouterr().out.strip() == "97.2864"
+    assert main(["normalize", "mcg/l", "K/uL"]) == 0
+    assert capsys.readouterr().out.split() == ["µg/L", "10^3/µL"]
+    assert main(["same", "µg/L", "ng/mL"]) == 0
+    assert main(["same", "mg/dL", "mg/L"]) == 1
+    capsys.readouterr()
+    assert main(["convert", "50", "mg/dL", "nmol/L", "-a", "lipoprotein-a"]) == 2
+    assert "forbidden" in capsys.readouterr().err
+    assert main(["explain", "mg/dL", "mmol/L", "-a", "cholesterol", "--json"]) == 0
+    assert json.loads(capsys.readouterr().out)["kind"] == "analyte_factor"
+
+
+def test_cli_qualifiers_and_factor(capsys):
+    assert main(["convert", "<5", "mg/dL", "mmol/L", "-a", "glucose"]) == 0
+    assert capsys.readouterr().out.strip() == "<0.277531"
+    assert main(["convert", "5,4 H", "mmol/L", "mg/dL", "-a", "glucose"]) == 0
+    assert capsys.readouterr().out.strip() == "97.2864 H"
+    assert main(["convert", "10", "µIU/mL", "pmol/L", "-a", "insulin", "--factor", "6"]) == 0
+    io = capsys.readouterr()
+    assert io.out.strip() == "60" and "not checked" in io.err
+
+
+def test_factor_is_never_default():
+    with pytest.raises(L.ForbiddenConversionError):
+        L.convert(10, "µIU/mL", "pmol/L", analyte="insulin")
+    e = L.explain("µIU/mL", "pmol/L", analyte="insulin", factor=6)
+    assert e["user_factor"]["overrides"] == "forbidden" and e["sources"] == []
+
+
+def test_amh_refused_with_reason():
+    with pytest.raises(L.ForbiddenConversionError) as ei:
+        L.convert(2, "ng/mL", "pmol/L", analyte="amh")
+    assert "assay-independent" in ei.value.details["reason"]

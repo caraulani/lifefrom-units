@@ -1,0 +1,87 @@
+analyte,marker_slugs,from_unit,to_unit,kind,factor,equation,basis,molar_mass_g_per_mol,source_ids,source_urls,published_crosscheck,crosscheck_rel_diff
+glucose,glucose-fasting | ogtt-2h-glucose | eag,mg/dL,mmol/L,analyte_factor,0.0555062,,molar mass 180.16 g/mol,180.16,pubchem-5793,https://pubchem.ncbi.nlm.nih.gov/compound/5793,0.05551 (nhanes-glu-l) | 0.0555 (nhanes-biopro-l),-0.0068% | +0.0112%
+cholesterol,total-cholesterol | hdl-cholesterol | ldl-cholesterol | non-hdl-cholesterol | vldl-cholesterol | remnant-cholesterol,mg/dL,mmol/L,analyte_factor,0.0258598,,molar mass 386.7 g/mol,386.7,pubchem-5997,https://pubchem.ncbi.nlm.nih.gov/compound/5997,0.02586 (nhanes-tchol-l) | 0.0259 (nhanes-biopro-l),-0.0006% | -0.1551%
+triglycerides,triglycerides,mg/dL,mmol/L,analyte_factor,0.01129,,published factor 0.01129,,nhanes-trigly-l,https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/TRIGLY_L.htm,0.0113 (nhanes-biopro-l),-0.0885%
+creatinine,creatinine-serum | urine-creatinine,mg/dL,mmol/L,analyte_factor,0.0884017,,molar mass 113.12 g/mol,113.12,pubchem-588,https://pubchem.ncbi.nlm.nih.gov/compound/588,,
+creatinine,creatinine-serum | urine-creatinine,mg/dL,µmol/L,analyte_factor,88.4017,,molar mass 113.12 g/mol,113.12,pubchem-588,https://pubchem.ncbi.nlm.nih.gov/compound/588,88.4 (nhanes-biopro-l) | 88.4 (nhanes-alb-cr-l),+0.0019% | +0.0019%
+uric-acid,uric-acid,mg/dL,mmol/L,analyte_factor,0.0594849,,molar mass 168.11 g/mol,168.11,pubchem-1175,https://pubchem.ncbi.nlm.nih.gov/compound/1175,,
+uric-acid,uric-acid,mg/dL,µmol/L,analyte_factor,59.4849,,molar mass 168.11 g/mol,168.11,pubchem-1175,https://pubchem.ncbi.nlm.nih.gov/compound/1175,59.48 (nhanes-biopro-l),+0.0082%
+bilirubin,total-bilirubin | direct-bilirubin | indirect-bilirubin,mg/dL,mmol/L,analyte_factor,0.0171028,,molar mass 584.7 g/mol,584.7,pubchem-5280352,https://pubchem.ncbi.nlm.nih.gov/compound/5280352,,
+bilirubin,total-bilirubin | direct-bilirubin | indirect-bilirubin,mg/dL,µmol/L,analyte_factor,17.1028,,molar mass 584.7 g/mol,584.7,pubchem-5280352,https://pubchem.ncbi.nlm.nih.gov/compound/5280352,17.1 (nhanes-biopro-l),+0.0163%
+urea,urea,mg/dL,mmol/L,analyte_factor,0.166511,,molar mass 60.056 g/mol,60.056,pubchem-1176,https://pubchem.ncbi.nlm.nih.gov/compound/1176,,
+blood-urea-nitrogen,blood-urea-nitrogen,mg/dL,mmol/L,analyte_factor,0.356964,,urea (CH4N2O) holds 2 N per molecule; molar mass of N2,28.014,pubchem-947,https://pubchem.ncbi.nlm.nih.gov/compound/947,0.357 (nhanes-biopro-l),-0.0100%
+calcium,calcium-total | calcium-ionized | calcium-corrected,mg/dL,mmol/L,analyte_factor,0.249513,,molar mass 40.078 g/mol,40.078,ciaaw-Ca,https://www.ciaaw.org/abridged-atomic-weights.htm,0.25 (nhanes-biopro-l),-0.1946%
+calcium,calcium-total | calcium-ionized | calcium-corrected,mmol/L,mEq/L,analyte_factor,2,,derived: unit arithmetic with ion charge 2 (1 Eq = 1 mol of charge / |z|),40.078,ucum-2.2,https://ucum.org/ucum,,
+magnesium,magnesium-serum | magnesium-rbc,mg/dL,mmol/L,analyte_factor,0.411438,,molar mass 24.305 g/mol,24.305,ciaaw-Mg,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+magnesium,magnesium-serum | magnesium-rbc,mmol/L,mEq/L,analyte_factor,2,,derived: unit arithmetic with ion charge 2 (1 Eq = 1 mol of charge / |z|),24.305,ucum-2.2,https://ucum.org/ucum,,
+phosphorus,phosphorus-serum,mg/dL,mmol/L,analyte_factor,0.322851,,molar mass 30.974 g/mol,30.974,ciaaw-P,https://www.ciaaw.org/abridged-atomic-weights.htm,0.323 (nhanes-biopro-l),-0.0460%
+iron,serum-iron | tibc | uibc,mg/dL,mmol/L,analyte_factor,0.179067,,molar mass 55.845 g/mol,55.845,ciaaw-Fe,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+iron,serum-iron | tibc | uibc,µg/dL,µmol/L,analyte_factor,0.179067,,molar mass 55.845 g/mol,55.845,ciaaw-Fe,https://www.ciaaw.org/abridged-atomic-weights.htm,0.1791 (nhanes-biopro-l),-0.0184%
+zinc,zinc,mg/dL,mmol/L,analyte_factor,0.152952,,molar mass 65.38 g/mol,65.38,ciaaw-Zn,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+copper,copper,mg/dL,mmol/L,analyte_factor,0.157366,,molar mass 63.546 g/mol,63.546,ciaaw-Cu,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+selenium,selenium,mg/dL,mmol/L,analyte_factor,0.126629,,molar mass 78.971 g/mol,78.971,ciaaw-Se,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+manganese,manganese,mg/dL,mmol/L,analyte_factor,0.182023,,molar mass 54.938 g/mol,54.938,ciaaw-Mn,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+chromium,chromium,mg/dL,mmol/L,analyte_factor,0.192322,,molar mass 51.996 g/mol,51.996,ciaaw-Cr,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+sodium,sodium-serum | urine-sodium,mg/dL,mmol/L,analyte_factor,0.434972,,molar mass 22.990 g/mol,22.99,ciaaw-Na,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+sodium,sodium-serum | urine-sodium,mmol/L,mEq/L,analyte_factor,1,,derived: unit arithmetic with ion charge 1 (1 Eq = 1 mol of charge / |z|),22.99,ucum-2.2,https://ucum.org/ucum,,
+potassium,potassium-serum | urine-potassium,mg/dL,mmol/L,analyte_factor,0.255768,,molar mass 39.098 g/mol,39.098,ciaaw-K,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+potassium,potassium-serum | urine-potassium,mmol/L,mEq/L,analyte_factor,1,,derived: unit arithmetic with ion charge 1 (1 Eq = 1 mol of charge / |z|),39.098,ucum-2.2,https://ucum.org/ucum,,
+chloride,chloride-serum,mg/dL,mmol/L,analyte_factor,0.282087,,molar mass 35.45 g/mol,35.45,ciaaw-Cl,https://www.ciaaw.org/abridged-atomic-weights.htm,,
+chloride,chloride-serum,mmol/L,mEq/L,analyte_factor,1,,derived: unit arithmetic with ion charge 1 (1 Eq = 1 mol of charge / |z|),35.45,ucum-2.2,https://ucum.org/ucum,,
+bicarbonate,bicarbonate-co2,mmol/L,mEq/L,analyte_factor,1,,derived: unit arithmetic with ion charge 1 (1 Eq = 1 mol of charge / |z|),,ucum-2.2,https://ucum.org/ucum,,
+anion-gap,anion-gap,mmol/L,mEq/L,analyte_factor,1,,derived: unit arithmetic with ion charge 1 (1 Eq = 1 mol of charge / |z|),,ucum-2.2,https://ucum.org/ucum,,
+cortisol,cortisol-am | cortisol-pm,mg/dL,mmol/L,analyte_factor,0.0275862,,molar mass 362.5 g/mol,362.5,pubchem-5754,https://pubchem.ncbi.nlm.nih.gov/compound/5754,,
+testosterone,testosterone-total | testosterone-free | testosterone-bioavailable,mg/dL,mmol/L,analyte_factor,0.0346741,,molar mass 288.4 g/mol,288.4,pubchem-6013,https://pubchem.ncbi.nlm.nih.gov/compound/6013,,
+testosterone,testosterone-total | testosterone-free | testosterone-bioavailable,ng/dL,nmol/L,analyte_factor,0.0346741,,molar mass 288.4 g/mol,288.4,pubchem-6013,https://pubchem.ncbi.nlm.nih.gov/compound/6013,0.0347 (nhanes-tst-l),-0.0747%
+estradiol,estradiol-e2,mg/dL,mmol/L,analyte_factor,0.0367107,,molar mass 272.4 g/mol,272.4,pubchem-5757,https://pubchem.ncbi.nlm.nih.gov/compound/5757,,
+estradiol,estradiol-e2,pg/mL,pmol/L,analyte_factor,3.67107,,molar mass 272.4 g/mol,272.4,pubchem-5757,https://pubchem.ncbi.nlm.nih.gov/compound/5757,3.67 (nhanes-tst-l),+0.0292%
+estrone,estrone-e1,mg/dL,mmol/L,analyte_factor,0.0369822,,molar mass 270.4 g/mol,270.4,pubchem-5870,https://pubchem.ncbi.nlm.nih.gov/compound/5870,,
+estrone,estrone-e1,ng/dL,pmol/L,analyte_factor,36.9822,,molar mass 270.4 g/mol,270.4,pubchem-5870,https://pubchem.ncbi.nlm.nih.gov/compound/5870,37.0 (nhanes-tst-l),-0.0480%
+dhea-s,dhea-s,mg/dL,mmol/L,analyte_factor,0.027137,,molar mass 368.5 g/mol,368.5,pubchem-12594,https://pubchem.ncbi.nlm.nih.gov/compound/12594,,
+dhea-s,dhea-s,µg/dL,µmol/L,analyte_factor,0.027137,,molar mass 368.5 g/mol,368.5,pubchem-12594,https://pubchem.ncbi.nlm.nih.gov/compound/12594,0.0271 (nhanes-tst-l),+0.1367%
+dhea,dhea,mg/dL,mmol/L,analyte_factor,0.0346741,,molar mass 288.4 g/mol,288.4,pubchem-5881,https://pubchem.ncbi.nlm.nih.gov/compound/5881,,
+androstenedione,androstenedione,mg/dL,mmol/L,analyte_factor,0.0349162,,molar mass 286.4 g/mol,286.4,pubchem-6128,https://pubchem.ncbi.nlm.nih.gov/compound/6128,,
+androstenedione,androstenedione,ng/dL,nmol/L,analyte_factor,0.0349162,,molar mass 286.4 g/mol,286.4,pubchem-6128,https://pubchem.ncbi.nlm.nih.gov/compound/6128,0.0349 (nhanes-tst-l),+0.0464%
+17-hydroxyprogesterone,17-hydroxyprogesterone,mg/dL,mmol/L,analyte_factor,0.0302572,,molar mass 330.5 g/mol,330.5,pubchem-6238,https://pubchem.ncbi.nlm.nih.gov/compound/6238,,
+17-hydroxyprogesterone,17-hydroxyprogesterone,ng/dL,nmol/L,analyte_factor,0.0302572,,molar mass 330.5 g/mol,330.5,pubchem-6238,https://pubchem.ncbi.nlm.nih.gov/compound/6238,0.0303 (nhanes-tst-l),-0.1413%
+progesterone,progesterone,mg/dL,mmol/L,analyte_factor,0.0317965,,molar mass 314.5 g/mol,314.5,pubchem-5994,https://pubchem.ncbi.nlm.nih.gov/compound/5994,,
+progesterone,progesterone,ng/dL,nmol/L,analyte_factor,0.0317965,,molar mass 314.5 g/mol,314.5,pubchem-5994,https://pubchem.ncbi.nlm.nih.gov/compound/5994,0.0318 (nhanes-tst-l),-0.0110%
+aldosterone,aldosterone,mg/dL,mmol/L,analyte_factor,0.0277469,,molar mass 360.4 g/mol,360.4,pubchem-5839,https://pubchem.ncbi.nlm.nih.gov/compound/5839,,
+dihydrotestosterone,dht,mg/dL,mmol/L,analyte_factor,0.0344353,,molar mass 290.4 g/mol,290.4,pubchem-10635,https://pubchem.ncbi.nlm.nih.gov/compound/10635,,
+pregnenolone,pregnenolone,mg/dL,mmol/L,analyte_factor,0.0315956,,molar mass 316.5 g/mol,316.5,pubchem-8955,https://pubchem.ncbi.nlm.nih.gov/compound/8955,,
+folate,folate-serum | folate-rbc,mg/dL,mmol/L,analyte_factor,0.0226552,,molar mass 441.4 g/mol,441.4,pubchem-135398658,https://pubchem.ncbi.nlm.nih.gov/compound/135398658,,
+folate,folate-serum | folate-rbc,ng/mL,nmol/L,analyte_factor,2.26552,,molar mass 441.4 g/mol,441.4,pubchem-135398658,https://pubchem.ncbi.nlm.nih.gov/compound/135398658,2.265 (nhanes-folate-l),+0.0229%
+triiodothyronine,free-t3 | total-t3 | reverse-t3,mg/dL,mmol/L,analyte_factor,0.0153617,,molar mass 650.97 g/mol,650.97,pubchem-5920,https://pubchem.ncbi.nlm.nih.gov/compound/5920,,
+thyroxine,free-t4 | total-t4,mg/dL,mmol/L,analyte_factor,0.0128722,,molar mass 776.87 g/mol,776.87,pubchem-5819,https://pubchem.ncbi.nlm.nih.gov/compound/5819,,
+vitamin-b12,vitamin-b12,mg/dL,mmol/L,analyte_factor,0.0073779,,molar mass 1355.4 g/mol,1355.4,pubchem-5311498,https://pubchem.ncbi.nlm.nih.gov/compound/5311498,,
+25-hydroxyvitamin-d,vitamin-d-25-oh,mg/dL,mmol/L,analyte_factor,0.0249626,,molar mass 400.6 g/mol,400.6,pubchem-5283731 | iom-2011-vitd,https://pubchem.ncbi.nlm.nih.gov/compound/5283731 | https://doi.org/10.17226/13050,,
+1-25-dihydroxyvitamin-d,vitamin-d-1-25-oh2,mg/dL,mmol/L,analyte_factor,0.0240038,,molar mass 416.6 g/mol,416.6,pubchem-5280453,https://pubchem.ncbi.nlm.nih.gov/compound/5280453,,
+homocysteine,homocysteine,mg/dL,mmol/L,analyte_factor,0.07397,,molar mass 135.19 g/mol,135.19,pubchem-91552,https://pubchem.ncbi.nlm.nih.gov/compound/91552,,
+methylmalonic-acid,methylmalonic-acid,mg/dL,mmol/L,analyte_factor,0.0846812,,molar mass 118.09 g/mol,118.09,pubchem-487,https://pubchem.ncbi.nlm.nih.gov/compound/487,,
+vitamin-a,vitamin-a,mg/dL,mmol/L,analyte_factor,0.034904,,molar mass 286.5 g/mol,286.5,pubchem-445354,https://pubchem.ncbi.nlm.nih.gov/compound/445354,,
+vitamin-c,vitamin-c,mg/dL,mmol/L,analyte_factor,0.0567795,,molar mass 176.12 g/mol,176.12,pubchem-54670067,https://pubchem.ncbi.nlm.nih.gov/compound/54670067,,
+vitamin-e,vitamin-e,mg/dL,mmol/L,analyte_factor,0.023218,,molar mass 430.7 g/mol,430.7,pubchem-14985,https://pubchem.ncbi.nlm.nih.gov/compound/14985,,
+vitamin-k,vitamin-k,mg/dL,mmol/L,analyte_factor,0.0221877,,molar mass 450.7 g/mol,450.7,pubchem-5284607,https://pubchem.ncbi.nlm.nih.gov/compound/5284607,,
+lactate,lactate-serum,mg/dL,mmol/L,analyte_factor,0.111012,,molar mass 90.08 g/mol,90.08,pubchem-612,https://pubchem.ncbi.nlm.nih.gov/compound/612,,
+alp,alp,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+alp,alp,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+alt,alt,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+alt,alt,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+ast,ast,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+ast,ast,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+ggt,ggt,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+ggt,ggt,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+ldh,ldh,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+ldh,ldh,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+ck,ck-total,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+ck,ck-total,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+amylase,amylase,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+amylase,amylase,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+lipase,lipase,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+lipase,lipase,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+lp-pla2,lipoprotein-associated-phospholipase-a2,U/L,µkat/L,analyte_factor,0.0166667,,"derived: unit arithmetic from the UCUM definitions U = umol/min, kat = mol/s",,ucum-2.2 | ramsay-tipton-2017,https://ucum.org/ucum | https://doi.org/10.3390/molecules22071192,,
+lp-pla2,lipoprotein-associated-phospholipase-a2,IU/L,U/L,label_equivalence,1,,label equivalence for enzyme activity,,ramsay-tipton-2017,https://doi.org/10.3390/molecules22071192,,
+urine-albumin-creatinine-ratio,urine-acr,mg/g,mg/mmol,analyte_factor,0.11312,,creatinine molar mass 113.12 g/mol in the denominator,,pubchem-588,https://pubchem.ncbi.nlm.nih.gov/compound/588,,
+urine-protein-creatinine-ratio,urine-protein-creatinine-ratio,mg/g,mg/mmol,analyte_factor,0.11312,,creatinine molar mass 113.12 g/mol in the denominator,,pubchem-588,https://pubchem.ncbi.nlm.nih.gov/compound/588,,
+hba1c,hba1c,mmol/mol,%,equation,,% = 0.09148 × mmol/mol + 2.152,IFCC-NGSP master equation,,ngsp-ifcc | hoelzel-2004,https://ngsp.org/ifccngsp.asp | https://doi.org/10.1373/clinchem.2003.024802,,
+vitamin-d-dose,,µg,IU,analyte_factor,40,,IU of vitamin D defined as the activity of 0.025 µg cholecalciferol,,iom-2011-vitd,https://doi.org/10.17226/13050,,
