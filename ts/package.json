@@ -12,7 +12,7 @@
     }
   },
   "bin": {
-    "lifefrom-units": "./dist/src/cli.js"
+    "lifefrom-units": "dist/src/cli.js"
   },
   "files": [
     "dist/src",
@@ -24,7 +24,15 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node --test dist/test/"
   },
-  "keywords": ["laboratory", "units", "UCUM", "unit conversion", "clinical chemistry", "OMOP", "FHIR"],
+  "keywords": [
+    "laboratory",
+    "units",
+    "UCUM",
+    "unit conversion",
+    "clinical chemistry",
+    "OMOP",
+    "FHIR"
+  ],
   "author": "LifeFrom (https://lifefrom.ai), Julian Caraulani",
   "license": "MIT",
   "homepage": "https://lifefrom.ai/research/open-data/lab-units",

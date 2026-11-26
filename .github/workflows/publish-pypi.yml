@@ -1,0 +1,23 @@
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Test
+        working-directory: python
+        run: uvx --with pytest --with . pytest -q
+      - name: Build
+        working-directory: python
+        run: uv build --out-dir dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
