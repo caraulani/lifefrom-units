@@ -138,14 +138,20 @@ def unit_defs():
         ucum="/mm3")
     add("/nL", "number_concentration", 10**9, ["cells/nL", "per nL"], ucum="/nL")
     add("/pL", "number_concentration", 10**12, ["cells/pL"], ucum="/pL")
+    # "mil/µL" and "mil/mm3" are NOT aliases: they are in AMBIGUOUS below (thousand in Spanish, million in English).
     add("10^3/µL", "number_concentration", 10**9,
-        ["K/µL", "Thousand/µL", "Thou/µL", "x1000/µL", "1000/µL", "10^3 cells/µL", "10^3/µl", "K/uL"],
+        ["K/µL", "Thousand/µL", "Thou/µL", "x1000/µL", "1000/µL", "10^3 cells/µL", "10^3/µl", "K/uL",
+         "mii/µL", "miles/µL"],
         ["K/μL"], ucum="10*3/uL")
-    add("10^3/mm³", "number_concentration", 10**9, ["K/mm³", "K/mm3", "10^3/mm3", "10^3/cmm", "Thou/mm3"],
-        ucum="10*3/mm3")
-    add("10^6/µL", "number_concentration", 10**12, ["Million/µL", "Mil/µL", "mill/µL", "10^6 cells/µL"],
+    add("10^3/mm³", "number_concentration", 10**9,
+        ["K/mm³", "K/mm3", "10^3/mm3", "10^3/cmm", "Thou/mm3", "Thousand/mm3", "mii/mm3", "mii/mm³", "miles/mm3",
+         "miles/mm³"], ucum="10*3/mm3")
+    add("10^6/µL", "number_concentration", 10**12,
+        ["Million/µL", "mill/µL", "mill./µL", "millones/µL", "10^6 cells/µL"],
         ["M/µL", "M/uL"], ucum="10*6/uL")
-    add("10^6/mm³", "number_concentration", 10**12, ["10^6/mm3", "Mil/mm3"], ucum="10*6/mm3")
+    add("10^6/mm³", "number_concentration", 10**12,
+        ["10^6/mm3", "Million/mm3", "mill/mm3", "mill/mm³", "mill./mm3", "millones/mm3", "millones/mm³"],
+        ucum="10*6/mm3")
     add("10^3/L", "number_concentration", 10**3, [], ucum="10*3/L")
     add("10^6/L", "number_concentration", 10**6, [], ucum="10*6/L")
     add("10^9/L", "number_concentration", 10**9, ["10^9 cells/L", "Giga/L"], ["G/L", "Gpt/L"], ucum="10*9/L")
@@ -221,6 +227,43 @@ def unit_defs():
 
 
 # ---------------------------------------------------------------------------
+# Ambiguous spellings. The same letters mean different numbers in different
+# languages, so these are refused unless the caller passes a locale. "mil" is
+# the Spanish word for one thousand (miles = thousands; millions are "mill." or
+# "millones"), while US reports use "Mil" for million (RBC "mil/uL") and
+# Romanian reports use "mil." for milioane (thousands are "mii"). Matching is
+# case-insensitive: capitalisation does not tell the conventions apart.
+# readings: language subtag -> canonical unit.
+# ---------------------------------------------------------------------------
+AMBIGUOUS = [
+    dict(id="mil-per-mm3", spellings=["mil/mm3", "mil/mm³", "mil/cmm", "mil./mm3", "mil./mm³"],
+         readings={"es": "10^3/mm³", "en": "10^6/mm³", "ro": "10^6/mm³"}),
+    dict(id="mil-per-uL", spellings=["mil/µL", "mil./µL"],
+         readings={"es": "10^3/µL", "en": "10^6/µL", "ro": "10^6/µL"}),
+]
+
+# What "mil" means in each language for which a reading is shipped, and why.
+LANGUAGE_READINGS = {
+    "es": dict(meaning="thousand",
+               note="Spanish: 'mil' is the numeral one thousand (miles = thousands), so 'mil/mm3' = 10^3/mm³. "
+                    "Spanish has no conventional abbreviation for millón; millions are written out ('millones') or "
+                    "shortened to 'mill.'. Spanish-language documents translated from US usage can still use 'mil' "
+                    "for million (NIH Clinical Center), so pass locale='es' only for reports that follow Spanish usage.",
+               sources=["eswiktionary-mil", "nih-cc-cbc-es"]),
+    "en": dict(meaning="million",
+               note="English (US reports): 'Mil' abbreviates million, for example red cell counts in 'mil/uL'.",
+               sources=["uw-dlmp-rbc", "nih-cc-cbc-es"]),
+    "ro": dict(meaning="million",
+               note="Romanian: 'mil.' is read as an abbreviation of milion (plural milioane); thousands are 'mii' "
+                    "(plural of mie). No dictionary entry for the abbreviation 'mil.' itself was found; the reading "
+                    "rests on the two numerals.",
+               sources=["dexonline-milion", "dexonline-mie"]),
+}
+AMBIGUOUS_REASON = ("'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on "
+                    "English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart.")
+
+
+# ---------------------------------------------------------------------------
 # Normalisation rules. Applied in order to the input, and again to the
 # lower-cased input for the case-insensitive pass. Replacement strings use
 # $1-style group references (translated for Python by the runtimes).
@@ -254,6 +297,32 @@ NORMALIZATION_RULES = [
 # Sources that are not PubChem compound records.
 # ---------------------------------------------------------------------------
 SOURCES = {
+    "eswiktionary-mil": dict(
+        label="Wikcionario (Spanish Wiktionary), entry 'mil' (Spanish)",
+        url="https://es.wiktionary.org/wiki/mil", kind="dictionary", accessed="2026-11-26",
+        location="Adjetivo, sense 1: 'Diez veces cien.'; Sustantivo masculino, sense 4: 'El número 1000, 10^3.' "
+                 "(The RAE Diccionario de la lengua española, https://dle.rae.es/mil, gives the same definition but "
+                 "refused a scripted download, HTTP 403.)"),
+    "nih-cc-cbc-es": dict(
+        label="NIH Clinical Center, Patient Education: 'Entendiendo su conteo sanguíneo completo' (Spanish edition "
+              "of 'Understanding your complete blood count'), archived 2009-01-09",
+        url="https://web.archive.org/web/20090109175010/http://www.cc.nih.gov/ccc/patient_education/pepubs_sp/cbcsp.pdf",
+        kind="patient_education", accessed="2026-11-26",
+        location="p. 1: 'Los glóbulos rojos se miden en millones por milímetro cúbico (mil/mm3) de sangre.' and "
+                 "white cells 'se miden en miles por milímetro cúbico (K/mm3)'; 'RBC: 3.58-4.99 mil/mm3'. A Spanish "
+                 "text that uses 'mil' for million, following US usage."),
+    "uw-dlmp-rbc": dict(
+        label="UW Medicine Department of Laboratory Medicine and Pathology, Test Guide: Red Blood Cell Count (RBC)",
+        url="https://dlmp.uw.edu/test-guide/view/RBC", kind="lab_test_guide", accessed="2026-11-26",
+        location="reference ranges in 'mil/uL', for example adults 3.80-5.00 (female) and 4.40-5.60 (male)"),
+    "dexonline-mie": dict(
+        label="DEX '09 (Dicționarul explicativ al limbii române), entry 'mie', via dexonline.ro",
+        url="https://dexonline.ro/definitie/mie", kind="dictionary", accessed="2026-11-26",
+        location="'MIE, mii, num. card. ... Numărul care în numărătoare are locul între 999 și 1001.'"),
+    "dexonline-milion": dict(
+        label="DEX '09 (Dicționarul explicativ al limbii române), entry 'milion', via dexonline.ro",
+        url="https://dexonline.ro/definitie/milion", kind="dictionary", accessed="2026-11-26",
+        location="'MILION, milioane, num. card. Număr egal cu o mie de mii.'"),
     "ciaaw-abridged": dict(
         label="CIAAW, Abridged standard atomic weights (five significant digits)",
         url="https://www.ciaaw.org/abridged-atomic-weights.htm", kind="atomic_weight",

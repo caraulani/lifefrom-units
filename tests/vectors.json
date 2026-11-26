@@ -1,17 +1,17 @@
 {
- "version": "1.0.0",
+ "version": "1.1.0",
  "description": "Shared test vectors for the lifefrom-units Python and TypeScript packages. Expected values computed independently of the engine (scripts/make_vectors.py).",
  "ops": {
-  "normalize": "normalize_unit(unit) -> unit",
-  "same_unit": "same_unit(a, b, analyte?) -> same",
+  "normalize": "normalize_unit(unit, locale?) -> unit",
+  "same_unit": "same_unit(a, b, analyte?, locale?) -> same",
   "parse_value": "parse_value(value) -> value",
-  "convert": "convert(value, from, to, analyte?) -> value within rel_tol (or abs_tol)",
+  "convert": "convert(value, from, to, analyte?, factor?, locale?) -> value within rel_tol (or abs_tol)",
   "roundtrip": "convert(convert(value, a, b), b, a) -> value within rel_tol",
-  "explain": "explain(from, to, analyte?, factor?) -> kind, factor, derived, source ids, equation slope and intercept, reference_cids / reference_elements, warnings_contain (substrings), warning_count, user_factor_overrides, user_factor_library_kind",
+  "explain": "explain(from, to, analyte?, factor?, locale?) -> kind, factor, derived, source ids, equation slope and intercept, reference_cids / reference_elements, warnings_contain (substrings), warning_count, user_factor_overrides, user_factor_library_kind",
   "parse_result": "parse_result(value) -> value, comparator, flag",
-  "convert_result": "convert_result(value, from, to, analyte?, factor?) -> value (rel 1e-9), comparator, flag, unit"
+  "convert_result": "convert_result(value, from, to, analyte?, factor?, locale?) -> value (rel 1e-9), comparator, flag, unit"
  },
- "count": 1501,
+ "count": 1587,
  "vectors": [
   {
    "id": "normalize-0001",
@@ -18379,7 +18379,942 @@
    "note": "without factor the default still refuses"
   },
   {
-   "id": "explain-1481",
+   "id": "normalize-1481",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm3",
+    "locale": "es"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   }
+  },
+  {
+   "id": "normalize-1482",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm³",
+    "locale": "es-ES"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   }
+  },
+  {
+   "id": "normalize-1483",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/mm3",
+    "locale": "es-AR"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   }
+  },
+  {
+   "id": "normalize-1484",
+   "op": "normalize",
+   "input": {
+    "unit": "MIL/MM3",
+    "locale": "ES"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   }
+  },
+  {
+   "id": "normalize-1485",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/cmm",
+    "locale": "es"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   }
+  },
+  {
+   "id": "normalize-1486",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/mm3",
+    "locale": "en"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   }
+  },
+  {
+   "id": "normalize-1487",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm3",
+    "locale": "en-US"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   }
+  },
+  {
+   "id": "normalize-1488",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./mm3",
+    "locale": "ro"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   }
+  },
+  {
+   "id": "normalize-1489",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   }
+  },
+  {
+   "id": "normalize-1490",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/uL",
+    "locale": "es_MX"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   }
+  },
+  {
+   "id": "normalize-1491",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mcL",
+    "locale": "es"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   }
+  },
+  {
+   "id": "normalize-1492",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/µL",
+    "locale": "en"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1493",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/uL",
+    "locale": "en-US"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1494",
+   "op": "normalize",
+   "input": {
+    "unit": "MIL/UL",
+    "locale": "en"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1495",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./µL",
+    "locale": "ro"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1496",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./uL",
+    "locale": "ro-RO"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1497",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/µL",
+    "locale": "ro"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   }
+  },
+  {
+   "id": "normalize-1498",
+   "op": "normalize",
+   "input": {
+    "unit": "K/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   }
+  },
+  {
+   "id": "normalize-1499",
+   "op": "normalize",
+   "input": {
+    "unit": "mill/mm3",
+    "locale": "en"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   }
+  },
+  {
+   "id": "normalize-1500",
+   "op": "normalize",
+   "input": {
+    "unit": "mg/dL",
+    "locale": "ro"
+   },
+   "expect": {
+    "unit": "mg/dL"
+   }
+  },
+  {
+   "id": "normalize-1501",
+   "op": "normalize",
+   "input": {
+    "unit": "mill/mm3"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1502",
+   "op": "normalize",
+   "input": {
+    "unit": "mill/mm³"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1503",
+   "op": "normalize",
+   "input": {
+    "unit": "millones/mm3"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1504",
+   "op": "normalize",
+   "input": {
+    "unit": "Millones/mm³"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1505",
+   "op": "normalize",
+   "input": {
+    "unit": "Million/mm3"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1506",
+   "op": "normalize",
+   "input": {
+    "unit": "mill/µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1507",
+   "op": "normalize",
+   "input": {
+    "unit": "mill./µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1508",
+   "op": "normalize",
+   "input": {
+    "unit": "millones/µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1509",
+   "op": "normalize",
+   "input": {
+    "unit": "Million/µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1510",
+   "op": "normalize",
+   "input": {
+    "unit": "mii/µL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1511",
+   "op": "normalize",
+   "input": {
+    "unit": "mii/uL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1512",
+   "op": "normalize",
+   "input": {
+    "unit": "miles/µL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1513",
+   "op": "normalize",
+   "input": {
+    "unit": "mii/mm3"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1514",
+   "op": "normalize",
+   "input": {
+    "unit": "miles/mm3"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1515",
+   "op": "normalize",
+   "input": {
+    "unit": "Thousand/mm3"
+   },
+   "expect": {
+    "unit": "10^3/mm³"
+   },
+   "note": "unambiguous without a locale"
+  },
+  {
+   "id": "normalize-1516",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm3"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1517",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/mm3"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1518",
+   "op": "normalize",
+   "input": {
+    "unit": "MIL/MM3"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1519",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm³"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1520",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./mm3"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1521",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1522",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1523",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/uL"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1524",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/uL"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1525",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "'mil' is thousand in Spanish, million in English"
+  },
+  {
+   "id": "normalize-1526",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/mm3",
+    "locale": "de"
+   },
+   "error": "ambiguous_unit",
+   "note": "no reading shipped for this language"
+  },
+  {
+   "id": "normalize-1527",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil/µL",
+    "locale": "pt-BR"
+   },
+   "error": "ambiguous_unit",
+   "note": "no reading shipped for this language"
+  },
+  {
+   "id": "normalize-1528",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./µL",
+    "locale": "fr"
+   },
+   "error": "ambiguous_unit",
+   "note": "no reading shipped for this language"
+  },
+  {
+   "id": "normalize-1529",
+   "op": "normalize",
+   "input": {
+    "unit": "mg/dL",
+    "locale": ""
+   },
+   "error": "invalid_value",
+   "note": "locale must be a language tag"
+  },
+  {
+   "id": "normalize-1530",
+   "op": "normalize",
+   "input": {
+    "unit": "mg/dL",
+    "locale": "12"
+   },
+   "error": "invalid_value",
+   "note": "locale must be a language tag"
+  },
+  {
+   "id": "normalize-1531",
+   "op": "normalize",
+   "input": {
+    "unit": "mg/dL",
+    "locale": "español"
+   },
+   "error": "invalid_value",
+   "note": "locale must be a language tag"
+  },
+  {
+   "id": "convert-1532",
+   "op": "convert",
+   "input": {
+    "value": 7.5,
+    "from": "mil/mm3",
+    "to": "10^3/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 7.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1533",
+   "op": "convert",
+   "input": {
+    "value": "7,5",
+    "from": "mil/mm3",
+    "to": "K/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 7.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1534",
+   "op": "convert",
+   "input": {
+    "value": "7,5",
+    "from": "mil/mm3",
+    "to": "10^9/L",
+    "locale": "es-ES"
+   },
+   "expect": {
+    "value": 7.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1535",
+   "op": "convert",
+   "input": {
+    "value": 250,
+    "from": "mil/mm3",
+    "to": "10^9/L",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 250.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1536",
+   "op": "convert",
+   "input": {
+    "value": 7.5,
+    "from": "mil/µL",
+    "to": "/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 7500.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1537",
+   "op": "convert",
+   "input": {
+    "value": 4.5,
+    "from": "Mil/µL",
+    "to": "10^12/L",
+    "locale": "en"
+   },
+   "expect": {
+    "value": 4.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1538",
+   "op": "convert",
+   "input": {
+    "value": 4.5,
+    "from": "Mil/µL",
+    "to": "10^6/µL",
+    "locale": "en"
+   },
+   "expect": {
+    "value": 4.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1539",
+   "op": "convert",
+   "input": {
+    "value": 4.5,
+    "from": "Mil/uL",
+    "to": "/µL",
+    "locale": "en"
+   },
+   "expect": {
+    "value": 4500000.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1540",
+   "op": "convert",
+   "input": {
+    "value": 4.2,
+    "from": "mil./µL",
+    "to": "10^12/L",
+    "locale": "ro"
+   },
+   "expect": {
+    "value": 4.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1541",
+   "op": "convert",
+   "input": {
+    "value": "4,2",
+    "from": "mil./µL",
+    "to": "10^6/µL",
+    "locale": "ro"
+   },
+   "expect": {
+    "value": 4.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1542",
+   "op": "convert",
+   "input": {
+    "value": 6.1,
+    "from": "mii/µL",
+    "to": "10^9/L"
+   },
+   "expect": {
+    "value": 6.1
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1543",
+   "op": "convert",
+   "input": {
+    "value": 4.6,
+    "from": "mill/mm3",
+    "to": "10^12/L"
+   },
+   "expect": {
+    "value": 4.6
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1544",
+   "op": "convert",
+   "input": {
+    "value": 4.6,
+    "from": "millones/mm3",
+    "to": "10^12/L",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 4.6
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1545",
+   "op": "convert",
+   "input": {
+    "value": 7500,
+    "from": "/µL",
+    "to": "mil/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 7.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1546",
+   "op": "convert",
+   "input": {
+    "value": 4.5,
+    "from": "10^12/L",
+    "to": "mil/µL",
+    "locale": "en"
+   },
+   "expect": {
+    "value": 4.5
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1547",
+   "op": "convert",
+   "input": {
+    "value": 7.5,
+    "from": "mil/mm3",
+    "to": "K/µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "refused without a locale"
+  },
+  {
+   "id": "convert-1548",
+   "op": "convert",
+   "input": {
+    "value": 4.5,
+    "from": "Mil/µL",
+    "to": "10^12/L"
+   },
+   "error": "ambiguous_unit",
+   "note": "refused without a locale"
+  },
+  {
+   "id": "convert-1549",
+   "op": "convert",
+   "input": {
+    "value": 7500,
+    "from": "/µL",
+    "to": "mil/µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "refused without a locale"
+  },
+  {
+   "id": "convert-1550",
+   "op": "convert",
+   "input": {
+    "value": 4.2,
+    "from": "mil./µL",
+    "to": "10^6/µL"
+   },
+   "error": "ambiguous_unit",
+   "note": "refused without a locale"
+  },
+  {
+   "id": "convert-1551",
+   "op": "convert",
+   "input": {
+    "value": 7.5,
+    "from": "mil/mm3",
+    "to": "K/µL",
+    "factor": 1
+   },
+   "error": "ambiguous_unit",
+   "note": "a caller-supplied factor does not resolve the spelling"
+  },
+  {
+   "id": "convert-1552",
+   "op": "convert",
+   "input": {
+    "value": 7.5,
+    "from": "mil/mm3",
+    "to": "K/µL",
+    "locale": "de"
+   },
+   "error": "ambiguous_unit"
+  },
+  {
+   "id": "convert_result-1553",
+   "op": "convert_result",
+   "input": {
+    "value": "7,5 H",
+    "from": "mil/mm3",
+    "to": "10^9/L",
+    "locale": "es"
+   },
+   "expect": {
+    "value": 7.5,
+    "comparator": null,
+    "flag": "H",
+    "unit": "10^9/L"
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert_result-1554",
+   "op": "convert_result",
+   "input": {
+    "value": "<0,5",
+    "from": "mil./µL",
+    "to": "10^12/L",
+    "locale": "ro"
+   },
+   "expect": {
+    "value": 0.5,
+    "comparator": "<",
+    "flag": null,
+    "unit": "10^12/L"
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert_result-1555",
+   "op": "convert_result",
+   "input": {
+    "value": "7,5 H",
+    "from": "mil/mm3",
+    "to": "10^9/L"
+   },
+   "error": "ambiguous_unit"
+  },
+  {
+   "id": "same_unit-1556",
+   "op": "same_unit",
+   "input": {
+    "a": "mil/mm3",
+    "b": "K/µL",
+    "locale": "es"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1557",
+   "op": "same_unit",
+   "input": {
+    "a": "mil/mm3",
+    "b": "K/µL",
+    "locale": "en"
+   },
+   "expect": {
+    "same": false
+   }
+  },
+  {
+   "id": "same_unit-1558",
+   "op": "same_unit",
+   "input": {
+    "a": "Mil/µL",
+    "b": "10^12/L",
+    "locale": "en"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1559",
+   "op": "same_unit",
+   "input": {
+    "a": "mil./µL",
+    "b": "M/µL",
+    "locale": "ro"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1560",
+   "op": "same_unit",
+   "input": {
+    "a": "mil/µL",
+    "b": "10^9/L",
+    "locale": "es"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1561",
+   "op": "same_unit",
+   "input": {
+    "a": "mil/µL",
+    "b": "10^9/L",
+    "locale": "ro"
+   },
+   "expect": {
+    "same": false
+   }
+  },
+  {
+   "id": "same_unit-1562",
+   "op": "same_unit",
+   "input": {
+    "a": "mil/mm3",
+    "b": "K/µL"
+   },
+   "error": "ambiguous_unit"
+  },
+  {
+   "id": "explain-1563",
    "op": "explain",
    "input": {
     "from": "mg/L",
@@ -18393,7 +19328,7 @@
    }
   },
   {
-   "id": "explain-1482",
+   "id": "explain-1564",
    "op": "explain",
    "input": {
     "from": "ug/L",
@@ -18407,7 +19342,7 @@
    }
   },
   {
-   "id": "explain-1483",
+   "id": "explain-1565",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -18424,7 +19359,7 @@
    }
   },
   {
-   "id": "explain-1484",
+   "id": "explain-1566",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -18442,7 +19377,7 @@
    }
   },
   {
-   "id": "explain-1485",
+   "id": "explain-1567",
    "op": "explain",
    "input": {
     "from": "mmol/L",
@@ -18459,7 +19394,7 @@
    }
   },
   {
-   "id": "explain-1486",
+   "id": "explain-1568",
    "op": "explain",
    "input": {
     "from": "%",
@@ -18479,7 +19414,7 @@
    }
   },
   {
-   "id": "explain-1487",
+   "id": "explain-1569",
    "op": "explain",
    "input": {
     "from": "IU/L",
@@ -18496,7 +19431,7 @@
    }
   },
   {
-   "id": "explain-1488",
+   "id": "explain-1570",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -18514,7 +19449,7 @@
    }
   },
   {
-   "id": "explain-1489",
+   "id": "explain-1571",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -18531,7 +19466,7 @@
    }
   },
   {
-   "id": "explain-1490",
+   "id": "explain-1572",
    "op": "explain",
    "input": {
     "from": "IU",
@@ -18548,7 +19483,7 @@
    }
   },
   {
-   "id": "explain-1491",
+   "id": "explain-1573",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -18558,7 +19493,7 @@
    "error": "forbidden"
   },
   {
-   "id": "explain-1492",
+   "id": "explain-1574",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -18577,7 +19512,7 @@
    }
   },
   {
-   "id": "explain-1493",
+   "id": "explain-1575",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -18596,7 +19531,7 @@
    }
   },
   {
-   "id": "explain-1494",
+   "id": "explain-1576",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -18613,7 +19548,7 @@
    }
   },
   {
-   "id": "explain-1495",
+   "id": "explain-1577",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -18629,7 +19564,7 @@
    }
   },
   {
-   "id": "explain-1496",
+   "id": "explain-1578",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -18645,7 +19580,7 @@
    }
   },
   {
-   "id": "explain-1497",
+   "id": "explain-1579",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -18661,7 +19596,7 @@
    }
   },
   {
-   "id": "explain-1498",
+   "id": "explain-1580",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -18674,7 +19609,7 @@
    }
   },
   {
-   "id": "explain-1499",
+   "id": "explain-1581",
    "op": "explain",
    "input": {
     "from": "µIU/mL",
@@ -18695,7 +19630,7 @@
    }
   },
   {
-   "id": "explain-1500",
+   "id": "explain-1582",
    "op": "explain",
    "input": {
     "from": "mU/L",
@@ -18710,7 +19645,69 @@
    }
   },
   {
-   "id": "explain-1501",
+   "id": "explain-1583",
+   "op": "explain",
+   "input": {
+    "from": "mil/mm3",
+    "to": "10^9/L",
+    "locale": "es"
+   },
+   "expect": {
+    "kind": "unit_arithmetic",
+    "factor": 1.0,
+    "derived": true,
+    "source_ids": [
+     "eswiktionary-mil",
+     "nih-cc-cbc-es"
+    ],
+    "warning_count": 0
+   }
+  },
+  {
+   "id": "explain-1584",
+   "op": "explain",
+   "input": {
+    "from": "Mil/µL",
+    "to": "10^12/L",
+    "locale": "en"
+   },
+   "expect": {
+    "kind": "unit_arithmetic",
+    "factor": 1.0,
+    "source_ids": [
+     "uw-dlmp-rbc",
+     "nih-cc-cbc-es"
+    ]
+   }
+  },
+  {
+   "id": "explain-1585",
+   "op": "explain",
+   "input": {
+    "from": "mil./µL",
+    "to": "/µL",
+    "locale": "ro"
+   },
+   "expect": {
+    "kind": "unit_arithmetic",
+    "factor": 1000000.0,
+    "source_ids": [
+     "dexonline-milion",
+     "dexonline-mie"
+    ]
+   }
+  },
+  {
+   "id": "explain-1586",
+   "op": "explain",
+   "input": {
+    "from": "mil/mm3",
+    "to": "10^9/L"
+   },
+   "error": "ambiguous_unit"
+  },
+  {
+   "id": "explain-1587",
    "op": "explain",
    "input": {
     "from": "mg/dL",

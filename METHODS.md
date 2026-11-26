@@ -1,6 +1,6 @@
 # Methods
 
-This document is meant to let a stranger rebuild lifefrom-units 1.0.0 and get the same files. All sources were accessed on 2026-11-25.
+This document is meant to let a stranger rebuild lifefrom-units 1.1.0 and get the same files. All sources were accessed on 2026-11-25, except the five language-reading sources added in 1.1.0 (§3), accessed on 2026-11-26.
 
 ## 1. Rebuild
 
@@ -37,6 +37,7 @@ Rebuilding from a fresh download gave byte-identical `data/units.json`, `web/lif
 | CDC NHANES 2021–2023 lab documentation (`BIOPRO_L`, `TRIGLY_L`, `TCHOL_L`, `GLU_L`, `TST_L`, `FOLATE_L`, `ALB_CR_L`, `INS_L`, `HDL_L`) | `_raw/nhanes-docs-labunits/` | published factor for triglycerides (primary); AMH factor quoted in the AMH refusal; cross-checks for 20 other factors |
 | UCUM essence 2.2, https://github.com/ucum-org/ucum | `_raw/ucum/ucum-essence.xml` | build-time validation of UCUM codes only; not redistributed |
 | Europe PMC full texts PMC9639807, PMC9279959, PMC6152246 | `_raw/labunits-europepmc/` | quoted statements for Lp(a), insulin and the enzyme unit |
+| Spanish Wiktionary "mil"; NIH Clinical Center Spanish CBC leaflet (Wayback Machine copy); UW Medicine DLMP test guide, RBC; DEX '09 "mie" and "milion" via dexonline.ro | `_raw/unit-languages/` | how "mil/mm3" and "mil/µL" are read in Spanish, English and Romanian (§3); cited, nothing numeric is read from them |
 | IOM 2011, *Dietary Reference Intakes for Calcium and Vitamin D*, ch. 3, p. 78 (doi:10.17226/13050) | read online at nationalacademies.org/read/13050/chapter/5; that server refused a scripted download | 1 µg vitamin D = 40 IU (dose units); rounded serum divisor 2.5 (cross-check) |
 
 ## 3. Units and normalisation
@@ -68,6 +69,26 @@ A unit string is looked up in two passes:
 2. If that fails, the same is done to the lower-cased input, which is looked up in `lookup.casefold`.
 
 Some spellings must never match by case: `G/L` (giga per litre) vs `g/L`, `T/L`, `M/µL`, and `nM`, `pM`, `µM`, `mM` vs `nm`. These are kept out of the case-folded table. The build fails if two units collide after case folding.
+
+**Spellings that mean different units in different languages (added in 1.1.0).** "mil" is the Spanish word for one thousand, an English abbreviation for million, and the Romanian abbreviation "mil." for milion. So `7,5 mil/mm3` on a Spanish report is 7.5 × 10^3/mm³ (white cells), while `4.5 Mil/µL` on a US report is 4.5 × 10^6/µL (red cells). Case does not separate the two. Version 1.0.0 listed `Mil/mm3` and `Mil/µL` as aliases of the million units and matched them case-insensitively, so Spanish white-cell and platelet counts came out 1000× too high (found by lab-reading-bench on its generated Spanish reports: 12 values).
+
+- `mil/mm3`, `mil/mm³`, `mil/cmm`, `mil./mm3`, `mil./mm³`, `mil/µL` and `mil./µL` (any case, any spelling of µ) are kept in `ambiguous[]`, not in the lookup tables. The build fails if any of them also resolves as a unit, or if a case-sensitive alias folds onto one.
+- They are looked up after `lookup.exact` and before `lookup.casefold`. Without a locale, or with a language that has no reading, they raise `ambiguous_unit`.
+- With a locale, only the primary language subtag counts (`es-AR` → `es`). Readings shipped:
+
+| Language | "mil" | `mil/mm3` | `mil/µL` | Sources |
+|---|---|---|---|---|
+| `es` | thousand | 10^3/mm³ | 10^3/µL | Spanish Wiktionary, "mil": "Diez veces cien", "El número 1000, 10^3" (the RAE *Diccionario de la lengua española* gives the same definition but refused a scripted download, HTTP 403). NIH Clinical Center Spanish CBC leaflet, cited because it shows the opposite: "Los glóbulos rojos se miden en millones por milímetro cúbico (mil/mm3)". |
+| `en` | million | 10^6/mm³ | 10^6/µL | UW Medicine DLMP test guide, RBC, reference ranges in "mil/uL"; the NIH Clinical Center leaflet above. |
+| `ro` | million | 10^6/mm³ | 10^6/µL | DEX '09 "milion": "Număr egal cu o mie de mii"; DEX '09 "mie, mii": "Numărul care în numărătoare are locul între 999 și 1001". |
+
+What we could not source:
+
+- We found no Spanish or Romanian laboratory report online that prints `mil/mm3`, `mil/µL` or `mil./µL`. The Spanish reading rests on the meaning of the word, and the Romanian one on the two numerals; no dictionary entry for the abbreviation "mil." itself was found.
+- The NIH leaflet shows that a Spanish-language document can follow US usage, so `locale="es"` means "this report follows Spanish usage", not only "this report is in Spanish".
+- No reading is shipped for other languages. Portuguese "mil" is also thousand, but no source was fetched, so `pt` is refused for now.
+
+Unambiguous spellings were added and need no locale: `mill/mm3`, `mill./mm3`, `millones/mm3`, `Million/mm3`, `mill./µL`, `millones/µL` (millions); `mii/µL`, `mii/mm3`, `miles/µL`, `miles/mm3`, `Thousand/mm3` (thousands).
 
 **Coverage of release 1.** Every unit string in release 1's `units.csv` resolves: 575 rows plus their `equivalent_forms`. `data/release1_unknown_units.txt` is empty.
 
@@ -132,6 +153,7 @@ Conversions between arbitrary units are always refused (UCUM §24–§25).
 - `incompatible_units`: different dimensions and no analyte
 - `forbidden`
 - `no_sourced_conversion`: an analyte was given but no bridge exists
+- `ambiguous_unit`: the spelling means different units in different languages and no usable locale was given (§3)
 - `invalid_value`, `qualified_value`, `ambiguous_value`
 
 **Values.** `parse_value` accepts:
@@ -218,7 +240,7 @@ The same comparison is in `data/analyte_factors.csv`, in the `published_crossche
 
 ## 7. Test vectors
 
-`scripts/make_vectors.py` writes 1,501 vectors. It does not import lifefrom-units. Expected values come from three places:
+`scripts/make_vectors.py` writes 1,587 vectors. It does not import lifefrom-units. Expected values come from three places:
 
 - a separate hand-written scale table;
 - molar masses read straight from the raw PubChem and CIAAW files, with exact fraction arithmetic;
@@ -226,21 +248,22 @@ The same comparison is in `data/analyte_factors.csv`, in the `published_crossche
 
 | Op | Count | Notes |
 |---|---|---|
-| `normalize` | 273 | spelling variants of 55 units (µ/u/mcg/μ, case, spacing, ×10⁹, superscripts, UI, [IU], 24 h) and 11 unknown strings |
-| `convert` | 877 | unit arithmetic across 10 dimensions; molar-mass conversions for 43 analytes in both directions; charge; BUN; published factors; enzymes; creatinine ratios; HbA1c (master equation and NGSP Table 1); vitamin D doses; 8 caller-supplied factors; error cases |
+| `normalize` | 324 | spelling variants of 55 units (µ/u/mcg/μ, case, spacing, ×10⁹, superscripts, UI, [IU], 24 h), 11 unknown strings, and 51 for `mil/…` with and without a locale |
+| `convert` | 898 | unit arithmetic across 10 dimensions; molar-mass conversions for 43 analytes in both directions; charge; BUN; published factors; enzymes; creatinine ratios; HbA1c (master equation and NGSP Table 1); vitamin D doses; 8 caller-supplied factors; `mil/…` with a locale and refused without; error cases |
 | `roundtrip` | 163 | there and back, relative tolerance 1e-12 |
-| `same_unit` | 78 | true and false pairs, with and without an analyte |
+| `same_unit` | 85 | true and false pairs, with and without an analyte |
 | `parse_value` | 50 | decimal commas, thousands separators, ambiguous, invalid and qualified inputs |
 | `parse_result` | 30 | comparators, flags, both together, malformed inputs |
-| `convert_result` | 9 | censored and flagged values through glucose, mg/L, HbA1c and a caller-supplied factor |
-| `explain` | 21 | kind, factor or equation, derived flag, source ids, reference compounds, warnings, user-factor record |
+| `convert_result` | 12 | censored and flagged values through glucose, mg/L, HbA1c and a caller-supplied factor |
+| `explain` | 25 | kind, factor or equation, derived flag, source ids, reference compounds, warnings, user-factor record, language-reading sources |
 
 Error vectors by code:
 
 | Code | Count |
 |---|---|
 | `forbidden` | 47 |
-| `invalid_value` | 23 |
+| `invalid_value` | 26 |
+| `ambiguous_unit` | 22 |
 | `unknown_unit` | 15 |
 | `no_sourced_conversion` | 13 |
 | `qualified_value` | 10 |
@@ -253,7 +276,7 @@ Both suites read the same `tests/vectors.json`:
 - **Python:** `python/tests/test_vectors.py`, run with pytest on Python 3.14 and 3.9.6.
 - **TypeScript:** `ts/test/vectors.test.ts`, run with `node --test` on Node 26.
 
-`scripts/crosscheck_languages.py` then runs every vector through both packages and requires identical results: the same doubles, the same explanation text, warnings, reference compounds and user-factor records, and the same error codes.
+`scripts/crosscheck_languages.py` then runs every vector through both packages and requires identical results: the same doubles, the same explanation text, warnings, reference compounds and user-factor records, and the same error codes. Since 1.1.0 it also compares every explanation step and the full `ambiguous_unit` message.
 
 ## 8. Comparison with LifeFrom release 1
 

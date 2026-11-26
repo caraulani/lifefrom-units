@@ -23,21 +23,22 @@ function isClose(a: number, b: number, rel: number): boolean {
 
 function run(v: Vector): Record<string, any> {
   const i = v.input;
+  const o = { locale: i.locale };
   switch (v.op) {
     case 'normalize':
-      return { unit: normalizeUnit(i.unit) };
+      return { unit: normalizeUnit(i.unit, o) };
     case 'same_unit':
-      return { same: sameUnit(i.a, i.b, i.analyte) };
+      return { same: sameUnit(i.a, i.b, i.analyte, o) };
     case 'parse_value':
       return { value: parseValue(i.value) };
     case 'convert':
-      return { value: convert(i.value, i.from, i.to, i.analyte, i.factor) };
+      return { value: convert(i.value, i.from, i.to, i.analyte, i.factor, o) };
     case 'parse_result': {
       const r = parseResult(i.value);
       return { value: r.value, comparator: r.comparator, flag: r.flag };
     }
     case 'convert_result': {
-      const r = convertResult(i.value, i.from, i.to, i.analyte, i.factor);
+      const r = convertResult(i.value, i.from, i.to, i.analyte, i.factor, o);
       return { value: r.value, comparator: r.comparator, flag: r.flag, unit: r.unit };
     }
     case 'roundtrip': {
@@ -45,7 +46,7 @@ function run(v: Vector): Record<string, any> {
       return { value: convert(x, i.b, i.a, i.analyte) };
     }
     case 'explain': {
-      const e = explain(i.from, i.to, i.analyte, undefined, i.factor);
+      const e = explain(i.from, i.to, i.analyte, undefined, i.factor, o);
       const out: Record<string, any> = {
         kind: e.kind,
         factor: e.factor,

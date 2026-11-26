@@ -3,9 +3,9 @@
  * analyte-specific factors. Zero runtime dependencies. Same data and API as the Python package.
  */
 import { SPEC } from './data.js';
-import type { Analyte, Bridge, Forbidden, ReferenceCompound, Source, UnitRecord } from './types.js';
+import type { AmbiguousSpelling, Analyte, Bridge, Forbidden, ReferenceCompound, Source, UnitRecord } from './types.js';
 
-export type { Analyte, Bridge, Forbidden, ReferenceCompound, Source, Spec, UnitRecord } from './types.js';
+export type { AmbiguousSpelling, Analyte, Bridge, Forbidden, LanguageReading, ReferenceCompound, Source, Spec, UnitRecord } from './types.js';
 export { SPEC } from './data.js';
 
 export const VERSION: string = SPEC.version;
@@ -21,7 +21,8 @@ export type ErrorCode =
   | 'no_sourced_conversion'
   | 'invalid_value'
   | 'qualified_value'
-  | 'ambiguous_value';
+  | 'ambiguous_value'
+  | 'ambiguous_unit';
 
 export class LifeFromUnitsError extends Error {
   readonly code: ErrorCode;
@@ -51,32 +52,85 @@ function unitKey(text: string): string {
   return s.replace(/\s+/g, '');
 }
 
-function lookup(unit: string): UnitRecord {
+/** Options shared by the functions that read unit spellings. */
+export interface UnitOptions {
+  /**
+   * Language of the report (a language tag such as 'es', 'es-AR', 'en-US', 'ro'). Used only for spellings that mean
+   * different units in different languages: 'mil/mm3' and 'mil/µL' are thousands in Spanish ('es') and millions on
+   * English ('en') and Romanian ('ro') reports. Without it those spellings throw 'ambiguous_unit'.
+   */
+  locale?: string | null;
+}
+
+interface Reading {
+  spelling: string;
+  unit: string;
+  locale: string;
+  meaning: string;
+  note: string;
+  sources: string[];
+}
+
+const AMBIG = new Map<string, AmbiguousSpelling>((SPEC.ambiguous ?? []).map((a) => [a.id, a]));
+const AMBIG_KEYS: Record<string, string> = SPEC.lookup.ambiguous ?? {};
+const LANG = /^([A-Za-z]{2,3})(?:[-_][A-Za-z0-9]{1,8})*$/;
+
+function language(locale: string | null | undefined): string | null {
+  if (locale === null || locale === undefined) return null;
+  const m = typeof locale === 'string' ? LANG.exec(locale.trim()) : null;
+  if (!m) throw new LifeFromUnitsError('invalid_value', `locale must be a language tag such as 'es' or 'es-AR', got '${locale}'`, { locale });
+  return m[1].toLowerCase();
+}
+
+function lookupRead(unit: string, locale?: string | null): [UnitRecord, Reading | null] {
+  const lang = language(locale);
   if (typeof unit !== 'string' || unit.trim() === '') {
     throw new LifeFromUnitsError('unknown_unit', 'empty unit', { unit });
   }
   const k = unitKey(unit);
-  let canon: string | undefined = has(SPEC.lookup.exact, k) ? SPEC.lookup.exact[k] : undefined;
-  if (canon === undefined) {
-    const kf = unitKey(unit.toLowerCase());
-    canon = has(SPEC.lookup.casefold, kf) ? SPEC.lookup.casefold[kf] : undefined;
+  if (has(SPEC.lookup.exact, k)) return [UNITS.get(SPEC.lookup.exact[k])!, null];
+  const kf = unitKey(unit.toLowerCase());
+  if (has(AMBIG_KEYS, kf)) {
+    const a = AMBIG.get(AMBIG_KEYS[kf])!;
+    const langs = Object.keys(a.readings).sort();
+    if (lang === null || !has(a.readings, lang)) {
+      const why = lang === null ? 'no locale given' : `no reading for locale '${locale}'`;
+      throw new LifeFromUnitsError('ambiguous_unit', `ambiguous unit '${unit}' (${why}): ${a.reason} Pass a locale (one of ${langs.join(', ')}).`, {
+        unit,
+        ambiguity: a.id,
+        locale: locale ?? null,
+        readings: { ...a.readings },
+        reason: a.reason,
+      });
+    }
+    const r = SPEC.language_readings[lang];
+    const canon = a.readings[lang];
+    return [UNITS.get(canon)!, { spelling: unit, unit: canon, locale: lang, meaning: r.meaning, note: r.note, sources: r.sources }];
   }
+  const canon = has(SPEC.lookup.casefold, kf) ? SPEC.lookup.casefold[kf] : undefined;
   if (canon === undefined) throw new LifeFromUnitsError('unknown_unit', `unknown unit: '${unit}'`, { unit });
-  return UNITS.get(canon)!;
+  return [UNITS.get(canon)!, null];
+}
+
+function lookup(unit: string, locale?: string | null): UnitRecord {
+  return lookupRead(unit, locale)[0];
 }
 
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
 
-/** Canonical spelling of a unit (µ/u/mcg, superscripts, ×10⁹/L, UI/IU, case, spacing). */
-export function normalizeUnit(unit: string): string {
-  return lookup(unit).unit;
+/**
+ * Canonical spelling of a unit (µ/u/mcg, superscripts, ×10⁹/L, UI/IU, case, spacing).
+ * normalizeUnit('mil/mm3', { locale: 'es' }) -> '10^3/mm³'; without a locale it throws 'ambiguous_unit'.
+ */
+export function normalizeUnit(unit: string, opts?: UnitOptions): string {
+  return lookup(unit, opts?.locale).unit;
 }
 
 /** Canonical spelling, dimension, scale to the base unit, and UCUM code of a unit. */
-export function unitInfo(unit: string): { unit: string; dimension: string; scale: number; ucum: string | null } {
-  const u = lookup(unit);
+export function unitInfo(unit: string, opts?: UnitOptions): { unit: string; dimension: string; scale: number; ucum: string | null } {
+  const u = lookup(unit, opts?.locale);
   return { unit: u.unit, dimension: u.dimension, scale: u.scale, ucum: u.ucum };
 }
 
@@ -254,9 +308,25 @@ interface Plan {
   steps: Step[];
 }
 
-function plan(fromUnit: string, toUnit: string, analyte?: string | null): Plan {
-  const ua = lookup(fromUnit);
-  const ub = lookup(toUnit);
+function readingStep(r: Reading): Step {
+  return {
+    kind: 'spelling_reading',
+    description: `'${r.spelling}' read as ${r.unit} ('mil' = ${r.meaning}, locale '${r.locale}')`,
+    basis: r.note,
+    sources: sourceList(r.sources),
+  };
+}
+
+function plan(fromUnit: string, toUnit: string, analyte?: string | null, locale?: string | null): Plan {
+  const [ua, ra] = lookupRead(fromUnit, locale);
+  const [ub, rb] = lookupRead(toUnit, locale);
+  const p = planUnits(ua, ub, analyte);
+  const reads = [ra, rb].filter((r): r is Reading => r !== null).map(readingStep);
+  if (reads.length) p.steps = [...reads, ...p.steps];
+  return p;
+}
+
+function planUnits(ua: UnitRecord, ub: UnitRecord, analyte?: string | null): Plan {
   const an = resolveAnalyte(analyte);
   const base = { from_unit: ua.unit, to_unit: ub.unit, analyte: an ? an.id : null };
   const da = ua.dimension;
@@ -398,16 +468,22 @@ function pct(x: number): string {
   return (s.startsWith('-') ? s : '+' + s) + '%';
 }
 
-function planWith(fromUnit: string, toUnit: string, analyte: string | null | undefined, factor: number | string | null | undefined): FullPlan {
-  if (factor === undefined || factor === null) return { ...plan(fromUnit, toUnit, analyte), user_factor: null, warnings: [] };
+function planWith(
+  fromUnit: string,
+  toUnit: string,
+  analyte: string | null | undefined,
+  factor: number | string | null | undefined,
+  locale?: string | null,
+): FullPlan {
+  if (factor === undefined || factor === null) return { ...plan(fromUnit, toUnit, analyte, locale), user_factor: null, warnings: [] };
   const f = userFactor(factor);
-  const ua = lookup(fromUnit);
-  const ub = lookup(toUnit);
+  const [ua, ra] = lookupRead(fromUnit, locale);
+  const [ub, rb] = lookupRead(toUnit, locale);
   const an = resolveAnalyte(analyte);
   const warnings = [`Factor ${fmtG(f)} supplied by the caller; lifefrom-units has not checked it.`];
   const record: UserFactorRecord = { value: f, overrides: null, library_kind: null, library_factor: null };
   try {
-    const lib = plan(fromUnit, toUnit, analyte);
+    const lib = plan(fromUnit, toUnit, analyte, locale);
     record.library_kind = lib.kind;
     if (lib.b !== 0) warnings.push('lifefrom-units uses an equation for this pair, not a factor.');
     else {
@@ -433,6 +509,7 @@ function planWith(fromUnit: string, toUnit: string, analyte: string | null | und
     user_factor: record,
     warnings,
     steps: [
+      ...[ra, rb].filter((r): r is Reading => r !== null).map(readingStep),
       {
         kind: 'user_factor',
         factor: f,
@@ -448,12 +525,21 @@ function planWith(fromUnit: string, toUnit: string, analyte: string | null | und
  * Convert `value` from `fromUnit` to `toUnit`. `analyte` (lifefrom-units analyte id such as "glucose" or a
  * LifeFrom marker slug such as "glucose-fasting") is needed when the units measure different quantities.
  * `factor` (optional, never a default) is a caller-supplied multiplier recorded by explain().
+ * `opts.locale` (optional language tag) says which convention the report follows for spellings that are ambiguous
+ * across languages: convert('7,5', 'mil/mm3', 'K/µL', null, null, { locale: 'es' }) -> 7.5.
  * Throws LifeFromUnitsError with code incompatible_units, forbidden, no_sourced_conversion, unknown_unit,
- * unknown_analyte, invalid_value, qualified_value or ambiguous_value.
+ * ambiguous_unit, unknown_analyte, invalid_value, qualified_value or ambiguous_value.
  */
-export function convert(value: number | string, fromUnit: string, toUnit: string, analyte?: string | null, factor?: number | string | null): number {
+export function convert(
+  value: number | string,
+  fromUnit: string,
+  toUnit: string,
+  analyte?: string | null,
+  factor?: number | string | null,
+  opts?: UnitOptions,
+): number {
   const v = parseValue(value);
-  const p = planWith(fromUnit, toUnit, analyte, factor);
+  const p = planWith(fromUnit, toUnit, analyte, factor, opts?.locale);
   return p.a * v + p.b;
 }
 
@@ -470,9 +556,16 @@ export interface ConvertedResult {
 }
 
 /** Convert a reported value that may carry a comparator ("<5") or a flag ("5,4 H"); both are kept. */
-export function convertResult(value: number | string, fromUnit: string, toUnit: string, analyte?: string | null, factor?: number | string | null): ConvertedResult {
+export function convertResult(
+  value: number | string,
+  fromUnit: string,
+  toUnit: string,
+  analyte?: string | null,
+  factor?: number | string | null,
+  opts?: UnitOptions,
+): ConvertedResult {
   const r = parseResult(value);
-  const p = planWith(fromUnit, toUnit, analyte, factor);
+  const p = planWith(fromUnit, toUnit, analyte, factor, opts?.locale);
   let comparator = r.comparator;
   if (p.a < 0 && comparator) comparator = ({ '<': '>', '>': '<', '<=': '>=', '>=': '<=' } as Record<string, string>)[comparator];
   const v = p.a * r.value + p.b;
@@ -482,10 +575,10 @@ export function convertResult(value: number | string, fromUnit: string, toUnit: 
 }
 
 /** True if a value in unit `a` equals the same number in unit `b` (e.g. µg/L and ng/mL). */
-export function sameUnit(a: string, b: string, analyte?: string | null): boolean {
+export function sameUnit(a: string, b: string, analyte?: string | null, opts?: UnitOptions): boolean {
   let p: Plan;
   try {
-    p = plan(a, b, analyte);
+    p = plan(a, b, analyte, opts?.locale);
   } catch (e) {
     if (e instanceof LifeFromUnitsError && (e.code === 'incompatible_units' || e.code === 'forbidden' || e.code === 'no_sourced_conversion')) return false;
     throw e;
@@ -511,8 +604,15 @@ export function fmtG(x: number): string {
 }
 
 /** Explain a conversion: factor or equation, steps, basis, sources, reference compounds and warnings. */
-export function explain(fromUnit: string, toUnit: string, analyte?: string | null, value?: number | string, factor?: number | string | null): Explanation {
-  const p = planWith(fromUnit, toUnit, analyte, factor);
+export function explain(
+  fromUnit: string,
+  toUnit: string,
+  analyte?: string | null,
+  value?: number | string | null,
+  factor?: number | string | null,
+  opts?: UnitOptions,
+): Explanation {
+  const p = planWith(fromUnit, toUnit, analyte, factor, opts?.locale);
   const out: Explanation = {
     from_unit: p.from_unit,
     to_unit: p.to_unit,

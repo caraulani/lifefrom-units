@@ -1,8 +1,8 @@
 {
  "name": "lifefrom-units",
- "version": "1.0.0",
+ "version": "1.1.0",
  "schema_version": 1,
- "released": "2026-11-25",
+ "released": "2026-11-26",
  "license": "CC-BY-4.0 (data), MIT (code)",
  "homepage": "https://lifefrom.ai",
  "notice": "Not a medical device. Converts units only; it does not interpret results.",
@@ -145,7 +145,7 @@
     "note": "collapse spaces"
    }
   ],
-  "procedure": "key = rules applied in order to the trimmed input, then all whitespace removed. Look up key in lookup.exact; if absent, apply the same to the lower-cased input and look up in lookup.casefold."
+  "procedure": "key = rules applied in order to the trimmed input, then all whitespace removed. Look up key in lookup.exact; if absent, apply the same to the lower-cased input and look up in lookup.ambiguous, then in lookup.casefold. A spelling found in lookup.ambiguous resolves only with a locale whose primary language subtag (lower-cased, e.g. 'es' from 'es-AR') is in that entry's readings; otherwise it is refused (ambiguous_unit)."
  },
  "dimensions": {
   "mass_concentration": {
@@ -1132,7 +1132,9 @@
     "1000/µL",
     "10^3 cells/µL",
     "10^3/µl",
-    "K/uL"
+    "K/uL",
+    "mii/µL",
+    "miles/µL"
    ],
    "case_sensitive_aliases": [
     "K/μL"
@@ -1149,7 +1151,12 @@
     "K/mm3",
     "10^3/mm3",
     "10^3/cmm",
-    "Thou/mm3"
+    "Thou/mm3",
+    "Thousand/mm3",
+    "mii/mm3",
+    "mii/mm³",
+    "miles/mm3",
+    "miles/mm³"
    ],
    "case_sensitive_aliases": [],
    "ucum": "10*3/mm3",
@@ -1161,8 +1168,9 @@
    "scale": 1000000000000.0,
    "aliases": [
     "Million/µL",
-    "Mil/µL",
     "mill/µL",
+    "mill./µL",
+    "millones/µL",
     "10^6 cells/µL"
    ],
    "case_sensitive_aliases": [
@@ -1178,7 +1186,12 @@
    "scale": 1000000000000.0,
    "aliases": [
     "10^6/mm3",
-    "Mil/mm3"
+    "Million/mm3",
+    "mill/mm3",
+    "mill/mm³",
+    "mill./mm3",
+    "millones/mm3",
+    "millones/mm³"
    ],
    "case_sensitive_aliases": [],
    "ucum": "10*6/mm3",
@@ -2120,8 +2133,7 @@
    "K/µL": "10^3/µL",
    "L/L": "L/L",
    "M/µL": "10^6/µL",
-   "Mil/mm3": "10^6/mm³",
-   "Mil/µL": "10^6/µL",
+   "Million/mm3": "10^6/mm³",
    "Million/µL": "10^6/µL",
    "Ratio": "ratio",
    "S/C.O.": "S/CO",
@@ -2130,6 +2142,7 @@
    "Tera/L": "10^12/L",
    "Thou/mm3": "10^3/mm³",
    "Thou/µL": "10^3/µL",
+   "Thousand/mm3": "10^3/mm³",
    "Thousand/µL": "10^3/µL",
    "Titer": "titer",
    "Titre": "titer",
@@ -2236,7 +2249,16 @@
    "mg/mmolcreat": "mg/mmol",
    "mg/mmolcreatinine": "mg/mmol",
    "mgperdL": "mg/dL",
+   "mii/mm3": "10^3/mm³",
+   "mii/µL": "10^3/µL",
+   "miles/mm3": "10^3/mm³",
+   "miles/µL": "10^3/µL",
+   "mill./mm3": "10^6/mm³",
+   "mill./µL": "10^6/µL",
+   "mill/mm3": "10^6/mm³",
    "mill/µL": "10^6/µL",
+   "millones/mm3": "10^6/mm³",
+   "millones/µL": "10^6/µL",
    "min": "min",
    "mins": "min",
    "minute": "min",
@@ -2500,10 +2522,18 @@
    "mg/mmolcreat": "mg/mmol",
    "mg/mmolcreatinine": "mg/mmol",
    "mgperdl": "mg/dL",
-   "mil/mm3": "10^6/mm³",
-   "mil/µl": "10^6/µL",
+   "mii/mm3": "10^3/mm³",
+   "mii/µl": "10^3/µL",
+   "miles/mm3": "10^3/mm³",
+   "miles/µl": "10^3/µL",
+   "mill./mm3": "10^6/mm³",
+   "mill./µl": "10^6/µL",
+   "mill/mm3": "10^6/mm³",
    "mill/µl": "10^6/µL",
+   "million/mm3": "10^6/mm³",
    "million/µl": "10^6/µL",
+   "millones/mm3": "10^6/mm³",
+   "millones/µl": "10^6/µL",
    "min": "min",
    "mins": "min",
    "minute": "min",
@@ -2608,6 +2638,7 @@
    "tera/l": "10^12/L",
    "thou/mm3": "10^3/mm³",
    "thou/µl": "10^3/µL",
+   "thousand/mm3": "10^3/mm³",
    "thousand/µl": "10^3/µL",
    "titer": "titer",
    "titre": "titer",
@@ -2657,6 +2688,13 @@
    "µu/l": "µU/L",
    "µu/ml": "µU/mL",
    "‰": "‰"
+  },
+  "ambiguous": {
+   "mil./mm3": "mil-per-mm3",
+   "mil./µl": "mil-per-uL",
+   "mil/cmm": "mil-per-mm3",
+   "mil/mm3": "mil-per-mm3",
+   "mil/µl": "mil-per-uL"
   },
   "analytes": {
    "1-25-dihydroxyvitamin-d": "1-25-dihydroxyvitamin-d",
@@ -2985,6 +3023,63 @@
    "wbc": "wbc",
    "zinc": "zinc",
    "zonulin-stool": "zonulin-stool"
+  }
+ },
+ "ambiguous": [
+  {
+   "id": "mil-per-mm3",
+   "spellings": [
+    "mil/mm3",
+    "mil/mm³",
+    "mil/cmm",
+    "mil./mm3",
+    "mil./mm³"
+   ],
+   "readings": {
+    "es": "10^3/mm³",
+    "en": "10^6/mm³",
+    "ro": "10^6/mm³"
+   },
+   "reason": "'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart."
+  },
+  {
+   "id": "mil-per-uL",
+   "spellings": [
+    "mil/µL",
+    "mil./µL"
+   ],
+   "readings": {
+    "es": "10^3/µL",
+    "en": "10^6/µL",
+    "ro": "10^6/µL"
+   },
+   "reason": "'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart."
+  }
+ ],
+ "language_readings": {
+  "es": {
+   "meaning": "thousand",
+   "note": "Spanish: 'mil' is the numeral one thousand (miles = thousands), so 'mil/mm3' = 10^3/mm³. Spanish has no conventional abbreviation for millón; millions are written out ('millones') or shortened to 'mill.'. Spanish-language documents translated from US usage can still use 'mil' for million (NIH Clinical Center), so pass locale='es' only for reports that follow Spanish usage.",
+   "sources": [
+    "eswiktionary-mil",
+    "nih-cc-cbc-es"
+   ]
+  },
+  "en": {
+   "meaning": "million",
+   "note": "English (US reports): 'Mil' abbreviates million, for example red cell counts in 'mil/uL'.",
+   "sources": [
+    "uw-dlmp-rbc",
+    "nih-cc-cbc-es"
+   ]
+  },
+  "ro": {
+   "meaning": "million",
+   "note": "Romanian: 'mil.' is read as an abbreviation of milion (plural milioane); thousands are 'mii' (plural of mie). No dictionary entry for the abbreviation 'mil.' itself was found; the reading rests on the two numerals.",
+   "sources": [
+    "dexonline-milion",
+    "dexonline-mie"
+   ]
   }
  },
  "analytes": [
@@ -9336,85 +9431,113 @@
    "molar_mass": "65.38",
    "accessed": "2026-11-25"
   },
+  "dexonline-mie": {
+   "accessed": "2026-11-26",
+   "label": "DEX '09 (Dicționarul explicativ al limbii române), entry 'mie', via dexonline.ro",
+   "url": "https://dexonline.ro/definitie/mie",
+   "kind": "dictionary",
+   "location": "'MIE, mii, num. card. ... Numărul care în numărătoare are locul între 999 și 1001.'"
+  },
+  "dexonline-milion": {
+   "accessed": "2026-11-26",
+   "label": "DEX '09 (Dicționarul explicativ al limbii române), entry 'milion', via dexonline.ro",
+   "url": "https://dexonline.ro/definitie/milion",
+   "kind": "dictionary",
+   "location": "'MILION, milioane, num. card. Număr egal cu o mie de mii.'"
+  },
+  "eswiktionary-mil": {
+   "accessed": "2026-11-26",
+   "label": "Wikcionario (Spanish Wiktionary), entry 'mil' (Spanish)",
+   "url": "https://es.wiktionary.org/wiki/mil",
+   "kind": "dictionary",
+   "location": "Adjetivo, sense 1: 'Diez veces cien.'; Sustantivo masculino, sense 4: 'El número 1000, 10^3.' (The RAE Diccionario de la lengua española, https://dle.rae.es/mil, gives the same definition but refused a scripted download, HTTP 403.)"
+  },
   "hoelzel-2004": {
+   "accessed": "2026-11-25",
    "label": "Hoelzel W et al. IFCC reference system for measurement of hemoglobin A1c in human blood and the national standardization schemes in the United States, Japan, and Sweden: a method-comparison study. Clin Chem 2004;50(1):166-174",
    "url": "https://doi.org/10.1373/clinchem.2003.024802",
    "doi": "10.1373/clinchem.2003.024802",
    "kind": "literature",
-   "location": "cited by NGSP as the origin of the master equation; coefficients read from the NGSP page",
-   "accessed": "2026-11-25"
+   "location": "cited by NGSP as the origin of the master equation; coefficients read from the NGSP page"
   },
   "iom-2011-vitd": {
+   "accessed": "2026-11-25",
    "label": "Institute of Medicine. Dietary Reference Intakes for Calcium and Vitamin D. Washington, DC: The National Academies Press; 2011",
    "url": "https://doi.org/10.17226/13050",
    "doi": "10.17226/13050",
    "kind": "literature",
-   "location": "Chapter 3, Box 3-1, p. 78: '1 IU of vitamin D is defined as the activity of 0.025 μg of cholecalciferol'; 'The biological activity of 1 μg of vitamin D is equivalent to 40 IU.'; serum nmol/L to ng/mL 'by dividing by a factor of 2.5'",
-   "accessed": "2026-11-25"
+   "location": "Chapter 3, Box 3-1, p. 78: '1 IU of vitamin D is defined as the activity of 0.025 μg of cholecalciferol'; 'The biological activity of 1 μg of vitamin D is equivalent to 40 IU.'; serum nmol/L to ng/mL 'by dividing by a factor of 2.5'"
   },
   "kronenberg-2022": {
+   "accessed": "2026-11-25",
    "label": "Kronenberg F et al. Lipoprotein(a) in atherosclerotic cardiovascular disease and aortic stenosis: a European Atherosclerosis Society consensus statement. Eur Heart J 2022;43(39):3925-3946",
    "url": "https://doi.org/10.1093/eurheartj/ehac361",
    "doi": "10.1093/eurheartj/ehac361",
    "kind": "literature",
-   "location": "section on Lp(a) measurement: 'This panel does not recommend using a standard factor to convert between mg/dL and nmol/L, as assays vary extensively.' (full text PMC9639807)",
-   "accessed": "2026-11-25"
+   "location": "section on Lp(a) measurement: 'This panel does not recommend using a standard factor to convert between mg/dL and nmol/L, as assays vary extensively.' (full text PMC9639807)"
   },
   "ngsp-ifcc": {
+   "accessed": "2026-11-25",
    "label": "NGSP, IFCC Standardization of HbA1c: The IFCC and NGSP, Table 2 (master equation)",
    "url": "https://ngsp.org/ifccngsp.asp",
    "kind": "equation",
-   "location": "Table 2: NGSP = (0.09148*IFCC) + 2.152; IFCC = (10.93*NGSP) - 23.50",
-   "accessed": "2026-11-25"
+   "location": "Table 2: NGSP = (0.09148*IFCC) + 2.152; IFCC = (10.93*NGSP) - 23.50"
   },
   "nhanes-alb-cr-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation ALB_CR_L (Albumin and creatinine, urine)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/ALB_CR_L.htm",
    "kind": "published_table",
-   "location": "'... urine creatinine value in mg/dL (URXUCR) was converted to µmol/L (URXCRS) by multiplying by 88.4'",
-   "accessed": "2026-11-25"
+   "location": "'... urine creatinine value in mg/dL (URXUCR) was converted to µmol/L (URXCRS) by multiplying by 88.4'"
   },
   "nhanes-biopro-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation BIOPRO_L (Standard Biochemistry Profile)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/BIOPRO_L.htm",
    "kind": "published_table",
-   "location": "Data Processing and Editing: '... was converted to ... by multiplying by ...'",
-   "accessed": "2026-11-25"
+   "location": "Data Processing and Editing: '... was converted to ... by multiplying by ...'"
   },
   "nhanes-folate-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation FOLATE_L (RBC folate)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/FOLATE_L.htm",
    "kind": "published_table",
-   "location": "'... converted to ng/mL RBC (LBDRFO) by dividing LBDRFOSI by 2.265'",
-   "accessed": "2026-11-25"
+   "location": "'... converted to ng/mL RBC (LBDRFO) by dividing LBDRFOSI by 2.265'"
   },
   "nhanes-glu-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation GLU_L (Plasma fasting glucose)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/GLU_L.htm",
    "kind": "published_table",
-   "location": "'... converted to mmol/L (LBDGLUSI) by multiplying by 0.05551'",
-   "accessed": "2026-11-25"
+   "location": "'... converted to mmol/L (LBDGLUSI) by multiplying by 0.05551'"
   },
   "nhanes-tchol-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation TCHOL_L (Total cholesterol)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/TCHOL_L.htm",
    "kind": "published_table",
-   "location": "'... converted to mmol/L (LBDTCSI) by multiplying by 0.02586.'",
-   "accessed": "2026-11-25"
+   "location": "'... converted to mmol/L (LBDTCSI) by multiplying by 0.02586.'"
   },
   "nhanes-trigly-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation TRIGLY_L (Triglyceride and LDL-cholesterol)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/TRIGLY_L.htm",
    "kind": "published_table",
-   "location": "'The triglyceride values in mg/dL (LBXTLG) were converted to mmol/L (LBDTRSI) by multiplying by 0.01129.'",
-   "accessed": "2026-11-25"
+   "location": "'The triglyceride values in mg/dL (LBXTLG) were converted to mmol/L (LBDTRSI) by multiplying by 0.01129.'"
   },
   "nhanes-tst-l": {
+   "accessed": "2026-11-25",
    "label": "CDC NHANES 2021-2023 laboratory documentation TST_L (Sex steroid hormone panel)",
    "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/TST_L.htm",
    "kind": "published_table",
-   "location": "Data Processing and Editing: SI conversions for each hormone",
-   "accessed": "2026-11-25"
+   "location": "Data Processing and Editing: SI conversions for each hormone"
+  },
+  "nih-cc-cbc-es": {
+   "accessed": "2026-11-26",
+   "label": "NIH Clinical Center, Patient Education: 'Entendiendo su conteo sanguíneo completo' (Spanish edition of 'Understanding your complete blood count'), archived 2009-01-09",
+   "url": "https://web.archive.org/web/20090109175010/http://www.cc.nih.gov/ccc/patient_education/pepubs_sp/cbcsp.pdf",
+   "kind": "patient_education",
+   "location": "p. 1: 'Los glóbulos rojos se miden en millones por milímetro cúbico (mil/mm3) de sangre.' and white cells 'se miden en miles por milímetro cúbico (K/mm3)'; 'RBC: 3.58-4.99 mil/mm3'. A Spanish text that uses 'mil' for million, following US usage."
   },
   "pubchem-10635": {
    "label": "PubChem CID 10635 (Dihydrotestosterone), C19H30O2, molecular weight 290.4 g/mol",
@@ -9802,27 +9925,34 @@
    "accessed": "2026-11-25"
   },
   "ramsay-tipton-2017": {
+   "accessed": "2026-11-25",
    "label": "Ramsay R, Tipton K. Assessment of enzyme inhibition: a review with examples from the development of monoamine oxidase and cholinesterase inhibitory drugs. Molecules 2017;22(7):1192",
    "url": "https://doi.org/10.3390/molecules22071192",
    "doi": "10.3390/molecules22071192",
    "kind": "literature",
-   "location": "'The most commonly used quantity is the Unit, sometimes referred to as the International Unit (IU) or Enzyme Unit.' and '1 Unit = 1 μmol·min−1' (full text PMC6152246)",
-   "accessed": "2026-11-25"
+   "location": "'The most commonly used quantity is the Unit, sometimes referred to as the International Unit (IU) or Enzyme Unit.' and '1 Unit = 1 μmol·min−1' (full text PMC6152246)"
   },
   "rosli-2022": {
+   "accessed": "2026-11-25",
    "label": "Rosli N, Kwon H, Lim J, Yoon Y, Jeong J. Measurement comparability of insulin assays using conventional immunoassay kits. J Clin Lab Anal 2022;36(7)",
    "url": "https://doi.org/10.1002/jcla.24521",
    "doi": "10.1002/jcla.24521",
    "kind": "literature",
-   "location": "Results/Discussion: 'Even a harmonized conversion factor are recommended, 6.00 pmol/L, there are still several different conversion factors available depending on the manufacturer or field.' (full text PMC9279959)",
-   "accessed": "2026-11-25"
+   "location": "Results/Discussion: 'Even a harmonized conversion factor are recommended, 6.00 pmol/L, there are still several different conversion factors available depending on the manufacturer or field.' (full text PMC9279959)"
   },
   "ucum-2.2": {
+   "accessed": "2026-11-25",
    "label": "Schadow G, McDonald CJ. The Unified Code for Units of Measure, version 2.2 (2024-06-17)",
    "url": "https://ucum.org/ucum",
    "kind": "standard",
-   "location": "§24-§25 arbitrary units; unit atoms U (= umol/min), kat (= mol/s), [IU] (arbitrary), eq, osm",
-   "accessed": "2026-11-25"
+   "location": "§24-§25 arbitrary units; unit atoms U (= umol/min), kat (= mol/s), [IU] (arbitrary), eq, osm"
+  },
+  "uw-dlmp-rbc": {
+   "accessed": "2026-11-26",
+   "label": "UW Medicine Department of Laboratory Medicine and Pathology, Test Guide: Red Blood Cell Count (RBC)",
+   "url": "https://dlmp.uw.edu/test-guide/view/RBC",
+   "kind": "lab_test_guide",
+   "location": "reference ranges in 'mil/uL', for example adults 3.80-5.00 (female) and 4.40-5.60 (male)"
   }
  }
 }

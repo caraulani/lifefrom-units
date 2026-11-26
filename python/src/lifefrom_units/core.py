@@ -19,7 +19,7 @@ Number = Union[int, float]
 __all__ = [
     "LifeFromUnitsError", "UnknownUnitError", "UnknownAnalyteError", "IncompatibleUnitsError",
     "ForbiddenConversionError", "NoSourcedConversionError", "InvalidValueError", "AmbiguousValueError",
-    "QualifiedValueError", "normalize_unit", "unit_info", "parse_value", "parse_result", "convert",
+    "AmbiguousUnitError", "QualifiedValueError", "normalize_unit", "unit_info", "parse_value", "parse_result", "convert",
     "convert_result", "same_unit", "explain", "analytes", "SPEC",
 ]
 
@@ -85,6 +85,13 @@ class AmbiguousValueError(LifeFromUnitsError):
     code = "ambiguous_value"
 
 
+class AmbiguousUnitError(LifeFromUnitsError):
+    """The unit spelling means different units in different languages ('mil/mm3': thousand in Spanish,
+    million in English). Pass ``locale=`` (for example ``"es"``) to say which convention the report follows."""
+
+    code = "ambiguous_unit"
+
+
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
@@ -100,6 +107,9 @@ _RULES = compile_rules(SPEC["normalization"]["rules"])
 _UNITS: Dict[str, Dict[str, Any]] = {u["unit"]: u for u in SPEC["units"]}
 _EXACT: Dict[str, str] = SPEC["lookup"]["exact"]
 _FOLDED: Dict[str, str] = SPEC["lookup"]["casefold"]
+_AMBIG_KEYS: Dict[str, str] = SPEC["lookup"].get("ambiguous", {})
+_AMBIG: Dict[str, Dict[str, Any]] = {a["id"]: a for a in SPEC.get("ambiguous", [])}
+_READINGS: Dict[str, Dict[str, Any]] = SPEC.get("language_readings", {})
 _ANALYTES: Dict[str, Dict[str, Any]] = {a["id"]: a for a in SPEC["analytes"]}
 _ANALYTE_INDEX: Dict[str, str] = SPEC["lookup"]["analytes"]
 _SOURCES: Dict[str, Dict[str, Any]] = SPEC["sources"]
@@ -112,19 +122,61 @@ def _key(text: str) -> str:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
-def _lookup(unit: str) -> Dict[str, Any]:
+_LANG = re.compile(r"^([A-Za-z]{2,3})(?:[-_][A-Za-z0-9]{1,8})*$")
+
+
+def _language(locale: Optional[str]) -> Optional[str]:
+    """'es', 'es-AR', 'es_MX', 'ES' -> 'es'. None -> None."""
+    if locale is None:
+        return None
+    m = _LANG.match(locale.strip()) if isinstance(locale, str) else None
+    if not m:
+        raise InvalidValueError(f"locale must be a language tag such as 'es' or 'es-AR', got {locale!r}",
+                                locale=locale)
+    return m.group(1).lower()
+
+
+def _lookup_read(unit: str, locale: Optional[str] = None) -> Tuple[Dict[str, Any], Optional[Dict[str, Any]]]:
+    """Resolve a spelling to its unit record, plus the reading used when the spelling is ambiguous."""
+    lang = _language(locale)
     if not isinstance(unit, str) or not unit.strip():
         raise UnknownUnitError("empty unit", unit=unit)
     k = _key(unit)
     canon = _EXACT.get(k)
-    if canon is None:
-        canon = _FOLDED.get(_key(unit.lower()))
+    if canon is not None:
+        return _UNITS[canon], None
+    kf = _key(unit.lower())
+    aid = _AMBIG_KEYS.get(kf)
+    if aid is not None:
+        a = _AMBIG[aid]
+        langs = sorted(a["readings"])
+        if lang is None or lang not in a["readings"]:
+            why = ("no locale given" if lang is None else
+                   f"no reading for locale {locale!r}")
+            raise AmbiguousUnitError(
+                f"ambiguous unit {unit!r} ({why}): {a['reason']} Pass a locale (one of {', '.join(langs)}).",
+                unit=unit, ambiguity=aid, locale=locale, readings=dict(a["readings"]), reason=a["reason"])
+        r = _READINGS[lang]
+        canon = a["readings"][lang]
+        return _UNITS[canon], {"spelling": unit, "unit": canon, "locale": lang, "meaning": r["meaning"],
+                               "note": r["note"], "sources": r["sources"]}
+    canon = _FOLDED.get(kf)
     if canon is None:
         raise UnknownUnitError(f"unknown unit: {unit!r}", unit=unit)
-    return _UNITS[canon]
+    return _UNITS[canon], None
 
 
-def normalize_unit(unit: str) -> str:
+def _lookup(unit: str, locale: Optional[str] = None) -> Dict[str, Any]:
+    return _lookup_read(unit, locale)[0]
+
+
+def _reading_step(r: Dict[str, Any]) -> Dict[str, Any]:
+    return {"kind": "spelling_reading",
+            "description": f"'{r['spelling']}' read as {r['unit']} ('mil' = {r['meaning']}, locale '{r['locale']}')",
+            "basis": r["note"], "sources": _source_list(r["sources"])}
+
+
+def normalize_unit(unit: str, locale: Optional[str] = None) -> str:
     """Return the canonical spelling of a unit string.
 
     Handles µ/u/mc/Greek mu, superscripts, ×10⁹/L-style powers, UI/IU, case, and spacing.
@@ -135,15 +187,23 @@ def normalize_unit(unit: str) -> str:
     'µg/L'
     >>> normalize_unit("x10E9/L")
     '10^9/L'
+    >>> normalize_unit("mil/mm3", locale="es")
+    '10^3/mm³'
+
+    ``locale`` (optional, a language tag such as ``"es"``, ``"en-US"`` or ``"ro"``) is used only for
+    spellings that mean different units in different languages: ``mil/mm3`` and ``mil/µL`` are thousands
+    in Spanish (``es``) and millions on English (``en``) and Romanian (``ro``) reports. Without a locale
+    these raise :class:`AmbiguousUnitError`. Unambiguous spellings (``mill/mm3``, ``millones/mm3``,
+    ``Million/µL``, ``mii/µL``, ``K/µL``, ``10^6/µL``) ignore it.
 
     Raises :class:`UnknownUnitError` if the spelling is not known.
     """
-    return _lookup(unit)["unit"]
+    return _lookup(unit, locale)["unit"]
 
 
-def unit_info(unit: str) -> Dict[str, Any]:
+def unit_info(unit: str, locale: Optional[str] = None) -> Dict[str, Any]:
     """Return the record for a unit: canonical spelling, dimension, scale to the base unit, UCUM code."""
-    u = _lookup(unit)
+    u = _lookup(unit, locale)
     return {"unit": u["unit"], "dimension": u["dimension"], "scale": u["scale"], "ucum": u.get("ucum")}
 
 
@@ -301,9 +361,18 @@ def _raise_forbidden(f: Dict[str, Any], ua: Dict[str, Any], ub: Dict[str, Any]) 
         sources=_source_list(f["sources"]))
 
 
-def _plan(from_unit: str, to_unit: str, analyte: Optional[str]) -> Dict[str, Any]:
+def _plan(from_unit: str, to_unit: str, analyte: Optional[str], locale: Optional[str] = None) -> Dict[str, Any]:
     """Work out the affine map y = a*x + b from from_unit to to_unit, with its steps and sources."""
-    ua, ub = _lookup(from_unit), _lookup(to_unit)
+    ua, ra = _lookup_read(from_unit, locale)
+    ub, rb = _lookup_read(to_unit, locale)
+    p = _plan_units(ua, ub, analyte)
+    reads = [_reading_step(r) for r in (ra, rb) if r is not None]
+    if reads:
+        p["steps"] = reads + p["steps"]
+    return p
+
+
+def _plan_units(ua: Dict[str, Any], ub: Dict[str, Any], analyte: Optional[str]) -> Dict[str, Any]:
     an = _resolve_analyte(analyte)
     base = {"from_unit": ua["unit"], "to_unit": ub["unit"], "analyte": an["id"] if an else None}
     da, db = ua["dimension"], ub["dimension"]
@@ -397,20 +466,21 @@ def _user_factor(factor: Union[Number, str]) -> float:
 
 
 def _plan_with(from_unit: str, to_unit: str, analyte: Optional[str],
-               factor: Union[Number, str, None]) -> Dict[str, Any]:
+               factor: Union[Number, str, None], locale: Optional[str] = None) -> Dict[str, Any]:
     """Plan a conversion; with ``factor`` the caller's factor replaces the library's answer."""
     if factor is None:
-        p = _plan(from_unit, to_unit, analyte)
+        p = _plan(from_unit, to_unit, analyte, locale)
         p["user_factor"] = None
         p["warnings"] = []
         return p
     f = _user_factor(factor)
-    ua, ub = _lookup(from_unit), _lookup(to_unit)
+    ua, ra = _lookup_read(from_unit, locale)
+    ub, rb = _lookup_read(to_unit, locale)
     an = _resolve_analyte(analyte)
     warnings = [f"Factor {_fmt(f)} supplied by the caller; lifefrom-units has not checked it."]
     record: Dict[str, Any] = {"value": f, "overrides": None, "library_kind": None, "library_factor": None}
     try:
-        lib = _plan(from_unit, to_unit, analyte)
+        lib = _plan(from_unit, to_unit, analyte, locale)
         record["library_kind"] = lib["kind"]
         if lib["b"] != 0.0:
             warnings.append("lifefrom-units uses an equation for this pair, not a factor.")
@@ -425,13 +495,13 @@ def _plan_with(from_unit: str, to_unit: str, analyte: Optional[str],
         warnings.append(f"Overrides lifefrom-units ({ex.code}): {reason}")
     return {"from_unit": ua["unit"], "to_unit": ub["unit"], "analyte": an["id"] if an else None,
             "a": f, "b": 0.0, "kind": "user_factor", "user_factor": record, "warnings": warnings,
-            "steps": [{"kind": "user_factor", "factor": f,
+            "steps": [_reading_step(r) for r in (ra, rb) if r is not None] + [{"kind": "user_factor", "factor": f,
                        "description": f"factor supplied by the caller: 1 {ua['unit']} = {_fmt(f)} {ub['unit']}",
                        "basis": "caller-supplied; not checked by lifefrom-units", "sources": []}]}
 
 
 def convert(value: Union[Number, str], from_unit: str, to_unit: str, analyte: Optional[str] = None,
-            factor: Union[Number, str, None] = None) -> float:
+            factor: Union[Number, str, None] = None, locale: Optional[str] = None) -> float:
     """Convert ``value`` from ``from_unit`` to ``to_unit``.
 
     ``analyte`` (a lifefrom-units analyte id such as ``"glucose"`` or a LifeFrom marker slug such as
@@ -442,20 +512,25 @@ def convert(value: Union[Number, str], from_unit: str, to_unit: str, analyte: Op
     factor``. Use it for conversions the library refuses or cannot source, such as insulin µIU/mL to
     pmol/L with the factor your assay states. :func:`explain` records it and what it overrode.
 
+    ``locale`` (optional language tag) says which convention the report follows for spellings that are
+    ambiguous across languages; see :func:`normalize_unit`.
+
     >>> round(convert(100, "mg/dL", "mmol/L", analyte="glucose"), 3)
     5.551
     >>> convert("5,4", "mmol/L", "mmol/L")
     5.4
     >>> convert(10, "µIU/mL", "pmol/L", analyte="insulin", factor=6)
     60.0
+    >>> convert("7,5", "mil/mm3", "10^3/µL", locale="es")
+    7.5
 
     Raises :class:`IncompatibleUnitsError` (needs an analyte), :class:`ForbiddenConversionError`
     (never convert, e.g. Lp(a) mg/dL to nmol/L), :class:`NoSourcedConversionError`,
-    :class:`UnknownUnitError`, :class:`UnknownAnalyteError`, :class:`InvalidValueError`,
+    :class:`UnknownUnitError`, :class:`AmbiguousUnitError` (pass ``locale=``), :class:`UnknownAnalyteError`, :class:`InvalidValueError`,
     :class:`QualifiedValueError` (use :func:`convert_result`) or :class:`AmbiguousValueError`.
     """
     v = parse_value(value)
-    p = _plan_with(from_unit, to_unit, analyte, factor)
+    p = _plan_with(from_unit, to_unit, analyte, factor, locale)
     return p["a"] * v + p["b"]
 
 
@@ -464,7 +539,7 @@ FLAG_NOTE = ("The flag is copied unchanged from the original report. It refers t
 
 
 def convert_result(value: Union[Number, str], from_unit: str, to_unit: str, analyte: Optional[str] = None,
-                   factor: Union[Number, str, None] = None) -> Dict[str, Any]:
+                   factor: Union[Number, str, None] = None, locale: Optional[str] = None) -> Dict[str, Any]:
     """Convert a reported value that may carry a comparator (``<5``) or flag (``5,4 H``).
 
     Returns ``{"value", "comparator", "flag", "unit", "text"}`` plus ``flag_note`` when a flag is
@@ -475,7 +550,7 @@ def convert_result(value: Union[Number, str], from_unit: str, to_unit: str, anal
     ('<', 50.0, 'mg/L')
     """
     r = parse_result(value)
-    p = _plan_with(from_unit, to_unit, analyte, factor)
+    p = _plan_with(from_unit, to_unit, analyte, factor, locale)
     out: Dict[str, Any] = {"value": p["a"] * r["value"] + p["b"], "comparator": r["comparator"], "flag": r["flag"],
                            "unit": p["to_unit"]}
     if p["a"] < 0 and out["comparator"]:  # not reachable with current data; kept for safety
@@ -486,15 +561,16 @@ def convert_result(value: Union[Number, str], from_unit: str, to_unit: str, anal
     return out
 
 
-def same_unit(a: str, b: str, analyte: Optional[str] = None) -> bool:
+def same_unit(a: str, b: str, analyte: Optional[str] = None, locale: Optional[str] = None) -> bool:
     """True if a value in unit ``a`` equals the same number in unit ``b``.
 
     ``same_unit("µg/L", "ng/mL")`` is True. With an analyte, charge equivalence counts:
     ``same_unit("mEq/L", "mmol/L", analyte="sodium")`` is True. Unknown units raise
-    :class:`UnknownUnitError`; impossible or forbidden conversions return False.
+    :class:`UnknownUnitError` (ambiguous ones :class:`AmbiguousUnitError`); impossible or forbidden
+    conversions return False.
     """
     try:
-        p = _plan(a, b, analyte)
+        p = _plan(a, b, analyte, locale)
     except (IncompatibleUnitsError, ForbiddenConversionError, NoSourcedConversionError):
         return False
     return p["b"] == 0.0 and abs(p["a"] - 1.0) <= 1e-12
@@ -505,7 +581,8 @@ def _fmt(x: float) -> str:
 
 
 def explain(from_unit: str, to_unit: str, analyte: Optional[str] = None,
-            value: Union[Number, str, None] = None, factor: Union[Number, str, None] = None) -> Dict[str, Any]:
+            value: Union[Number, str, None] = None, factor: Union[Number, str, None] = None,
+            locale: Optional[str] = None) -> Dict[str, Any]:
     """Explain a conversion: the factor (or equation), each step, its basis and its sources.
 
     Returns a dict with keys ``from_unit``, ``to_unit``, ``analyte``, ``kind`` (``identity``,
@@ -514,9 +591,11 @@ def explain(from_unit: str, to_unit: str, analyte: Optional[str] = None,
     ``derived`` (True when only unit arithmetic is involved), ``steps``, ``sources``,
     ``reference_compounds`` (the compound or element whose molar mass was used), ``warnings``
     (caveats that ship with the factor), ``user_factor`` (what a caller-supplied factor replaced, or
-    None) and, if ``value`` is given, ``value`` and ``result``. Raises the same errors as :func:`convert`.
+    None) and, if ``value`` is given, ``value`` and ``result``. When ``locale`` resolved an ambiguous
+    spelling, a ``spelling_reading`` step comes first, with its sources. Raises the same errors as
+    :func:`convert`.
     """
-    p = _plan_with(from_unit, to_unit, analyte, factor)
+    p = _plan_with(from_unit, to_unit, analyte, factor, locale)
     out: Dict[str, Any] = {
         "from_unit": p["from_unit"], "to_unit": p["to_unit"], "analyte": p["analyte"], "kind": p["kind"],
         "factor": p["a"] if p["b"] == 0.0 else None,

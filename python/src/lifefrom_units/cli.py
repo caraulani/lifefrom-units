@@ -15,21 +15,25 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--version", action="version", version=f"lifefrom-units {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    c = sub.add_parser("convert", help="convert a value: lifefrom-units convert 5,4 mmol/L mg/dL --analyte glucose")
+    c = sub.add_parser("convert", help="convert a value: lifefrom-units convert 5,4 mmol/L mg/dL --analyte glucose "
+                                       "(or: convert 7,5 mil/mm3 K/uL --locale es)")
     c.add_argument("value")
     c.add_argument("from_unit")
     c.add_argument("to_unit")
     c.add_argument("--analyte", "-a")
     c.add_argument("--factor", help="your own factor (value_to = value_from x factor); recorded, never a default")
     c.add_argument("--json", action="store_true", help="print the result and full explanation as JSON")
+    c.add_argument("--locale", "-l", help="language of the report, e.g. es, en, ro: needed for spellings like mil/mm3 (thousand in Spanish, million in English)")
 
     n = sub.add_parser("normalize", help="print the canonical spelling of one or more units")
     n.add_argument("units", nargs="+")
+    n.add_argument("--locale", "-l", help="language of the report, e.g. es, en, ro: needed for spellings like mil/mm3 (thousand in Spanish, million in English)")
 
     s = sub.add_parser("same", help="exit 0 if the two units are numerically the same, 1 if not")
     s.add_argument("a")
     s.add_argument("b")
     s.add_argument("--analyte", "-a")
+    s.add_argument("--locale", "-l", help="language of the report, e.g. es, en, ro: needed for spellings like mil/mm3 (thousand in Spanish, million in English)")
 
     e = sub.add_parser("explain", help="show the factor or equation and its sources")
     e.add_argument("from_unit")
@@ -37,6 +41,7 @@ def _parser() -> argparse.ArgumentParser:
     e.add_argument("--analyte", "-a")
     e.add_argument("--factor")
     e.add_argument("--json", action="store_true")
+    e.add_argument("--locale", "-l", help="language of the report, e.g. es, en, ro: needed for spellings like mil/mm3 (thousand in Spanish, million in English)")
 
     sub.add_parser("analytes", help="list analytes that have conversions")
     return p
@@ -46,10 +51,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = _parser().parse_args(argv)
     try:
         if args.cmd == "convert":
-            r = convert_result(args.value, args.from_unit, args.to_unit, args.analyte, factor=args.factor)
+            r = convert_result(args.value, args.from_unit, args.to_unit, args.analyte, factor=args.factor,
+                               locale=args.locale)
             if args.json:
                 print(json.dumps({"result": r, "explanation": explain(args.from_unit, args.to_unit, args.analyte,
-                                                                      factor=args.factor)},
+                                                                      factor=args.factor, locale=args.locale)},
                                  ensure_ascii=False, indent=2))
             else:
                 print(r["text"])
@@ -57,13 +63,13 @@ def main(argv: Optional[List[str]] = None) -> int:
                     print("note: factor supplied by you; not checked by lifefrom-units", file=sys.stderr)
         elif args.cmd == "normalize":
             for u in args.units:
-                print(normalize_unit(u))
+                print(normalize_unit(u, locale=args.locale))
         elif args.cmd == "same":
-            ok = same_unit(args.a, args.b, args.analyte)
+            ok = same_unit(args.a, args.b, args.analyte, locale=args.locale)
             print("same" if ok else "different")
             return 0 if ok else 1
         elif args.cmd == "explain":
-            ex = explain(args.from_unit, args.to_unit, args.analyte, factor=args.factor)
+            ex = explain(args.from_unit, args.to_unit, args.analyte, factor=args.factor, locale=args.locale)
             if args.json:
                 print(json.dumps(ex, ensure_ascii=False, indent=2))
             else:

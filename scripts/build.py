@@ -25,7 +25,7 @@ import spec  # noqa: E402
 from _rules import compile_rules, unit_key  # noqa: E402
 import ucum_validate  # noqa: E402
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 
 def page_text(path: Path) -> str:
@@ -83,7 +83,7 @@ def molar_mass(ref) -> tuple[F, str, dict]:
     raise ValueError(ref)
 
 
-SOURCES: dict = {k: dict(v, accessed=spec.ACCESSED) for k, v in spec.SOURCES.items()}
+SOURCES: dict = {k: {"accessed": spec.ACCESSED, **v} for k, v in spec.SOURCES.items()}
 
 
 def check_published(src_id: str, frm: str, to: str, factor: float) -> None:
@@ -130,6 +130,32 @@ def build_lookup():
             folded[k] = u["unit"]
             folded_src[k] = n
     return exact, folded
+
+
+def build_ambiguous(exact, folded):
+    """Spellings refused without a locale. Keyed like lookup.casefold (rules on the lower-cased input)."""
+    keys, entries = {}, []
+    for a in spec.AMBIGUOUS:
+        for lang, unit in a["readings"].items():
+            if unit not in UNIT:
+                raise SystemExit(f"{a['id']}: reading {lang} -> {unit} is not a canonical unit")
+            if lang not in spec.LANGUAGE_READINGS:
+                raise SystemExit(f"{a['id']}: no LANGUAGE_READINGS entry for {lang}")
+        for sp in a["spellings"]:
+            k = key(sp.lower())
+            if k in folded or k in exact or k.lower() in exact:
+                raise SystemExit(f"ambiguous spelling {sp!r} also resolves as a unit")
+            if k in keys and keys[k] != a["id"]:
+                raise SystemExit(f"ambiguous spelling {sp!r} in two entries")
+            keys[k] = a["id"]
+        entries.append(dict(id=a["id"], spellings=a["spellings"], readings=a["readings"],
+                            reason=spec.AMBIGUOUS_REASON))
+    # no case-sensitive alias may fold onto an ambiguous key
+    for u in UNITDEFS:
+        for n in [u["unit"]] + u["aliases"] + u["cs_aliases"]:
+            if key(n.lower()) in keys:
+                raise SystemExit(f"{n!r} ({u['unit']}) folds onto an ambiguous spelling")
+    return keys, entries
 
 
 def scale_float(u) -> float:
@@ -263,6 +289,7 @@ def main():
     units_rows = list(csv.DictReader(open(r1 / "units.csv", encoding="utf-8")))
 
     exact, folded = build_lookup()
+    ambiguous_keys, ambiguous = build_ambiguous(exact, folded)
     analytes_list, crosschecks = build_analytes(set(markers))
     forbidden = build_forbidden()
 
@@ -304,6 +331,8 @@ def main():
     for f in forbidden:
         used_sources.update(f["sources"])
     used_sources.add("ucum-2.2")
+    for r in spec.LANGUAGE_READINGS.values():
+        used_sources.update(r["sources"])
     for _, sid, *_ in crosschecks:
         used_sources.add(sid)
     for a in analytes_list:
@@ -314,7 +343,7 @@ def main():
         used_sources.add("pubchem-5497163")
 
     spec_json = dict(
-        name="lifefrom-units", version=VERSION, schema_version=1, released="2026-11-25",
+        name="lifefrom-units", version=VERSION, schema_version=1, released="2026-11-26",
         license="CC-BY-4.0 (data), MIT (code)",
         homepage="https://lifefrom.ai",
         notice="Not a medical device. Converts units only; it does not interpret results.",
@@ -325,12 +354,17 @@ def main():
         normalization=dict(rules=RULES_JSON,
                            procedure="key = rules applied in order to the trimmed input, then all whitespace removed. "
                                      "Look up key in lookup.exact; if absent, apply the same to the lower-cased "
-                                     "input and look up in lookup.casefold."),
+                                     "input and look up in lookup.ambiguous, then in lookup.casefold. A spelling "
+                                     "found in lookup.ambiguous resolves only with a locale whose primary language "
+                                     "subtag (lower-cased, e.g. 'es' from 'es-AR') is in that entry's readings; "
+                                     "otherwise it is refused (ambiguous_unit)."),
         dimensions=dims,
         units=[dict(unit=u["unit"], dimension=u["dimension"], scale=scale_float(u), aliases=u["aliases"],
                     case_sensitive_aliases=u["cs_aliases"], ucum=u["ucum"], note=u["note"]) for u in UNITDEFS],
         lookup=dict(exact=dict(sorted(exact.items())), casefold=dict(sorted(folded.items())),
-                    analytes=dict(sorted(index.items()))),
+                    ambiguous=dict(sorted(ambiguous_keys.items())), analytes=dict(sorted(index.items()))),
+        ambiguous=ambiguous,
+        language_readings=spec.LANGUAGE_READINGS,
         analytes=analytes_list,
         forbidden=forbidden,
         arbitrary_reason=spec.ARBITRARY_REASON,
@@ -356,7 +390,7 @@ def main():
 
     write_factor_table(L, analytes_list, crosschecks)
     write_release1_comparison(L, units_rows, markers)
-    write_web(L, analytes_list, units_rows, forbidden)
+    write_web(L, analytes_list, units_rows, forbidden, ambiguous)
     print(f"units: {len(UNITDEFS)}  spellings(exact keys): {len(exact)}  analytes with bridges: "
           f"{sum(1 for a in analytes_list if a['bridges'])}  forbidden rules: {len(forbidden)}  sources: "
           f"{len(spec_json['sources'])}")
@@ -469,7 +503,7 @@ def web_spellings(u):
     return list(dict.fromkeys(s + extra))
 
 
-def write_web(L, analytes_list, units_rows, forbidden):
+def write_web(L, analytes_list, units_rows, forbidden, ambiguous):
     units = []
     for u in UNITDEFS:
         for sp in web_spellings(u):
@@ -524,7 +558,21 @@ def write_web(L, analytes_list, units_rows, forbidden):
         a = next(x for x in analytes_list if x["id"] == f["analyte"])
         for slug in a["marker_slugs"] or [a["id"]]:
             fb.append(dict(slug=slug, a=f["example"][0], b=f["example"][1], reason=f["reason"]))
-    web = dict(name="lifefrom-units", version=VERSION, units=units, analytes=an_out, forbidden=fb)
+    amb = []
+    for a in ambiguous:
+        for sp in a["spellings"]:
+            amb.append(dict(unit=sp, readings=a["readings"], reason=a["reason"]))
+            if "µ" in sp:
+                amb.append(dict(unit=sp.replace("µ", "u"), readings=a["readings"], reason=a["reason"]))
+    for x in amb:
+        try:
+            L.normalize_unit(x["unit"])
+            raise SystemExit(f"{x['unit']} resolves without a locale")
+        except L.AmbiguousUnitError:
+            pass
+        for lang, u in x["readings"].items():
+            assert L.normalize_unit(x["unit"], locale=lang) == u, (x, lang)
+    web = dict(name="lifefrom-units", version=VERSION, units=units, analytes=an_out, forbidden=fb, ambiguous=amb)
     (ROOT / "web").mkdir(exist_ok=True)
     (ROOT / "web" / "lifefrom-units.json").write_text(json.dumps(web, ensure_ascii=False, separators=(",", ":")) + "\n",
                                                encoding="utf-8")

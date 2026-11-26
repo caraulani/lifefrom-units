@@ -11,11 +11,13 @@ convert('5,4', 'mmol/L', 'mg/dL', 'glucose');       // 97.2864
 convertResult('5,4 H', 'mmol/L', 'mg/dL', 'glucose').text;  // '97.2864 H'
 convert(10, 'µIU/mL', 'pmol/L', 'insulin', 6);      // 60, your factor (explain() records it)
 convert(50, 'mg/dL', 'nmol/L', 'lipoprotein-a');    // throws LifeFromUnitsError, code 'forbidden'
+convert('7,5', 'mil/mm3', 'K/µL', null, null, { locale: 'es' });  // 7.5: in Spanish "mil" is thousand
+convert('7,5', 'mil/mm3', 'K/µL');                  // throws, code 'ambiguous_unit' (million in English)
 ```
 
 Error codes:
 
-- `unknown_unit`, `unknown_analyte`
+- `unknown_unit`, `ambiguous_unit` (pass `{ locale }`), `unknown_analyte`
 - `incompatible_units`
 - `forbidden`
 - `no_sourced_conversion`

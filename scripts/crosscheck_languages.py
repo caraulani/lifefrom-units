@@ -20,18 +20,19 @@ const V = JSON.parse(readFileSync('../tests/vectors.json', 'utf-8')).vectors;
 const out = {};
 for (const v of V) {
   const i = v.input;
+  const o = { locale: i.locale };
   try {
     let r;
-    if (v.op === 'normalize') r = L.normalizeUnit(i.unit);
-    else if (v.op === 'same_unit') r = L.sameUnit(i.a, i.b, i.analyte);
+    if (v.op === 'normalize') r = L.normalizeUnit(i.unit, o);
+    else if (v.op === 'same_unit') r = L.sameUnit(i.a, i.b, i.analyte, o);
     else if (v.op === 'parse_value') r = L.parseValue(i.value);
-    else if (v.op === 'convert') r = L.convert(i.value, i.from, i.to, i.analyte, i.factor);
+    else if (v.op === 'convert') r = L.convert(i.value, i.from, i.to, i.analyte, i.factor, o);
     else if (v.op === 'parse_result') r = L.parseResult(i.value);
-    else if (v.op === 'convert_result') r = L.convertResult(i.value, i.from, i.to, i.analyte, i.factor);
+    else if (v.op === 'convert_result') r = L.convertResult(i.value, i.from, i.to, i.analyte, i.factor, o);
     else if (v.op === 'roundtrip') r = L.convert(L.convert(i.value, i.a, i.b, i.analyte), i.b, i.a, i.analyte);
-    else if (v.op === 'explain') { const e = L.explain(i.from, i.to, i.analyte, undefined, i.factor); r = [e.kind, e.factor, e.text, e.equation && e.equation.slope, e.equation && e.equation.intercept, e.warnings, e.reference_compounds, e.user_factor, e.sources.map(s => s.id)]; }
+    else if (v.op === 'explain') { const e = L.explain(i.from, i.to, i.analyte, undefined, i.factor, o); r = [e.kind, e.factor, e.text, e.equation && e.equation.slope, e.equation && e.equation.intercept, e.warnings, e.reference_compounds, e.user_factor, e.sources.map(s => s.id), e.steps.map(s => [s.kind, s.description, s.basis ?? null])]; }
     out[v.id] = ['ok', r];
-  } catch (e) { out[v.id] = ['err', e.code]; }
+  } catch (e) { out[v.id] = ['err', e.code, e.code === 'ambiguous_unit' ? e.message : null]; }
 }
 process.stdout.write(JSON.stringify(out));
 """
@@ -44,27 +45,29 @@ def py_results():
         i = v["input"]
         try:
             if v["op"] == "normalize":
-                r = L.normalize_unit(i["unit"])
+                r = L.normalize_unit(i["unit"], locale=i.get("locale"))
             elif v["op"] == "same_unit":
-                r = L.same_unit(i["a"], i["b"], i.get("analyte"))
+                r = L.same_unit(i["a"], i["b"], i.get("analyte"), locale=i.get("locale"))
             elif v["op"] == "parse_value":
                 r = L.parse_value(i["value"])
             elif v["op"] == "convert":
-                r = L.convert(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))
+                r = L.convert(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"), locale=i.get("locale"))
             elif v["op"] == "parse_result":
                 r = L.parse_result(i["value"])
             elif v["op"] == "convert_result":
-                r = L.convert_result(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))
+                r = L.convert_result(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"),
+                                     locale=i.get("locale"))
             elif v["op"] == "roundtrip":
                 r = L.convert(L.convert(i["value"], i["a"], i["b"], i.get("analyte")), i["b"], i["a"], i.get("analyte"))
             else:
-                e = L.explain(i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))
+                e = L.explain(i["from"], i["to"], i.get("analyte"), factor=i.get("factor"), locale=i.get("locale"))
                 r = [e["kind"], e["factor"], e["text"], e["equation"] and e["equation"]["slope"],
                      e["equation"] and e["equation"]["intercept"], e["warnings"], e["reference_compounds"],
-                     e["user_factor"], [s["id"] for s in e["sources"]]]
+                     e["user_factor"], [s["id"] for s in e["sources"]],
+                     [[s["kind"], s["description"], s.get("basis")] for s in e["steps"]]]
             out[v["id"]] = ["ok", r]
         except L.LifeFromUnitsError as ex:
-            out[v["id"]] = ["err", ex.code]
+            out[v["id"]] = ["err", ex.code, str(ex) if ex.code == "ambiguous_unit" else None]
     return out
 
 

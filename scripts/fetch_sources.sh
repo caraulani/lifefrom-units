@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Download every raw source that scripts/build.py reads.
 # Raw files go to ../_raw/<source>/ (outside this repo, never committed).
-# Access date for release 1.0.0: 2026-11-25.
+# Access date for release 1.0.0: 2026-11-25; the language-reading sources added in 1.1.0: 2026-11-26.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 RAW="${LABUNITS_RAW:-$HERE/../_raw}"
@@ -38,5 +38,14 @@ mkdir -p "$RAW/labunits-europepmc"
 for p in PMC9639807 PMC9279959 PMC6152246; do
   curl -sf "https://www.ebi.ac.uk/europepmc/webservices/rest/$p/fullTextXML" -o "$RAW/labunits-europepmc/$p.xml"
 done
+
+# Sources for reading "mil/mm3" and "mil/µL" by language (added in 1.1.0; cited only, nothing numeric is read).
+mkdir -p "$RAW/unit-languages"
+curl -sfL "https://web.archive.org/web/20090109175010id_/http://www.cc.nih.gov/ccc/patient_education/pepubs_sp/cbcsp.pdf" \
+  -o "$RAW/unit-languages/nih-cc-cbc-es.pdf"
+curl -sfL "https://dlmp.uw.edu/test-guide/view/RBC" -o "$RAW/unit-languages/uw-dlmp-rbc.html"
+curl -sfL "https://es.wiktionary.org/wiki/mil" -o "$RAW/unit-languages/eswiktionary-mil.html"
+curl -sfL "https://dexonline.ro/definitie/mie" -o "$RAW/unit-languages/dexonline-mie.html"
+curl -sfL "https://dexonline.ro/definitie/milion" -o "$RAW/unit-languages/dexonline-milion.html"
 
 echo "fetched into $RAW"

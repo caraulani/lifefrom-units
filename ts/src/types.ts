@@ -82,6 +82,20 @@ export interface Forbidden {
   sources: string[];
 }
 
+/** A spelling that means different units in different languages ('mil/mm3'); readings: language subtag -> unit. */
+export interface AmbiguousSpelling {
+  id: string;
+  spellings: string[];
+  readings: Record<string, string>;
+  reason: string;
+}
+
+export interface LanguageReading {
+  meaning: string;
+  note: string;
+  sources: string[];
+}
+
 export interface Spec {
   name: string;
   version: string;
@@ -89,7 +103,14 @@ export interface Spec {
   normalization: { rules: Rule[]; procedure: string };
   dimensions: Record<string, { name: string; base: string; convertible: boolean }>;
   units: UnitRecord[];
-  lookup: { exact: Record<string, string>; casefold: Record<string, string>; analytes: Record<string, string> };
+  lookup: {
+    exact: Record<string, string>;
+    casefold: Record<string, string>;
+    ambiguous: Record<string, string>;
+    analytes: Record<string, string>;
+  };
+  ambiguous: AmbiguousSpelling[];
+  language_readings: Record<string, LanguageReading>;
   analytes: Analyte[];
   forbidden: Forbidden[];
   arbitrary_reason: string;

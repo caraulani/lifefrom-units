@@ -21,24 +21,26 @@ def close(got, want, rel, abs_tol=None):
 def run(v):
     i, op = v["input"], v["op"]
     if op == "normalize":
-        return {"unit": L.normalize_unit(i["unit"])}
+        return {"unit": L.normalize_unit(i["unit"], locale=i.get("locale"))}
     if op == "same_unit":
-        return {"same": L.same_unit(i["a"], i["b"], i.get("analyte"))}
+        return {"same": L.same_unit(i["a"], i["b"], i.get("analyte"), locale=i.get("locale"))}
     if op == "parse_value":
         return {"value": L.parse_value(i["value"])}
     if op == "convert":
-        return {"value": L.convert(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))}
+        return {"value": L.convert(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"),
+                                    locale=i.get("locale"))}
     if op == "parse_result":
         r = L.parse_result(i["value"])
         return {"value": r["value"], "comparator": r["comparator"], "flag": r["flag"]}
     if op == "convert_result":
-        r = L.convert_result(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))
+        r = L.convert_result(i["value"], i["from"], i["to"], i.get("analyte"), factor=i.get("factor"),
+                             locale=i.get("locale"))
         return {"value": r["value"], "comparator": r["comparator"], "flag": r["flag"], "unit": r["unit"]}
     if op == "roundtrip":
         x = L.convert(i["value"], i["a"], i["b"], i.get("analyte"))
         return {"value": L.convert(x, i["b"], i["a"], i.get("analyte"))}
     if op == "explain":
-        e = L.explain(i["from"], i["to"], i.get("analyte"), factor=i.get("factor"))
+        e = L.explain(i["from"], i["to"], i.get("analyte"), factor=i.get("factor"), locale=i.get("locale"))
         out = {"kind": e["kind"], "factor": e["factor"], "derived": e["derived"],
                "source_ids": [s["id"] for s in e["sources"]],
                "reference_cids": [r["pubchem_cid"] for r in e["reference_compounds"] if "pubchem_cid" in r],

@@ -8,6 +8,7 @@
 """
 from .core import (
     SPEC,
+    AmbiguousUnitError,
     AmbiguousValueError,
     ForbiddenConversionError,
     IncompatibleUnitsError,
@@ -32,7 +33,7 @@ from . import core
 __version__ = SPEC["version"]
 
 __all__ = [
-    "AmbiguousValueError", "ForbiddenConversionError", "IncompatibleUnitsError", "InvalidValueError",
+    "AmbiguousUnitError", "AmbiguousValueError", "ForbiddenConversionError", "IncompatibleUnitsError", "InvalidValueError",
     "LifeFromUnitsError", "NoSourcedConversionError", "QualifiedValueError", "UnknownAnalyteError", "UnknownUnitError", "analytes",
     "convert", "convert_result", "core", "explain", "normalize_unit", "parse_result", "parse_value", "same_unit", "unit_info", "__version__",
 ]
