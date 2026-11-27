@@ -1,5 +1,5 @@
 {
- "version": "1.1.0",
+ "version": "1.2.0",
  "description": "Shared test vectors for the lifefrom-units Python and TypeScript packages. Expected values computed independently of the engine (scripts/make_vectors.py).",
  "ops": {
   "normalize": "normalize_unit(unit, locale?) -> unit",
@@ -11,7 +11,7 @@
   "parse_result": "parse_result(value) -> value, comparator, flag",
   "convert_result": "convert_result(value, from, to, analyte?, factor?, locale?) -> value (rel 1e-9), comparator, flag, unit"
  },
- "count": 1587,
+ "count": 1670,
  "vectors": [
   {
    "id": "normalize-0001",
@@ -18858,7 +18858,7 @@
    "op": "normalize",
    "input": {
     "unit": "mil/mm3",
-    "locale": "de"
+    "locale": "it"
    },
    "error": "ambiguous_unit",
    "note": "no reading shipped for this language"
@@ -19184,7 +19184,7 @@
     "value": 7.5,
     "from": "mil/mm3",
     "to": "K/µL",
-    "locale": "de"
+    "locale": "it"
    },
    "error": "ambiguous_unit"
   },
@@ -19314,7 +19314,964 @@
    "error": "ambiguous_unit"
   },
   {
-   "id": "explain-1563",
+   "id": "normalize-1563",
+   "op": "normalize",
+   "input": {
+    "unit": "G/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1564",
+   "op": "normalize",
+   "input": {
+    "unit": "G/L"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1565",
+   "op": "normalize",
+   "input": {
+    "unit": "Giga/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1566",
+   "op": "normalize",
+   "input": {
+    "unit": "Gpt/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1567",
+   "op": "normalize",
+   "input": {
+    "unit": "x10^9/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1568",
+   "op": "normalize",
+   "input": {
+    "unit": "x 10^9/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1569",
+   "op": "normalize",
+   "input": {
+    "unit": "×10⁹/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1570",
+   "op": "normalize",
+   "input": {
+    "unit": "10E9/l"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1571",
+   "op": "normalize",
+   "input": {
+    "unit": "T/l"
+   },
+   "expect": {
+    "unit": "10^12/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1572",
+   "op": "normalize",
+   "input": {
+    "unit": "T/L"
+   },
+   "expect": {
+    "unit": "10^12/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1573",
+   "op": "normalize",
+   "input": {
+    "unit": "Tera/l"
+   },
+   "expect": {
+    "unit": "10^12/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1574",
+   "op": "normalize",
+   "input": {
+    "unit": "Tpt/l"
+   },
+   "expect": {
+    "unit": "10^12/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1575",
+   "op": "normalize",
+   "input": {
+    "unit": "x10^12/l"
+   },
+   "expect": {
+    "unit": "10^12/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1576",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/µl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1577",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd./µl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1578",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/µL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1579",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd./µL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1580",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/ul"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1581",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/μl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1582",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd./μl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1583",
+   "op": "normalize",
+   "input": {
+    "unit": "TSD/µL"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1584",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd. / µl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1585",
+   "op": "normalize",
+   "input": {
+    "unit": "Tausend/µl"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1586",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio/µl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1587",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio./µl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1588",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio/µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1589",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio./µL"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1590",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio/ul"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1591",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio/μl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1592",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio./μl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1593",
+   "op": "normalize",
+   "input": {
+    "unit": "Mill./µl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1594",
+   "op": "normalize",
+   "input": {
+    "unit": "Millionen/µl"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1595",
+   "op": "normalize",
+   "input": {
+    "unit": "/nl"
+   },
+   "expect": {
+    "unit": "/nL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1596",
+   "op": "normalize",
+   "input": {
+    "unit": "pro nl"
+   },
+   "expect": {
+    "unit": "/nL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1597",
+   "op": "normalize",
+   "input": {
+    "unit": "/pl"
+   },
+   "expect": {
+    "unit": "/pL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1598",
+   "op": "normalize",
+   "input": {
+    "unit": "/µl"
+   },
+   "expect": {
+    "unit": "/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1599",
+   "op": "normalize",
+   "input": {
+    "unit": "/μl"
+   },
+   "expect": {
+    "unit": "/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1600",
+   "op": "normalize",
+   "input": {
+    "unit": "/ul"
+   },
+   "expect": {
+    "unit": "/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1601",
+   "op": "normalize",
+   "input": {
+    "unit": "pro µl"
+   },
+   "expect": {
+    "unit": "/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1602",
+   "op": "normalize",
+   "input": {
+    "unit": "pro μl"
+   },
+   "expect": {
+    "unit": "/µL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1603",
+   "op": "normalize",
+   "input": {
+    "unit": "mmol/l"
+   },
+   "expect": {
+    "unit": "mmol/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1604",
+   "op": "normalize",
+   "input": {
+    "unit": "µmol/l"
+   },
+   "expect": {
+    "unit": "µmol/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1605",
+   "op": "normalize",
+   "input": {
+    "unit": "μmol/l"
+   },
+   "expect": {
+    "unit": "µmol/L"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1606",
+   "op": "normalize",
+   "input": {
+    "unit": "g/dl"
+   },
+   "expect": {
+    "unit": "g/dL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1607",
+   "op": "normalize",
+   "input": {
+    "unit": "fl"
+   },
+   "expect": {
+    "unit": "fL"
+   },
+   "note": "German-language report spelling"
+  },
+  {
+   "id": "normalize-1608",
+   "op": "normalize",
+   "input": {
+    "unit": "Mil./µl",
+    "locale": "de"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German: 'Mil.' is an alternative to 'Mio.'"
+  },
+  {
+   "id": "normalize-1609",
+   "op": "normalize",
+   "input": {
+    "unit": "mil/µL",
+    "locale": "de-AT"
+   },
+   "expect": {
+    "unit": "10^6/µL"
+   },
+   "note": "German: 'Mil.' is an alternative to 'Mio.'"
+  },
+  {
+   "id": "normalize-1610",
+   "op": "normalize",
+   "input": {
+    "unit": "mil./mm3",
+    "locale": "de-CH"
+   },
+   "expect": {
+    "unit": "10^6/mm³"
+   },
+   "note": "German: 'Mil.' is an alternative to 'Mio.'"
+  },
+  {
+   "id": "normalize-1611",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd./µl",
+    "locale": "de"
+   },
+   "expect": {
+    "unit": "10^3/µL"
+   },
+   "note": "German: 'Mil.' is an alternative to 'Mio.'"
+  },
+  {
+   "id": "normalize-1612",
+   "op": "normalize",
+   "input": {
+    "unit": "G/l",
+    "locale": "de-AT"
+   },
+   "expect": {
+    "unit": "10^9/L"
+   },
+   "note": "German: 'Mil.' is an alternative to 'Mio.'"
+  },
+  {
+   "id": "normalize-1613",
+   "op": "normalize",
+   "input": {
+    "unit": "g/l"
+   },
+   "expect": {
+    "unit": "g/L"
+   },
+   "note": "lower-case g is gram, never giga"
+  },
+  {
+   "id": "normalize-1614",
+   "op": "normalize",
+   "input": {
+    "unit": "t/l"
+   },
+   "error": "unknown_unit",
+   "note": "not shipped: no source found"
+  },
+  {
+   "id": "normalize-1615",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/mm3"
+   },
+   "error": "unknown_unit",
+   "note": "not shipped: no source found"
+  },
+  {
+   "id": "normalize-1616",
+   "op": "normalize",
+   "input": {
+    "unit": "Mio/mm3"
+   },
+   "error": "unknown_unit",
+   "note": "not shipped: no source found"
+  },
+  {
+   "id": "normalize-1617",
+   "op": "normalize",
+   "input": {
+    "unit": "Tsd/nl"
+   },
+   "error": "unknown_unit",
+   "note": "not shipped: no source found"
+  },
+  {
+   "id": "convert-1618",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "Tsd/µl",
+    "to": "x10^9/L"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1619",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "Tsd./µl",
+    "to": "G/l"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1620",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "G/l",
+    "to": "Tsd./µl"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1621",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "G/l",
+    "to": "/nl"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1622",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "G/l",
+    "to": "/µl"
+   },
+   "expect": {
+    "value": 6200.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1623",
+   "op": "convert",
+   "input": {
+    "value": "6,2",
+    "from": "Gpt/l",
+    "to": "K/µL"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1624",
+   "op": "convert",
+   "input": {
+    "value": "245",
+    "from": "Tsd./µl",
+    "to": "G/l"
+   },
+   "expect": {
+    "value": 245.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1625",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "Mio/µl",
+    "to": "x10^12/L"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1626",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "Mio./µl",
+    "to": "T/l"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1627",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "T/l",
+    "to": "Mio./µl"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1628",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "Tpt/l",
+    "to": "/pl"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1629",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "Mio/μl",
+    "to": "/µl"
+   },
+   "expect": {
+    "value": 4800000.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1630",
+   "op": "convert",
+   "input": {
+    "value": "4,5",
+    "from": "Tsd/ul",
+    "to": "/µl"
+   },
+   "expect": {
+    "value": 4500.0
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert-1631",
+   "op": "convert",
+   "input": {
+    "value": "0,45",
+    "from": "G/l",
+    "to": "Tsd/µl"
+   },
+   "expect": {
+    "value": 0.45
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "roundtrip-1632",
+   "op": "roundtrip",
+   "input": {
+    "value": 6.2,
+    "a": "Tsd./µl",
+    "b": "G/l"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-12
+  },
+  {
+   "id": "roundtrip-1633",
+   "op": "roundtrip",
+   "input": {
+    "value": 4.8,
+    "a": "Mio./µl",
+    "b": "T/l"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-12
+  },
+  {
+   "id": "roundtrip-1634",
+   "op": "roundtrip",
+   "input": {
+    "value": 6.2,
+    "a": "G/l",
+    "b": "/nl"
+   },
+   "expect": {
+    "value": 6.2
+   },
+   "rel_tol": 1e-12
+  },
+  {
+   "id": "convert-1635",
+   "op": "convert",
+   "input": {
+    "value": "4,8",
+    "from": "Mil./µl",
+    "to": "T/l",
+    "locale": "de"
+   },
+   "expect": {
+    "value": 4.8
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert_result-1636",
+   "op": "convert_result",
+   "input": {
+    "value": "11,8 H",
+    "from": "Tsd./µl",
+    "to": "G/l"
+   },
+   "expect": {
+    "value": 11.8,
+    "comparator": null,
+    "flag": "H",
+    "unit": "10^9/L"
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "convert_result-1637",
+   "op": "convert_result",
+   "input": {
+    "value": "<0,1",
+    "from": "G/l",
+    "to": "Tsd./µl"
+   },
+   "expect": {
+    "value": 0.1,
+    "comparator": "<",
+    "flag": null,
+    "unit": "10^3/µL"
+   },
+   "rel_tol": 1e-09
+  },
+  {
+   "id": "same_unit-1638",
+   "op": "same_unit",
+   "input": {
+    "a": "Tsd./µl",
+    "b": "G/l"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1639",
+   "op": "same_unit",
+   "input": {
+    "a": "Tsd/µl",
+    "b": "x10^9/L"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1640",
+   "op": "same_unit",
+   "input": {
+    "a": "Mio./µl",
+    "b": "T/l"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1641",
+   "op": "same_unit",
+   "input": {
+    "a": "Mio/µl",
+    "b": "10^12/L"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1642",
+   "op": "same_unit",
+   "input": {
+    "a": "G/l",
+    "b": "/nl"
+   },
+   "expect": {
+    "same": true
+   }
+  },
+  {
+   "id": "same_unit-1643",
+   "op": "same_unit",
+   "input": {
+    "a": "G/l",
+    "b": "g/l"
+   },
+   "expect": {
+    "same": false
+   }
+  },
+  {
+   "id": "same_unit-1644",
+   "op": "same_unit",
+   "input": {
+    "a": "T/l",
+    "b": "G/l"
+   },
+   "expect": {
+    "same": false
+   }
+  },
+  {
+   "id": "same_unit-1645",
+   "op": "same_unit",
+   "input": {
+    "a": "Tsd./µl",
+    "b": "Mio./µl"
+   },
+   "expect": {
+    "same": false
+   }
+  },
+  {
+   "id": "explain-1646",
    "op": "explain",
    "input": {
     "from": "mg/L",
@@ -19328,7 +20285,7 @@
    }
   },
   {
-   "id": "explain-1564",
+   "id": "explain-1647",
    "op": "explain",
    "input": {
     "from": "ug/L",
@@ -19342,7 +20299,7 @@
    }
   },
   {
-   "id": "explain-1565",
+   "id": "explain-1648",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -19359,7 +20316,7 @@
    }
   },
   {
-   "id": "explain-1566",
+   "id": "explain-1649",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -19377,7 +20334,7 @@
    }
   },
   {
-   "id": "explain-1567",
+   "id": "explain-1650",
    "op": "explain",
    "input": {
     "from": "mmol/L",
@@ -19394,7 +20351,7 @@
    }
   },
   {
-   "id": "explain-1568",
+   "id": "explain-1651",
    "op": "explain",
    "input": {
     "from": "%",
@@ -19414,7 +20371,7 @@
    }
   },
   {
-   "id": "explain-1569",
+   "id": "explain-1652",
    "op": "explain",
    "input": {
     "from": "IU/L",
@@ -19431,7 +20388,7 @@
    }
   },
   {
-   "id": "explain-1570",
+   "id": "explain-1653",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -19449,7 +20406,7 @@
    }
   },
   {
-   "id": "explain-1571",
+   "id": "explain-1654",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -19466,7 +20423,7 @@
    }
   },
   {
-   "id": "explain-1572",
+   "id": "explain-1655",
    "op": "explain",
    "input": {
     "from": "IU",
@@ -19483,7 +20440,7 @@
    }
   },
   {
-   "id": "explain-1573",
+   "id": "explain-1656",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -19493,7 +20450,7 @@
    "error": "forbidden"
   },
   {
-   "id": "explain-1574",
+   "id": "explain-1657",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -19512,7 +20469,7 @@
    }
   },
   {
-   "id": "explain-1575",
+   "id": "explain-1658",
    "op": "explain",
    "input": {
     "from": "ng/mL",
@@ -19531,7 +20488,7 @@
    }
   },
   {
-   "id": "explain-1576",
+   "id": "explain-1659",
    "op": "explain",
    "input": {
     "from": "mg/dL",
@@ -19548,7 +20505,7 @@
    }
   },
   {
-   "id": "explain-1577",
+   "id": "explain-1660",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -19564,7 +20521,7 @@
    }
   },
   {
-   "id": "explain-1578",
+   "id": "explain-1661",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -19580,7 +20537,7 @@
    }
   },
   {
-   "id": "explain-1579",
+   "id": "explain-1662",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -19596,7 +20553,7 @@
    }
   },
   {
-   "id": "explain-1580",
+   "id": "explain-1663",
    "op": "explain",
    "input": {
     "from": "U/L",
@@ -19609,7 +20566,7 @@
    }
   },
   {
-   "id": "explain-1581",
+   "id": "explain-1664",
    "op": "explain",
    "input": {
     "from": "µIU/mL",
@@ -19630,7 +20587,7 @@
    }
   },
   {
-   "id": "explain-1582",
+   "id": "explain-1665",
    "op": "explain",
    "input": {
     "from": "mU/L",
@@ -19645,7 +20602,7 @@
    }
   },
   {
-   "id": "explain-1583",
+   "id": "explain-1666",
    "op": "explain",
    "input": {
     "from": "mil/mm3",
@@ -19664,7 +20621,7 @@
    }
   },
   {
-   "id": "explain-1584",
+   "id": "explain-1667",
    "op": "explain",
    "input": {
     "from": "Mil/µL",
@@ -19681,7 +20638,7 @@
    }
   },
   {
-   "id": "explain-1585",
+   "id": "explain-1668",
    "op": "explain",
    "input": {
     "from": "mil./µL",
@@ -19698,7 +20655,7 @@
    }
   },
   {
-   "id": "explain-1586",
+   "id": "explain-1669",
    "op": "explain",
    "input": {
     "from": "mil/mm3",
@@ -19707,7 +20664,7 @@
    "error": "ambiguous_unit"
   },
   {
-   "id": "explain-1587",
+   "id": "explain-1670",
    "op": "explain",
    "input": {
     "from": "mg/dL",

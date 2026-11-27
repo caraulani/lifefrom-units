@@ -102,7 +102,7 @@ def test_mil_mm3_without_locale_is_refused():
     with pytest.raises(L.AmbiguousUnitError) as ei:
         L.convert(7.5, "mil/mm3", "10^3/µL")
     assert ei.value.code == "ambiguous_unit"
-    assert ei.value.details["readings"] == {"es": "10^3/mm³", "en": "10^6/mm³", "ro": "10^6/mm³"}
+    assert ei.value.details["readings"] == {"es": "10^3/mm³", "en": "10^6/mm³", "ro": "10^6/mm³", "de": "10^6/mm³"}
     assert "thousand in Spanish" in str(ei.value)
     for u in ("Mil/mm3", "mil/µL", "Mil/uL", "mil./µL"):
         with pytest.raises(L.AmbiguousUnitError):
@@ -110,7 +110,7 @@ def test_mil_mm3_without_locale_is_refused():
     with pytest.raises(L.AmbiguousUnitError):
         L.same_unit("mil/mm3", "K/µL")
     with pytest.raises(L.AmbiguousUnitError):
-        L.normalize_unit("mil/mm3", locale="de")
+        L.normalize_unit("mil/mm3", locale="it")
 
 
 def test_us_mil_ul_rbc_with_locale_en():
@@ -142,3 +142,36 @@ def test_cli_locale(capsys):
     assert "ambiguous_unit" in capsys.readouterr().err
     assert main(["normalize", "Mil/uL", "-l", "en"]) == 0
     assert capsys.readouterr().out.strip() == "10^6/µL"
+
+
+# German, Austrian and Swiss reports (1.2.0).
+def test_german_wbc_and_platelets():
+    assert L.normalize_unit("G/l") == "10^9/L"
+    assert L.normalize_unit("g/l") == "g/L"
+    assert L.normalize_unit("Tsd./µl") == "10^3/µL"
+    assert L.normalize_unit("Tsd/μl") == "10^3/µL"
+    assert L.normalize_unit("Gpt/l") == "10^9/L"
+    assert L.convert("6,2", "Tsd/µl", "x10^9/L") == pytest.approx(6.2, rel=1e-12)
+    assert L.convert("6,2", "G/l", "Tsd./µl") == pytest.approx(6.2, rel=1e-12)
+    assert L.convert("6,2", "G/l", "/nl") == pytest.approx(6.2, rel=1e-12)
+    assert L.same_unit("Tsd./µl", "G/l") and not L.same_unit("G/l", "g/l")
+
+
+def test_german_rbc():
+    assert L.normalize_unit("Mio./µl") == "10^6/µL"
+    assert L.normalize_unit("T/l") == "10^12/L"
+    assert L.convert("4,8", "Mio/µl", "x10^12/L") == pytest.approx(4.8, rel=1e-12)
+    assert L.convert("4,8", "T/l", "Mio./µl") == pytest.approx(4.8, rel=1e-12)
+    assert L.normalize_unit("Mil./µl", locale="de-AT") == "10^6/µL"
+
+
+def test_german_spellings_carry_sources():
+    rec = next(u for u in L.SPEC["units"] if u["unit"] == "10^3/µL")
+    entry = next(e for e in rec["spelling_sources"] if "Tsd./µL" in e["spellings"])
+    assert "dewiktionary-tsd" in entry["sources"]
+    for u in L.SPEC["units"]:
+        for e in u.get("spelling_sources", []):
+            for sp in e["spellings"]:
+                assert L.normalize_unit(sp) == u["unit"], sp
+            for sid in e["sources"]:
+                assert sid in L.SPEC["sources"], sid

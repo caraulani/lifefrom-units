@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use lifefrom-units, please cite it as below. When you use a specific conversion factor, please also cite its source (explain() returns it)."
 title: "lifefrom-units: lab unit normalisation and sourced conversion"
-version: 1.1.0
-date-released: 2026-11-26
+version: 1.2.0
+date-released: 2026-11-27
 type: software
 license:
   - MIT
@@ -28,6 +28,6 @@ abstract: >-
   between units. Unit-arithmetic factors are derived; analyte-specific factors (molar masses, ion
   charges, published factors, the IFCC-NGSP HbA1c master equation) carry a cited source; conversions
   that must not be done by default (for example lipoprotein(a) mg/dL to nmol/L) are refused with a reason. One JSON
-  specification is shared by a Python package and a TypeScript package that pass the same 1,587 test
+  specification is shared by a Python package and a TypeScript package that pass the same 1,670 test
   vectors. Spellings that mean different units in different languages (mil/mm3: thousand in Spanish,
   million in English) are refused unless the caller names the report's language.

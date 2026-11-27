@@ -15,6 +15,14 @@ export interface UnitRecord {
   case_sensitive_aliases: string[];
   ucum: string | null;
   note: string | null;
+  /** Sources for language-specific spellings of this unit ('Tsd./µl', 'G/l'); present only where shipped. */
+  spelling_sources?: SpellingSource[];
+}
+
+export interface SpellingSource {
+  spellings: string[];
+  note: string;
+  sources: string[];
 }
 
 export interface Source {

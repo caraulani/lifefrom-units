@@ -1,6 +1,6 @@
 # Methods
 
-This document is meant to let a stranger rebuild lifefrom-units 1.1.0 and get the same files. All sources were accessed on 2026-11-25, except the five language-reading sources added in 1.1.0 (§3), accessed on 2026-11-26.
+This document is meant to let a stranger rebuild lifefrom-units 1.2.0 and get the same files. All sources were accessed on 2026-11-25, except the five language-reading sources added in 1.1.0 (§3), accessed on 2026-11-26, and the ten German-language sources added in 1.2.0 (§3), accessed on 2026-11-27.
 
 ## 1. Rebuild
 
@@ -81,12 +81,30 @@ Some spellings must never match by case: `G/L` (giga per litre) vs `g/L`, `T/L`,
 | `es` | thousand | 10^3/mm³ | 10^3/µL | Spanish Wiktionary, "mil": "Diez veces cien", "El número 1000, 10^3" (the RAE *Diccionario de la lengua española* gives the same definition but refused a scripted download, HTTP 403). NIH Clinical Center Spanish CBC leaflet, cited because it shows the opposite: "Los glóbulos rojos se miden en millones por milímetro cúbico (mil/mm3)". |
 | `en` | million | 10^6/mm³ | 10^6/µL | UW Medicine DLMP test guide, RBC, reference ranges in "mil/uL"; the NIH Clinical Center leaflet above. |
 | `ro` | million | 10^6/mm³ | 10^6/µL | DEX '09 "milion": "Număr egal cu o mie de mii"; DEX '09 "mie, mii": "Numărul care în numărătoare are locul între 999 și 1001". |
+| `de` (added in 1.2.0) | million | 10^6/mm³ | 10^6/µL | German Wiktionary "Mio.": "Million(en)", alternative spellings "Mill., auch Mil."; German Wiktionary "Tsd.": "Tausend". |
 
 What we could not source:
 
 - We found no Spanish or Romanian laboratory report online that prints `mil/mm3`, `mil/µL` or `mil./µL`. The Spanish reading rests on the meaning of the word, and the Romanian one on the two numerals; no dictionary entry for the abbreviation "mil." itself was found.
 - The NIH leaflet shows that a Spanish-language document can follow US usage, so `locale="es"` means "this report follows Spanish usage", not only "this report is in Spanish".
 - No reading is shipped for other languages. Portuguese "mil" is also thousand, but no source was fetched, so `pt` is refused for now.
+
+**German, Austrian and Swiss spellings (added in 1.2.0).** German-language reports print cell counts with number-word abbreviations or SI prefix letters. These are plain aliases (no locale needed), each listed in `units[].spelling_sources` with its sources:
+
+| Spelling | Unit | Example | Sources |
+|---|---|---|---|
+| `G/l`, `G/L`, `Giga/l` | 10^9/L | white cells `6,2 G/l` = 6.2 × 10^9/L | gesundheit.gv.at, Leukozyten: "G/L (Giga pro Liter)"; Inselspital Bern ZLM, "Leukozyten G/L"; Universitätsklinikum Ulm, "Leukozyten Giga/l"; German Wikipedia "Leukozyt": "10^9/l = Giga/Liter" |
+| `Gpt/l`, `Gpt/L` | 10^9/L | | Universitätsklinikum Magdeburg, "Leukozyten: 4,0 - 10,0 Gpt/l" |
+| `T/l`, `T/L`, `Tera/l` | 10^12/L | red cells `4,8 T/l` = 4.8 × 10^12/L | gesundheit.gv.at, Erythrozyten: "T/L (Tera pro Liter)"; Inselspital Bern ZLM, "Erythrozyten T/L"; Universitätsklinikum Ulm, "Erythrozyten Tera/l" |
+| `Tpt/l`, `Tpt/L` | 10^12/L | | Universitätsklinikum Magdeburg, "Erythrozyten: weibl.: 4,0 – 5,5 Tpt/l" |
+| `Tsd/µl`, `Tsd./µl`, `Tausend/µl` | 10^3/µL | `6,2 Tsd./µl` = 6.2 × 10^9/L | German Wiktionary "Tsd.": "Tausend"; MHH Zentrallabor Referenzbereiche 2025, platelets in "Tsd./µl"; German Wikipedia "Blutbild" |
+| `Mio/µl`, `Mio./µl`, `Millionen/µl` | 10^6/µL | `4,8 Mio./µl` = 4.8 × 10^12/L | German Wiktionary "Mio.": "Million(en)"; MHH Zentrallabor, "Erythrozyten (Mio./µl)"; German Wikipedia "Blutbild" |
+| `/nl`, `pro nl` | /nL | `6,2 /nl` = 6.2 × 10^9/L | German Wikipedia "Leukozyt": counts "pro Nanoliter (nl)" |
+| `pro µl` | /µL | | "pro" is German for "per", as in the existing alias `per µL` |
+
+- `G/l`, `Gpt/l`, `T/l` and `Tpt/l` are case-sensitive. Lower-case `g/l` stays gram per litre, and `t/l` is unknown. In 1.1.0, `G/l` (capital G, lower-case l) missed the exact table and fell through to the case-folded `g/l`, so a German white-cell count in `G/l` was read as grams per litre. It now reads as 10^9/L. `G/L` already did.
+- The litre symbol `l` and the micro spellings `µl`, `μl` (Greek mu) and `ul` were already handled by the normalisation rules and case folding; decimal commas (`6,2`) by `parse_value`.
+- Not added, for lack of a source: `Tsd/mm³`, `Mio/mm³`, `Tsd/nl`, `Mrd/l`.
 
 Unambiguous spellings were added and need no locale: `mill/mm3`, `mill./mm3`, `millones/mm3`, `Million/mm3`, `mill./µL`, `millones/µL` (millions); `mii/µL`, `mii/mm3`, `miles/µL`, `miles/mm3`, `Thousand/mm3` (thousands).
 
@@ -240,7 +258,7 @@ The same comparison is in `data/analyte_factors.csv`, in the `published_crossche
 
 ## 7. Test vectors
 
-`scripts/make_vectors.py` writes 1,587 vectors. It does not import lifefrom-units. Expected values come from three places:
+`scripts/make_vectors.py` writes 1,670 vectors. It does not import lifefrom-units. Expected values come from three places:
 
 - a separate hand-written scale table;
 - molar masses read straight from the raw PubChem and CIAAW files, with exact fraction arithmetic;

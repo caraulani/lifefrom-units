@@ -1,8 +1,8 @@
 {
  "name": "lifefrom-units",
- "version": "1.1.0",
+ "version": "1.2.0",
  "schema_version": 1,
- "released": "2026-11-26",
+ "released": "2026-11-27",
  "license": "CC-BY-4.0 (data), MIT (code)",
  "homepage": "https://lifefrom.ai",
  "notice": "Not a medical device. Converts units only; it does not interpret results.",
@@ -1075,7 +1075,8 @@
    "aliases": [
     "cells/µL",
     "per µL",
-    "cells/uL"
+    "cells/uL",
+    "pro µL"
    ],
    "case_sensitive_aliases": [],
    "ucum": "/uL",
@@ -1103,11 +1104,24 @@
    "scale": 1000000000.0,
    "aliases": [
     "cells/nL",
-    "per nL"
+    "per nL",
+    "pro nL"
    ],
    "case_sensitive_aliases": [],
    "ucum": "/nL",
-   "note": null
+   "note": null,
+   "spelling_sources": [
+    {
+     "spellings": [
+      "/nL",
+      "pro nL"
+     ],
+     "note": "German: counts per nanolitre (nl), 1/nL = 10^9/L; 'pro' is German for 'per'.",
+     "sources": [
+      "dewikipedia-leukozyt"
+     ]
+    }
+   ]
   },
   {
    "unit": "/pL",
@@ -1134,13 +1148,31 @@
     "10^3/µl",
     "K/uL",
     "mii/µL",
-    "miles/µL"
+    "miles/µL",
+    "Tsd/µL",
+    "Tsd./µL",
+    "Tausend/µL"
    ],
    "case_sensitive_aliases": [
     "K/μL"
    ],
    "ucum": "10*3/uL",
-   "note": null
+   "note": null,
+   "spelling_sources": [
+    {
+     "spellings": [
+      "Tsd/µL",
+      "Tsd./µL",
+      "Tausend/µL"
+     ],
+     "note": "German: 'Tsd.' abbreviates Tausend (thousand), so '6,2 Tsd./µl' = 6.2 × 10^3/µL = 6.2 × 10^9/L.",
+     "sources": [
+      "dewiktionary-tsd",
+      "mhh-zla-referenzbereiche",
+      "dewikipedia-blutbild"
+     ]
+    }
+   ]
   },
   {
    "unit": "10^3/mm³",
@@ -1171,14 +1203,32 @@
     "mill/µL",
     "mill./µL",
     "millones/µL",
-    "10^6 cells/µL"
+    "10^6 cells/µL",
+    "Mio/µL",
+    "Mio./µL",
+    "Millionen/µL"
    ],
    "case_sensitive_aliases": [
     "M/µL",
     "M/uL"
    ],
    "ucum": "10*6/uL",
-   "note": null
+   "note": null,
+   "spelling_sources": [
+    {
+     "spellings": [
+      "Mio/µL",
+      "Mio./µL",
+      "Millionen/µL"
+     ],
+     "note": "German: 'Mio.' abbreviates Million(en), so '4,8 Mio./µl' red cells = 4.8 × 10^6/µL = 4.8 × 10^12/L.",
+     "sources": [
+      "dewiktionary-mio",
+      "mhh-zla-referenzbereiche",
+      "dewikipedia-blutbild"
+     ]
+    }
+   ]
   },
   {
    "unit": "10^6/mm³",
@@ -1225,10 +1275,39 @@
    ],
    "case_sensitive_aliases": [
     "G/L",
-    "Gpt/L"
+    "Gpt/L",
+    "G/l",
+    "Gpt/l"
    ],
    "ucum": "10*9/L",
-   "note": null
+   "note": null,
+   "spelling_sources": [
+    {
+     "spellings": [
+      "G/L",
+      "G/l",
+      "Giga/L",
+      "Giga/l"
+     ],
+     "note": "German, Austrian and Swiss reports: G is the SI prefix giga (10^9) and l or L the litre, so '6,2 G/l' white cells = 6.2 × 10^9/L. Lower-case 'g/l' is gram per litre: only a capital G reads as giga.",
+     "sources": [
+      "gesundheit-gv-leukozyten",
+      "insel-zlm-haematologie",
+      "ukulm-kleines-blutbild",
+      "dewikipedia-leukozyt"
+     ]
+    },
+    {
+     "spellings": [
+      "Gpt/L",
+      "Gpt/l"
+     ],
+     "note": "German (mainly eastern German) reports: Gpt = Gigapartikel, 10^9 particles.",
+     "sources": [
+      "ukmd-laborparameter"
+     ]
+    }
+   ]
   },
   {
    "unit": "10^12/L",
@@ -1240,10 +1319,38 @@
    ],
    "case_sensitive_aliases": [
     "T/L",
-    "Tpt/L"
+    "Tpt/L",
+    "T/l",
+    "Tpt/l"
    ],
    "ucum": "10*12/L",
-   "note": null
+   "note": null,
+   "spelling_sources": [
+    {
+     "spellings": [
+      "T/L",
+      "T/l",
+      "Tera/L",
+      "Tera/l"
+     ],
+     "note": "German, Austrian and Swiss reports: T is the SI prefix tera (10^12), so '4,8 T/l' red cells = 4.8 × 10^12/L. Lower-case 't/l' is not read.",
+     "sources": [
+      "gesundheit-gv-erythrozyten",
+      "insel-zlm-haematologie",
+      "ukulm-kleines-blutbild"
+     ]
+    },
+    {
+     "spellings": [
+      "Tpt/L",
+      "Tpt/l"
+     ],
+     "note": "German (mainly eastern German) reports: Tpt = Terapartikel, 10^12 particles.",
+     "sources": [
+      "ukmd-laborparameter"
+     ]
+    }
+   ]
   },
   {
    "unit": "10^3/mL",
@@ -2121,8 +2228,10 @@
    "Ehrlichunits/dL": "EU/dL",
    "Eq/L": "Eq/L",
    "G/L": "10^9/L",
+   "G/l": "10^9/L",
    "Giga/L": "10^9/L",
    "Gpt/L": "10^9/L",
+   "Gpt/l": "10^9/L",
    "I.U.": "IU",
    "IU": "IU",
    "IU/L": "IU/L",
@@ -2135,10 +2244,15 @@
    "M/µL": "10^6/µL",
    "Million/mm3": "10^6/mm³",
    "Million/µL": "10^6/µL",
+   "Millionen/µL": "10^6/µL",
+   "Mio./µL": "10^6/µL",
+   "Mio/µL": "10^6/µL",
    "Ratio": "ratio",
    "S/C.O.": "S/CO",
    "S/CO": "S/CO",
    "T/L": "10^12/L",
+   "T/l": "10^12/L",
+   "Tausend/µL": "10^3/µL",
    "Tera/L": "10^12/L",
    "Thou/mm3": "10^3/mm³",
    "Thou/µL": "10^3/µL",
@@ -2147,6 +2261,9 @@
    "Titer": "titer",
    "Titre": "titer",
    "Tpt/L": "10^12/L",
+   "Tpt/l": "10^12/L",
+   "Tsd./µL": "10^3/µL",
+   "Tsd/µL": "10^3/µL",
    "U/L": "U/L",
    "U/dL": "U/dL",
    "U/mL": "U/mL",
@@ -2336,7 +2453,9 @@
    "pmol/L": "pmol/L",
    "pmol/dL": "pmol/dL",
    "pmol/mL": "pmol/mL",
+   "pronL": "/nL",
    "proportion": "fraction",
+   "proµL": "/µL",
    "qualitative": "qualitative",
    "ratio": "ratio",
    "s": "s",
@@ -2532,12 +2651,15 @@
    "mill/µl": "10^6/µL",
    "million/mm3": "10^6/mm³",
    "million/µl": "10^6/µL",
+   "millionen/µl": "10^6/µL",
    "millones/mm3": "10^6/mm³",
    "millones/µl": "10^6/µL",
    "min": "min",
    "mins": "min",
    "minute": "min",
    "minutes": "min",
+   "mio./µl": "10^6/µL",
+   "mio/µl": "10^6/µL",
    "miu/dl": "mIU/dL",
    "miu/l": "mIU/L",
    "miu/ml": "mIU/mL",
@@ -2622,7 +2744,9 @@
    "pmol/dl": "pmol/dL",
    "pmol/l": "pmol/L",
    "pmol/ml": "pmol/mL",
+   "pronl": "/nL",
    "proportion": "fraction",
+   "proµl": "/µL",
    "qualitative": "qualitative",
    "ratio": "ratio",
    "s": "s",
@@ -2635,6 +2759,7 @@
    "semi-quantitative": "semiquantitative",
    "semiquantitative": "semiquantitative",
    "signal/cutoff": "S/CO",
+   "tausend/µl": "10^3/µL",
    "tera/l": "10^12/L",
    "thou/mm3": "10^3/mm³",
    "thou/µl": "10^3/µL",
@@ -2642,6 +2767,8 @@
    "thousand/µl": "10^3/µL",
    "titer": "titer",
    "titre": "titer",
+   "tsd./µl": "10^3/µL",
+   "tsd/µl": "10^3/µL",
    "u/dl": "U/dL",
    "u/l": "U/L",
    "u/ml": "U/mL",
@@ -3038,7 +3165,8 @@
    "readings": {
     "es": "10^3/mm³",
     "en": "10^6/mm³",
-    "ro": "10^6/mm³"
+    "ro": "10^6/mm³",
+    "de": "10^6/mm³"
    },
    "reason": "'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart."
   },
@@ -3051,7 +3179,8 @@
    "readings": {
     "es": "10^3/µL",
     "en": "10^6/µL",
-    "ro": "10^6/µL"
+    "ro": "10^6/µL",
+    "de": "10^6/µL"
    },
    "reason": "'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart."
   }
@@ -3079,6 +3208,14 @@
    "sources": [
     "dexonline-milion",
     "dexonline-mie"
+   ]
+  },
+  "de": {
+   "meaning": "million",
+   "note": "German: 'Mio.' is the usual abbreviation of Million (plural Millionen), with 'Mill.' and 'Mil.' as alternative spellings; thousands are 'Tsd.' (Tausend). 'mil' is never German for thousand.",
+   "sources": [
+    "dewiktionary-mio",
+    "dewiktionary-tsd"
    ]
   }
  },
@@ -9431,6 +9568,34 @@
    "molar_mass": "65.38",
    "accessed": "2026-11-25"
   },
+  "dewikipedia-blutbild": {
+   "accessed": "2026-11-27",
+   "label": "Wikipedia (German), article 'Blutbild'",
+   "url": "https://de.wikipedia.org/wiki/Blutbild",
+   "kind": "encyclopedia",
+   "location": "section '„Kleines“ Blutbild', table: Leukozyten and Thrombozyten in 'Tsd./µl', Erythrozyten in 'Mio./µl'"
+  },
+  "dewikipedia-leukozyt": {
+   "accessed": "2026-11-27",
+   "label": "Wikipedia (German), article 'Leukozyt'",
+   "url": "https://de.wikipedia.org/wiki/Leukozyt",
+   "kind": "encyclopedia",
+   "location": "section 'Zahlen und Werte': 'Dies sind die Zellanzahl pro Mikroliter (µl) und die pro Nanoliter (nl). In SI-Einheiten und SI-Präfixen können diese Einheiten als 10^6/l = Mega/Liter und 10^9/l = Giga/Liter ausgedrückt werden.'"
+  },
+  "dewiktionary-mio": {
+   "accessed": "2026-11-27",
+   "label": "Wiktionary (German), entry 'Mio.' (Abkürzung)",
+   "url": "https://de.wiktionary.org/wiki/Mio.",
+   "kind": "dictionary",
+   "location": "Bedeutungen: '[1] Million(en)'; Alternative Schreibweisen: 'Mill., auch Mil.'"
+  },
+  "dewiktionary-tsd": {
+   "accessed": "2026-11-27",
+   "label": "Wiktionary (German), entry 'Tsd.' (Abkürzung)",
+   "url": "https://de.wiktionary.org/wiki/Tsd.",
+   "kind": "dictionary",
+   "location": "Bedeutungen: '[1] Tausend'; Beispiele: '10 Tsd. Stück'"
+  },
   "dexonline-mie": {
    "accessed": "2026-11-26",
    "label": "DEX '09 (Dicționarul explicativ al limbii române), entry 'mie', via dexonline.ro",
@@ -9452,6 +9617,20 @@
    "kind": "dictionary",
    "location": "Adjetivo, sense 1: 'Diez veces cien.'; Sustantivo masculino, sense 4: 'El número 1000, 10^3.' (The RAE Diccionario de la lengua española, https://dle.rae.es/mil, gives the same definition but refused a scripted download, HTTP 403.)"
   },
+  "gesundheit-gv-erythrozyten": {
+   "accessed": "2026-11-27",
+   "label": "gesundheit.gv.at (Austrian public health portal), Laborwerte: Erythrozyten",
+   "url": "https://www.gesundheit.gv.at/labor/laborwerte/blutbild/erythrozyten",
+   "kind": "patient_education",
+   "location": "reference table: unit 'T/L (Tera pro Liter)', men '4,5–5,5 T/L', women '4,0–5,0 T/L'"
+  },
+  "gesundheit-gv-leukozyten": {
+   "accessed": "2026-11-27",
+   "label": "gesundheit.gv.at (Austrian public health portal), Laborwerte: Leukozyten",
+   "url": "https://www.gesundheit.gv.at/labor/laborwerte/blutbild/leukozyten",
+   "kind": "patient_education",
+   "location": "reference table: unit 'G/L (Giga pro Liter)', adults '4,0–10,0 G/L'"
+  },
   "hoelzel-2004": {
    "accessed": "2026-11-25",
    "label": "Hoelzel W et al. IFCC reference system for measurement of hemoglobin A1c in human blood and the national standardization schemes in the United States, Japan, and Sweden: a method-comparison study. Clin Chem 2004;50(1):166-174",
@@ -9459,6 +9638,13 @@
    "doi": "10.1373/clinchem.2003.024802",
    "kind": "literature",
    "location": "cited by NGSP as the origin of the master equation; coefficients read from the NGSP page"
+  },
+  "insel-zlm-haematologie": {
+   "accessed": "2026-11-27",
+   "label": "Inselspital Bern, Zentrum für Labormedizin: Referenzwerte Morphologische Hämatologie, version 7.0, 10.10.2023",
+   "url": "https://zlm.insel.ch/fileadmin/Zentrum_f%C3%BCr_Labormedizin/Dokumente/Akkreditierungsurkunden_und_Referenzwerte/Referenzwerte__Morphologische_Haematologie.pdf",
+   "kind": "lab_test_guide",
+   "location": "p. 1, Blutbild: 'Leukozyten G/L', 'Erythrozyten T/L', 'Thrombozyten G/L' (Swiss usage)"
   },
   "iom-2011-vitd": {
    "accessed": "2026-11-25",
@@ -9475,6 +9661,13 @@
    "doi": "10.1093/eurheartj/ehac361",
    "kind": "literature",
    "location": "section on Lp(a) measurement: 'This panel does not recommend using a standard factor to convert between mg/dL and nmol/L, as assays vary extensively.' (full text PMC9639807)"
+  },
+  "mhh-zla-referenzbereiche": {
+   "accessed": "2026-11-27",
+   "label": "Medizinische Hochschule Hannover, Zentrallabor (ZLA): Leistungsverzeichnis ZLA Referenzbereiche, version 7.0, 18.06.2025",
+   "url": "https://www.mhh.de/fileadmin/mhh/zentrallabor-zla/downloads/LVZ_ZLA_Referenzbereiche.pdf",
+   "kind": "lab_test_guide",
+   "location": "p. 26, Tabelle 02: 'Erythrozyten (Mio./µl)'; p. 27-28: Normoblasten and Thrombozyten in 'Tsd./µl'"
   },
   "ngsp-ifcc": {
    "accessed": "2026-11-25",
@@ -9946,6 +10139,20 @@
    "url": "https://ucum.org/ucum",
    "kind": "standard",
    "location": "§24-§25 arbitrary units; unit atoms U (= umol/min), kat (= mol/s), [IU] (arbitrary), eq, osm"
+  },
+  "ukmd-laborparameter": {
+   "accessed": "2026-11-27",
+   "label": "Universitätsklinikum Magdeburg, Klinik für Hämatologie und Onkologie: Informationen zu den Laborparametern (2007)",
+   "url": "https://www.med.uni-magdeburg.de/unimagdeburg_mm/Downloads/Kliniken/KHAE/haemalabor/InfoLabParm.pdf",
+   "kind": "lab_test_guide",
+   "location": "p. 4: 'Leukozyten: 4,0 - 10,0 Gpt/l', 'Erythrozyten: weibl.: 4,0 – 5,5 Tpt/l', 'Thrombozyten: 150 - 375 Gpt/l'"
+  },
+  "ukulm-kleines-blutbild": {
+   "accessed": "2026-11-27",
+   "label": "Universitätsklinikum Ulm, Klinische Chemie: Leistungsverzeichnis Kleines Blutbild und maschinelle Differenzierung (FB-PÄ 6 BB OE)",
+   "url": "https://www.uniklinik-ulm.de/fileadmin/default/09_Sonstige/Klinische-Chemie/Seiteninhalte/Seiteninhalte_B/Kleines_Blutbild_und_maschinelle_Differenzierung_FB-PAE_6_BB_OE.pdf",
+   "kind": "lab_test_guide",
+   "location": "p. 2: 'Erythrozyten Tera/l', 'Leukozyten Giga/l', 'Thrombozyten Giga/l'; p. 3: 'Erythrozyten 4,5 – 5,9 Tera/l', 'Leukozyten 4,4 – 11,3 Giga/l'"
   },
   "uw-dlmp-rbc": {
    "accessed": "2026-11-26",

@@ -25,7 +25,7 @@ import spec  # noqa: E402
 from _rules import compile_rules, unit_key  # noqa: E402
 import ucum_validate  # noqa: E402
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 
 def page_text(path: Path) -> str:
@@ -156,6 +156,23 @@ def build_ambiguous(exact, folded):
             if key(n.lower()) in keys:
                 raise SystemExit(f"{n!r} ({u['unit']}) folds onto an ambiguous spelling")
     return keys, entries
+
+
+def build_spelling_sources(exact, folded):
+    """Per-unit list of {spellings, note, sources}; every spelling must resolve to its unit, every source exist."""
+    out = {}
+    for e in spec.SPELLING_SOURCES:
+        if e["unit"] not in UNIT:
+            raise SystemExit(f"spelling sources: {e['unit']} is not a canonical unit")
+        for sp in e["spellings"]:
+            got = exact.get(key(sp)) or folded.get(key(sp.lower()))
+            if got != e["unit"]:
+                raise SystemExit(f"spelling sources: {sp!r} resolves to {got}, not {e['unit']}")
+        for sid in e["sources"]:
+            if sid not in SOURCES:
+                raise SystemExit(f"spelling sources: unknown source {sid}")
+        out.setdefault(e["unit"], []).append(dict(spellings=e["spellings"], note=e["note"], sources=e["sources"]))
+    return out
 
 
 def scale_float(u) -> float:
@@ -290,6 +307,7 @@ def main():
 
     exact, folded = build_lookup()
     ambiguous_keys, ambiguous = build_ambiguous(exact, folded)
+    spelling_sources = build_spelling_sources(exact, folded)
     analytes_list, crosschecks = build_analytes(set(markers))
     forbidden = build_forbidden()
 
@@ -333,6 +351,8 @@ def main():
     used_sources.add("ucum-2.2")
     for r in spec.LANGUAGE_READINGS.values():
         used_sources.update(r["sources"])
+    for e in spec.SPELLING_SOURCES:
+        used_sources.update(e["sources"])
     for _, sid, *_ in crosschecks:
         used_sources.add(sid)
     for a in analytes_list:
@@ -343,7 +363,7 @@ def main():
         used_sources.add("pubchem-5497163")
 
     spec_json = dict(
-        name="lifefrom-units", version=VERSION, schema_version=1, released="2026-11-26",
+        name="lifefrom-units", version=VERSION, schema_version=1, released="2026-11-27",
         license="CC-BY-4.0 (data), MIT (code)",
         homepage="https://lifefrom.ai",
         notice="Not a medical device. Converts units only; it does not interpret results.",
@@ -360,7 +380,9 @@ def main():
                                      "otherwise it is refused (ambiguous_unit)."),
         dimensions=dims,
         units=[dict(unit=u["unit"], dimension=u["dimension"], scale=scale_float(u), aliases=u["aliases"],
-                    case_sensitive_aliases=u["cs_aliases"], ucum=u["ucum"], note=u["note"]) for u in UNITDEFS],
+                    case_sensitive_aliases=u["cs_aliases"], ucum=u["ucum"], note=u["note"],
+                    **({"spelling_sources": spelling_sources[u["unit"]]} if u["unit"] in spelling_sources else {}))
+               for u in UNITDEFS],
         lookup=dict(exact=dict(sorted(exact.items())), casefold=dict(sorted(folded.items())),
                     ambiguous=dict(sorted(ambiguous_keys.items())), analytes=dict(sorted(index.items()))),
         ambiguous=ambiguous,

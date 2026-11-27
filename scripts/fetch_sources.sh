@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Download every raw source that scripts/build.py reads.
 # Raw files go to ../_raw/<source>/ (outside this repo, never committed).
-# Access date for release 1.0.0: 2026-11-25; the language-reading sources added in 1.1.0: 2026-11-26.
+# Access date for release 1.0.0: 2026-11-25; the language-reading sources added in 1.1.0: 2026-11-26; the German sources added in 1.2.0: 2026-11-27.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 RAW="${LABUNITS_RAW:-$HERE/../_raw}"
@@ -47,5 +47,24 @@ curl -sfL "https://dlmp.uw.edu/test-guide/view/RBC" -o "$RAW/unit-languages/uw-d
 curl -sfL "https://es.wiktionary.org/wiki/mil" -o "$RAW/unit-languages/eswiktionary-mil.html"
 curl -sfL "https://dexonline.ro/definitie/mie" -o "$RAW/unit-languages/dexonline-mie.html"
 curl -sfL "https://dexonline.ro/definitie/milion" -o "$RAW/unit-languages/dexonline-milion.html"
+
+
+# Sources for German, Austrian and Swiss count spellings (added in 1.2.0; cited only, nothing numeric is read).
+mkdir -p "$RAW/unit-languages-de"
+UA="Mozilla/5.0"
+curl -sfL -A "$UA" "https://de.wiktionary.org/w/index.php?title=Tsd.&action=raw" -o "$RAW/unit-languages-de/dewiktionary-tsd.txt"
+curl -sfL -A "$UA" "https://de.wiktionary.org/w/index.php?title=Mio.&action=raw" -o "$RAW/unit-languages-de/dewiktionary-mio.txt"
+curl -sfL -A "$UA" "https://de.wikipedia.org/w/index.php?title=Blutbild&action=raw" -o "$RAW/unit-languages-de/dewikipedia-blutbild.txt"
+curl -sfL -A "$UA" "https://de.wikipedia.org/w/index.php?title=Leukozyt&action=raw" -o "$RAW/unit-languages-de/dewikipedia-leukozyt.txt"
+curl -sfL -A "$UA" "https://www.gesundheit.gv.at/labor/laborwerte/blutbild/leukozyten" -o "$RAW/unit-languages-de/gesundheit-gv-leukozyten.html"
+curl -sfL -A "$UA" "https://www.gesundheit.gv.at/labor/laborwerte/blutbild/erythrozyten" -o "$RAW/unit-languages-de/gesundheit-gv-erythrozyten.html"
+curl -sfL -A "$UA" "https://zlm.insel.ch/fileadmin/Zentrum_f%C3%BCr_Labormedizin/Dokumente/Akkreditierungsurkunden_und_Referenzwerte/Referenzwerte__Morphologische_Haematologie.pdf" \
+  -o "$RAW/unit-languages-de/insel-zlm-haematologie.pdf"
+curl -sfL -A "$UA" "https://www.uniklinik-ulm.de/fileadmin/default/09_Sonstige/Klinische-Chemie/Seiteninhalte/Seiteninhalte_B/Kleines_Blutbild_und_maschinelle_Differenzierung_FB-PAE_6_BB_OE.pdf" \
+  -o "$RAW/unit-languages-de/ukulm-kleines-blutbild.pdf"
+curl -sfL -A "$UA" "https://www.med.uni-magdeburg.de/unimagdeburg_mm/Downloads/Kliniken/KHAE/haemalabor/InfoLabParm.pdf" \
+  -o "$RAW/unit-languages-de/ukmd-laborparameter.pdf"
+curl -sfL -A "$UA" "https://www.mhh.de/fileadmin/mhh/zentrallabor-zla/downloads/LVZ_ZLA_Referenzbereiche.pdf" \
+  -o "$RAW/unit-languages-de/mhh-zla-referenzbereiche.pdf"
 
 echo "fetched into $RAW"

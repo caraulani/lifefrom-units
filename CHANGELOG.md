@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.0 (2026-11-27)
+
+German, Austrian and Swiss lab reports: cell-count spellings, and a fix for "G/l".
+
+- **The bug.** `G/l` (capital G, lower-case l), the usual German and Austrian spelling of giga per litre for white cells and platelets, was not in the exact table and fell through to the case-insensitive pass, where it matched `g/l`. 1.1.0 read "6,2 G/l" as 6.2 g/L. It is now 10^9/L. `G/L` was already right. Lower-case `g/l` is still gram per litre.
+- **New spellings, no locale needed.**
+  - 10^9/L: `G/l`, `Gpt/l` (case-sensitive; `Giga/l` already worked).
+  - 10^12/L: `T/l`, `Tpt/l` (case-sensitive; `Tera/l` already worked). Lower-case `t/l` is not read.
+  - 10^3/µL: `Tsd/µL`, `Tsd./µL`, `Tausend/µL` (any case, any µ spelling: `µl`, `μl`, `ul`).
+  - 10^6/µL: `Mio/µL`, `Mio./µL`, `Millionen/µL` (any case, any µ spelling). `Mill./µl` already worked.
+  - /µL: `pro µL`; /nL: `pro nL`.
+- **German reading of "mil".** `locale="de"` now reads `mil/mm3`, `mil/µL` and `Mil./µl` as millions, following German "Mio.", with "Mill." and "Mil." as alternative spellings. Before, `de` was refused.
+- **Sources for spellings.** `units[].spelling_sources` (new, optional) lists, for each language-specific spelling, a note and its sources: gesundheit.gv.at (Austria) for `G/L` and `T/L`, Inselspital Bern (Switzerland), Universitätsklinikum Ulm (`Giga/l`, `Tera/l`), Universitätsklinikum Magdeburg (`Gpt/l`, `Tpt/l`), MHH Hannover (`Tsd./µl`, `Mio./µl`), German Wiktionary ("Tsd.", "Mio.") and German Wikipedia ("Blutbild", "Leukozyt"). 76 cited sources (10 new). `schema_version` stays 1 (additive).
+- **Not added**, for lack of a source: `Tsd/mm³`, `Mio/mm³`, `Tsd/nl`, `Mrd/l`.
+- **Tests.** 1,670 shared vectors (83 new), including round trips such as `6,2 Tsd/µl` = 6.2 × 10^9/L and `4,8 Mio/µl` = 4.8 × 10^12/L, and API tests in both languages.
+- **Compatibility.** `G/l`, `Gpt/l`, `T/l` and `Tpt/l` change meaning or become known; `locale="de"` now resolves "mil" instead of raising `ambiguous_unit`. Every other call behaves as in 1.1.0.
+
 ## 1.1.0 (2026-11-26)
 
 Fix: "mil/mm3" and "mil/µL" are no longer read as millions by default.

@@ -46,7 +46,7 @@ def scale(u: str) -> F:
     m = re.fullmatch(r"([kdmµnpf]?)(g|mol|IU|U|Eq)/(L|dL|mL)", u)
     if m:
         return P[m.group(1)] / VOLS[m.group(3)]
-    table = {"/L": 1, "/µL": 10**6, "/mm³": 10**6, "/nL": 10**9, "10^3/µL": 10**9, "10^9/L": 10**9,
+    table = {"/L": 1, "/µL": 10**6, "/mm³": 10**6, "/nL": 10**9, "/pL": 10**12, "10^3/µL": 10**9, "10^9/L": 10**9,
              "10^3/mm³": 10**9, "10^6/mm³": 10**12,
              "10^6/µL": 10**12, "10^12/L": 10**12, "%": F(1, 100), "fraction": 1, "L/L": 1, "‰": F(1, 1000),
              "mmol/mol": F(1, 1000), "mg/24h": F(1, 1000) / 86400, "g/24h": F(1, 86400),
@@ -485,7 +485,7 @@ for u, canon in [("mill/mm3", "10^6/mm³"), ("mill/mm³", "10^6/mm³"), ("millon
     add("normalize", {"unit": u}, {"unit": canon}, note="unambiguous without a locale")
 for u in ["mil/mm3", "Mil/mm3", "MIL/MM3", "mil/mm³", "mil./mm3", "mil/µL", "Mil/µL", "mil/uL", "Mil/uL", "mil./µL"]:
     add("normalize", {"unit": u}, error="ambiguous_unit", note="'mil' is thousand in Spanish, million in English")
-for u, loc in [("mil/mm3", "de"), ("Mil/µL", "pt-BR"), ("mil./µL", "fr")]:
+for u, loc in [("mil/mm3", "it"), ("Mil/µL", "pt-BR"), ("mil./µL", "fr")]:
     add("normalize", {"unit": u, "locale": loc}, error="ambiguous_unit", note="no reading shipped for this language")
 for loc in ["", "12", "español"]:
     add("normalize", {"unit": "mg/dL", "locale": loc}, error="invalid_value", note="locale must be a language tag")
@@ -516,7 +516,7 @@ for v, a, b in [(7.5, "mil/mm3", "K/µL"), (4.5, "Mil/µL", "10^12/L"), (7500, "
     add("convert", {"value": v, "from": a, "to": b}, error="ambiguous_unit", note="refused without a locale")
 add("convert", {"value": 7.5, "from": "mil/mm3", "to": "K/µL", "factor": 1}, error="ambiguous_unit",
     note="a caller-supplied factor does not resolve the spelling")
-add("convert", {"value": 7.5, "from": "mil/mm3", "to": "K/µL", "locale": "de"}, error="ambiguous_unit")
+add("convert", {"value": 7.5, "from": "mil/mm3", "to": "K/µL", "locale": "it"}, error="ambiguous_unit")
 add("convert_result", {"value": "7,5 H", "from": "mil/mm3", "to": "10^9/L", "locale": "es"},
     {"value": 7.5, "comparator": None, "flag": "H", "unit": "10^9/L"})
 add("convert_result", {"value": "<0,5", "from": "mil./µL", "to": "10^12/L", "locale": "ro"},
@@ -527,6 +527,61 @@ for a, b, loc, same in [("mil/mm3", "K/µL", "es", True), ("mil/mm3", "K/µL", "
                         ("mil/µL", "10^9/L", "es", True), ("mil/µL", "10^9/L", "ro", False)]:
     add("same_unit", {"a": a, "b": b, "locale": loc}, {"same": same})
 add("same_unit", {"a": "mil/mm3", "b": "K/µL"}, error="ambiguous_unit")
+
+# ---------------------------------------------------------------------------
+# 6e. German, Austrian and Swiss spellings (1.2.0)
+#     G/l = Giga/l = 10^9/L, T/l = 10^12/L, Tsd./µl = 10^3/µL, Mio./µl = 10^6/µL
+# ---------------------------------------------------------------------------
+for u, canon in [("G/l", "10^9/L"), ("G/L", "10^9/L"), ("Giga/l", "10^9/L"), ("Gpt/l", "10^9/L"),
+                 ("x10^9/l", "10^9/L"), ("x 10^9/l", "10^9/L"), ("×10⁹/l", "10^9/L"), ("10E9/l", "10^9/L"),
+                 ("T/l", "10^12/L"), ("T/L", "10^12/L"), ("Tera/l", "10^12/L"), ("Tpt/l", "10^12/L"),
+                 ("x10^12/l", "10^12/L"),
+                 ("Tsd/µl", "10^3/µL"), ("Tsd./µl", "10^3/µL"), ("Tsd/µL", "10^3/µL"), ("Tsd./µL", "10^3/µL"),
+                 ("Tsd/ul", "10^3/µL"), ("Tsd/μl", "10^3/µL"), ("Tsd./μl", "10^3/µL"), ("TSD/µL", "10^3/µL"),
+                 ("Tsd. / µl", "10^3/µL"), ("Tausend/µl", "10^3/µL"),
+                 ("Mio/µl", "10^6/µL"), ("Mio./µl", "10^6/µL"), ("Mio/µL", "10^6/µL"), ("Mio./µL", "10^6/µL"),
+                 ("Mio/ul", "10^6/µL"), ("Mio/μl", "10^6/µL"), ("Mio./μl", "10^6/µL"), ("Mill./µl", "10^6/µL"),
+                 ("Millionen/µl", "10^6/µL"),
+                 ("/nl", "/nL"), ("pro nl", "/nL"), ("/pl", "/pL"), ("/µl", "/µL"), ("/μl", "/µL"), ("/ul", "/µL"),
+                 ("pro µl", "/µL"), ("pro μl", "/µL"),
+                 ("mmol/l", "mmol/L"), ("µmol/l", "µmol/L"), ("μmol/l", "µmol/L"), ("g/dl", "g/dL"), ("fl", "fL")]:
+    add("normalize", {"unit": u}, {"unit": canon}, note="German-language report spelling")
+for u, loc, canon in [("Mil./µl", "de", "10^6/µL"), ("mil/µL", "de-AT", "10^6/µL"), ("mil./mm3", "de-CH", "10^6/mm³"),
+                      ("Tsd./µl", "de", "10^3/µL"), ("G/l", "de-AT", "10^9/L")]:
+    add("normalize", {"unit": u, "locale": loc}, {"unit": canon}, note="German: 'Mil.' is an alternative to 'Mio.'")
+add("normalize", {"unit": "g/l"}, {"unit": "g/L"}, note="lower-case g is gram, never giga")
+for u in ["t/l", "Tsd/mm3", "Mio/mm3", "Tsd/nl"]:
+    add("normalize", {"unit": u}, error="unknown_unit", note="not shipped: no source found")
+# (value, from, from read as, to, to read as, hand-checked result)
+for v, a, ac, b, bc, x in [
+        ("6,2", "Tsd/µl", "10^3/µL", "x10^9/L", "10^9/L", 6.2),
+        ("6,2", "Tsd./µl", "10^3/µL", "G/l", "10^9/L", 6.2),
+        ("6,2", "G/l", "10^9/L", "Tsd./µl", "10^3/µL", 6.2),
+        ("6,2", "G/l", "10^9/L", "/nl", "/nL", 6.2),
+        ("6,2", "G/l", "10^9/L", "/µl", "/µL", 6200),
+        ("6,2", "Gpt/l", "10^9/L", "K/µL", "10^3/µL", 6.2),
+        ("245", "Tsd./µl", "10^3/µL", "G/l", "10^9/L", 245),
+        ("4,8", "Mio/µl", "10^6/µL", "x10^12/L", "10^12/L", 4.8),
+        ("4,8", "Mio./µl", "10^6/µL", "T/l", "10^12/L", 4.8),
+        ("4,8", "T/l", "10^12/L", "Mio./µl", "10^6/µL", 4.8),
+        ("4,8", "Tpt/l", "10^12/L", "/pl", "/pL", 4.8),
+        ("4,8", "Mio/μl", "10^6/µL", "/µl", "/µL", 4800000),
+        ("4,5", "Tsd/ul", "10^3/µL", "/µl", "/µL", 4500),
+        ("0,45", "G/l", "10^9/L", "Tsd/µl", "10^3/µL", 0.45)]:
+    expect = float(F(v.replace(",", ".")) * scale(ac) / scale(bc))
+    assert abs(expect - x) <= 1e-9 * abs(x), (v, a, b, expect, x)
+    add("convert", {"value": v, "from": a, "to": b}, {"value": expect})
+for v, a, b in [(6.2, "Tsd./µl", "G/l"), (4.8, "Mio./µl", "T/l"), (6.2, "G/l", "/nl")]:
+    add("roundtrip", {"value": v, "a": a, "b": b}, {"value": v}, tol=1e-12)
+add("convert", {"value": "4,8", "from": "Mil./µl", "to": "T/l", "locale": "de"}, {"value": 4.8})
+add("convert_result", {"value": "11,8 H", "from": "Tsd./µl", "to": "G/l"},
+    {"value": 11.8, "comparator": None, "flag": "H", "unit": "10^9/L"})
+add("convert_result", {"value": "<0,1", "from": "G/l", "to": "Tsd./µl"},
+    {"value": 0.1, "comparator": "<", "flag": None, "unit": "10^3/µL"})
+for a, b, same in [("Tsd./µl", "G/l", True), ("Tsd/µl", "x10^9/L", True), ("Mio./µl", "T/l", True),
+                   ("Mio/µl", "10^12/L", True), ("G/l", "/nl", True), ("G/l", "g/l", False), ("T/l", "G/l", False),
+                   ("Tsd./µl", "Mio./µl", False)]:
+    add("same_unit", {"a": a, "b": b}, {"same": same})
 
 # ---------------------------------------------------------------------------
 # 7. explain
@@ -582,7 +637,7 @@ add("explain", {"from": "mg/dL", "to": "mmol/L", "analyte": "glucose", "factor":
     {"kind": "user_factor", "factor": 0.0555, "user_factor_overrides": None, "user_factor_library_kind": "analyte_factor",
      "warnings_contain": ["The library factor is 0.0555062"]})
 
-out = {"version": "1.1.0", "description": "Shared test vectors for the lifefrom-units Python and TypeScript packages. "
+out = {"version": "1.2.0", "description": "Shared test vectors for the lifefrom-units Python and TypeScript packages. "
        "Expected values computed independently of the engine (scripts/make_vectors.py).",
        "ops": {"normalize": "normalize_unit(unit, locale?) -> unit", "same_unit": "same_unit(a, b, analyte?, locale?) -> same",
                "parse_value": "parse_value(value) -> value",

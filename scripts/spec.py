@@ -133,29 +133,31 @@ def unit_defs():
     # number concentration
     add("/L", "number_concentration", 1, ["per L", "cells/L"], ucum="/L")
     add("/mL", "number_concentration", 1000, ["cells/mL", "per mL"], ucum="/mL")
-    add("/µL", "number_concentration", 10**6, ["cells/µL", "per µL", "cells/uL"], ucum="/uL")
+    add("/µL", "number_concentration", 10**6, ["cells/µL", "per µL", "cells/uL", "pro µL"], ucum="/uL")
     add("/mm³", "number_concentration", 10**6, ["/mm3", "/cmm", "cells/mm3", "cells/mm³", "/cu mm", "/mm^3"],
         ucum="/mm3")
-    add("/nL", "number_concentration", 10**9, ["cells/nL", "per nL"], ucum="/nL")
+    add("/nL", "number_concentration", 10**9, ["cells/nL", "per nL", "pro nL"], ucum="/nL")
     add("/pL", "number_concentration", 10**12, ["cells/pL"], ucum="/pL")
     # "mil/µL" and "mil/mm3" are NOT aliases: they are in AMBIGUOUS below (thousand in Spanish, million in English).
     add("10^3/µL", "number_concentration", 10**9,
         ["K/µL", "Thousand/µL", "Thou/µL", "x1000/µL", "1000/µL", "10^3 cells/µL", "10^3/µl", "K/uL",
-         "mii/µL", "miles/µL"],
+         "mii/µL", "miles/µL", "Tsd/µL", "Tsd./µL", "Tausend/µL"],
         ["K/μL"], ucum="10*3/uL")
     add("10^3/mm³", "number_concentration", 10**9,
         ["K/mm³", "K/mm3", "10^3/mm3", "10^3/cmm", "Thou/mm3", "Thousand/mm3", "mii/mm3", "mii/mm³", "miles/mm3",
          "miles/mm³"], ucum="10*3/mm3")
     add("10^6/µL", "number_concentration", 10**12,
-        ["Million/µL", "mill/µL", "mill./µL", "millones/µL", "10^6 cells/µL"],
+        ["Million/µL", "mill/µL", "mill./µL", "millones/µL", "10^6 cells/µL", "Mio/µL", "Mio./µL", "Millionen/µL"],
         ["M/µL", "M/uL"], ucum="10*6/uL")
     add("10^6/mm³", "number_concentration", 10**12,
         ["10^6/mm3", "Million/mm3", "mill/mm3", "mill/mm³", "mill./mm3", "millones/mm3", "millones/mm³"],
         ucum="10*6/mm3")
     add("10^3/L", "number_concentration", 10**3, [], ucum="10*3/L")
     add("10^6/L", "number_concentration", 10**6, [], ucum="10*6/L")
-    add("10^9/L", "number_concentration", 10**9, ["10^9 cells/L", "Giga/L"], ["G/L", "Gpt/L"], ucum="10*9/L")
-    add("10^12/L", "number_concentration", 10**12, ["10^12 cells/L", "Tera/L"], ["T/L", "Tpt/L"], ucum="10*12/L")
+    add("10^9/L", "number_concentration", 10**9, ["10^9 cells/L", "Giga/L"], ["G/L", "Gpt/L", "G/l", "Gpt/l"],
+        ucum="10*9/L")
+    add("10^12/L", "number_concentration", 10**12, ["10^12 cells/L", "Tera/L"], ["T/L", "Tpt/L", "T/l", "Tpt/l"],
+        ucum="10*12/L")
     add("10^3/mL", "number_concentration", 10**6, [], ucum="10*3/mL")
     add("10^6/mL", "number_concentration", 10**9, [], ucum="10*6/mL")
     # fractions
@@ -237,9 +239,9 @@ def unit_defs():
 # ---------------------------------------------------------------------------
 AMBIGUOUS = [
     dict(id="mil-per-mm3", spellings=["mil/mm3", "mil/mm³", "mil/cmm", "mil./mm3", "mil./mm³"],
-         readings={"es": "10^3/mm³", "en": "10^6/mm³", "ro": "10^6/mm³"}),
+         readings={"es": "10^3/mm³", "en": "10^6/mm³", "ro": "10^6/mm³", "de": "10^6/mm³"}),
     dict(id="mil-per-uL", spellings=["mil/µL", "mil./µL"],
-         readings={"es": "10^3/µL", "en": "10^6/µL", "ro": "10^6/µL"}),
+         readings={"es": "10^3/µL", "en": "10^6/µL", "ro": "10^6/µL", "de": "10^6/µL"}),
 ]
 
 # What "mil" means in each language for which a reading is shipped, and why.
@@ -258,9 +260,49 @@ LANGUAGE_READINGS = {
                     "(plural of mie). No dictionary entry for the abbreviation 'mil.' itself was found; the reading "
                     "rests on the two numerals.",
                sources=["dexonline-milion", "dexonline-mie"]),
+    "de": dict(meaning="million",
+               note="German: 'Mio.' is the usual abbreviation of Million (plural Millionen), with 'Mill.' and 'Mil.' "
+                    "as alternative spellings; thousands are 'Tsd.' (Tausend). 'mil' is never German for thousand.",
+               sources=["dewiktionary-mio", "dewiktionary-tsd"]),
 }
 AMBIGUOUS_REASON = ("'mil' means thousand in Spanish ('7,5 mil/mm3' white cells = 7.5 × 10^3/mm³) but million on "
                     "English and Romanian reports ('4.5 Mil/µL' red cells = 4.5 × 10^6/µL), a factor of 1000 apart.")
+
+
+# ---------------------------------------------------------------------------
+# Sources for spellings whose meaning is not plain unit notation: number words,
+# their abbreviations and letter prefixes used by labs in one language. Each
+# entry names the canonical unit, the spellings it covers (each must resolve to
+# that unit) and the sources that show the spelling or its meaning.
+# ---------------------------------------------------------------------------
+SPELLING_SOURCES = [
+    dict(unit="10^9/L", spellings=["G/L", "G/l", "Giga/L", "Giga/l"],
+         note="German, Austrian and Swiss reports: G is the SI prefix giga (10^9) and l or L the litre, so "
+              "'6,2 G/l' white cells = 6.2 × 10^9/L. Lower-case 'g/l' is gram per litre: only a capital G reads "
+              "as giga.",
+         sources=["gesundheit-gv-leukozyten", "insel-zlm-haematologie", "ukulm-kleines-blutbild",
+                  "dewikipedia-leukozyt"]),
+    dict(unit="10^9/L", spellings=["Gpt/L", "Gpt/l"],
+         note="German (mainly eastern German) reports: Gpt = Gigapartikel, 10^9 particles.",
+         sources=["ukmd-laborparameter"]),
+    dict(unit="10^12/L", spellings=["T/L", "T/l", "Tera/L", "Tera/l"],
+         note="German, Austrian and Swiss reports: T is the SI prefix tera (10^12), so '4,8 T/l' red cells = "
+              "4.8 × 10^12/L. Lower-case 't/l' is not read.",
+         sources=["gesundheit-gv-erythrozyten", "insel-zlm-haematologie", "ukulm-kleines-blutbild"]),
+    dict(unit="10^12/L", spellings=["Tpt/L", "Tpt/l"],
+         note="German (mainly eastern German) reports: Tpt = Terapartikel, 10^12 particles.",
+         sources=["ukmd-laborparameter"]),
+    dict(unit="10^3/µL", spellings=["Tsd/µL", "Tsd./µL", "Tausend/µL"],
+         note="German: 'Tsd.' abbreviates Tausend (thousand), so '6,2 Tsd./µl' = 6.2 × 10^3/µL = 6.2 × 10^9/L.",
+         sources=["dewiktionary-tsd", "mhh-zla-referenzbereiche", "dewikipedia-blutbild"]),
+    dict(unit="10^6/µL", spellings=["Mio/µL", "Mio./µL", "Millionen/µL"],
+         note="German: 'Mio.' abbreviates Million(en), so '4,8 Mio./µl' red cells = 4.8 × 10^6/µL = "
+              "4.8 × 10^12/L.",
+         sources=["dewiktionary-mio", "mhh-zla-referenzbereiche", "dewikipedia-blutbild"]),
+    dict(unit="/nL", spellings=["/nL", "pro nL"],
+         note="German: counts per nanolitre (nl), 1/nL = 10^9/L; 'pro' is German for 'per'.",
+         sources=["dewikipedia-leukozyt"]),
+]
 
 
 # ---------------------------------------------------------------------------
@@ -297,6 +339,64 @@ NORMALIZATION_RULES = [
 # Sources that are not PubChem compound records.
 # ---------------------------------------------------------------------------
 SOURCES = {
+    "dewiktionary-tsd": dict(
+        label="Wiktionary (German), entry 'Tsd.' (Abkürzung)",
+        url="https://de.wiktionary.org/wiki/Tsd.", kind="dictionary", accessed="2026-11-27",
+        location="Bedeutungen: '[1] Tausend'; Beispiele: '10 Tsd. Stück'"),
+    "dewiktionary-mio": dict(
+        label="Wiktionary (German), entry 'Mio.' (Abkürzung)",
+        url="https://de.wiktionary.org/wiki/Mio.", kind="dictionary", accessed="2026-11-27",
+        location="Bedeutungen: '[1] Million(en)'; Alternative Schreibweisen: 'Mill., auch Mil.'"),
+    "dewikipedia-blutbild": dict(
+        label="Wikipedia (German), article 'Blutbild'",
+        url="https://de.wikipedia.org/wiki/Blutbild", kind="encyclopedia", accessed="2026-11-27",
+        location="section '„Kleines“ Blutbild', table: Leukozyten and Thrombozyten in 'Tsd./µl', Erythrozyten in "
+                 "'Mio./µl'"),
+    "dewikipedia-leukozyt": dict(
+        label="Wikipedia (German), article 'Leukozyt'",
+        url="https://de.wikipedia.org/wiki/Leukozyt", kind="encyclopedia", accessed="2026-11-27",
+        location="section 'Zahlen und Werte': 'Dies sind die Zellanzahl pro Mikroliter (µl) und die pro Nanoliter "
+                 "(nl). In SI-Einheiten und SI-Präfixen können diese Einheiten als 10^6/l = Mega/Liter und "
+                 "10^9/l = Giga/Liter ausgedrückt werden.'"),
+    "gesundheit-gv-leukozyten": dict(
+        label="gesundheit.gv.at (Austrian public health portal), Laborwerte: Leukozyten",
+        url="https://www.gesundheit.gv.at/labor/laborwerte/blutbild/leukozyten", kind="patient_education",
+        accessed="2026-11-27",
+        location="reference table: unit 'G/L (Giga pro Liter)', adults '4,0–10,0 G/L'"),
+    "gesundheit-gv-erythrozyten": dict(
+        label="gesundheit.gv.at (Austrian public health portal), Laborwerte: Erythrozyten",
+        url="https://www.gesundheit.gv.at/labor/laborwerte/blutbild/erythrozyten", kind="patient_education",
+        accessed="2026-11-27",
+        location="reference table: unit 'T/L (Tera pro Liter)', men '4,5–5,5 T/L', women '4,0–5,0 T/L'"),
+    "insel-zlm-haematologie": dict(
+        label="Inselspital Bern, Zentrum für Labormedizin: Referenzwerte Morphologische Hämatologie, version 7.0, "
+              "10.10.2023",
+        url="https://zlm.insel.ch/fileadmin/Zentrum_f%C3%BCr_Labormedizin/Dokumente/"
+            "Akkreditierungsurkunden_und_Referenzwerte/Referenzwerte__Morphologische_Haematologie.pdf",
+        kind="lab_test_guide", accessed="2026-11-27",
+        location="p. 1, Blutbild: 'Leukozyten G/L', 'Erythrozyten T/L', 'Thrombozyten G/L' (Swiss usage)"),
+    "ukulm-kleines-blutbild": dict(
+        label="Universitätsklinikum Ulm, Klinische Chemie: Leistungsverzeichnis Kleines Blutbild und maschinelle "
+              "Differenzierung (FB-PÄ 6 BB OE)",
+        url="https://www.uniklinik-ulm.de/fileadmin/default/09_Sonstige/Klinische-Chemie/Seiteninhalte/"
+            "Seiteninhalte_B/Kleines_Blutbild_und_maschinelle_Differenzierung_FB-PAE_6_BB_OE.pdf",
+        kind="lab_test_guide", accessed="2026-11-27",
+        location="p. 2: 'Erythrozyten Tera/l', 'Leukozyten Giga/l', 'Thrombozyten Giga/l'; p. 3: "
+                 "'Erythrozyten 4,5 – 5,9 Tera/l', 'Leukozyten 4,4 – 11,3 Giga/l'"),
+    "ukmd-laborparameter": dict(
+        label="Universitätsklinikum Magdeburg, Klinik für Hämatologie und Onkologie: Informationen zu den "
+              "Laborparametern (2007)",
+        url="https://www.med.uni-magdeburg.de/unimagdeburg_mm/Downloads/Kliniken/KHAE/haemalabor/InfoLabParm.pdf",
+        kind="lab_test_guide", accessed="2026-11-27",
+        location="p. 4: 'Leukozyten: 4,0 - 10,0 Gpt/l', 'Erythrozyten: weibl.: 4,0 – 5,5 Tpt/l', "
+                 "'Thrombozyten: 150 - 375 Gpt/l'"),
+    "mhh-zla-referenzbereiche": dict(
+        label="Medizinische Hochschule Hannover, Zentrallabor (ZLA): Leistungsverzeichnis ZLA Referenzbereiche, "
+              "version 7.0, 18.06.2025",
+        url="https://www.mhh.de/fileadmin/mhh/zentrallabor-zla/downloads/LVZ_ZLA_Referenzbereiche.pdf",
+        kind="lab_test_guide", accessed="2026-11-27",
+        location="p. 26, Tabelle 02: 'Erythrozyten (Mio./µl)'; p. 27-28: Normoblasten and Thrombozyten in "
+                 "'Tsd./µl'"),
     "eswiktionary-mil": dict(
         label="Wikcionario (Spanish Wiktionary), entry 'mil' (Spanish)",
         url="https://es.wiktionary.org/wiki/mil", kind="dictionary", accessed="2026-11-26",
